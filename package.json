@@ -1,0 +1,50 @@
+{
+  "name": "wc-base-component",
+  "version": "0.0.1",
+  "description": "re-usable base component for custom elements",
+  "main": "dist/wc-base-component.js",
+  "module": "src/index.js",
+  "scripts": {
+    "clean": "test -d 'dist' && rm -r dist/* || echo 'Build folder is clean!'",
+    "lint": "./node_modules/.bin/eslint  ./src/**/*.js --quiet",
+    "webpackServer": "./node_modules/.bin/webpack-dev-server --config webpack.config.js",
+    "start": "npm install && npm run bowerDeps && npm run server",
+    "prod": "npm run clean && NODE_ENV=production ./node_modules/.bin/webpack --config webpack.config.js",
+    "server": "npm run webpackServer",
+    "bundleServ": "./node_modules/.bin/live-server --port=2929 --host=0.0.0.0 --open='./demo/'",
+    "release": "npm run prod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dsadhanala/wc-base-component.git"
+  },
+  "keywords": [
+    "web component",
+    "base custom element",
+    "uses lit-html",
+    "ES6 template literals",
+    "ES6 mixins"
+  ],
+  "author": "dsadhanala@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dsadhanala/wc-base-component/issues"
+  },
+  "homepage": "https://github.com/dsadhanala/wc-base-component#readme",
+  "dependencies": {
+    "lit-html": "^0.7.1",
+    "mixwith": "^0.1.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "live-server": "^1.2.0",
+    "lodash.camelcase": "^4.3.0",
+    "uglifyjs-webpack-plugin": "^1.0.1",
+    "webpack": "^3.8.1",
+    "webpack-dashboard": "^1.0.0",
+    "webpack-dev-server": "^2.9.3"
+  }
+}
