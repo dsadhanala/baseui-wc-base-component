@@ -1,11 +1,9 @@
-import { Mixin } from 'mixwith';
-import { toCamelCase } from '../../utils';
-import serializeAttrValue from './helpers';
+import { toCamelCase, serializeAttrValue } from './helpers/index.js';
 
 /**
  * This module create property instance and get/set for all attributes and observedAttributes
  */
-const BootstrapElement = Mixin(superclass => class extends superclass {
+const BootstrapElement = superclass => class extends superclass {
     /**
      * This is re-usable static method, which sets property on the instance prototype based on the given attribute name
      * @param {string} name attribute name
@@ -78,6 +76,6 @@ const BootstrapElement = Mixin(superclass => class extends superclass {
     remove(attr) {
         return this.removeAttribute(attr);
     }
-});
+};
 
 export default BootstrapElement;
