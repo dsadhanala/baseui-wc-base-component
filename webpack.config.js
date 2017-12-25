@@ -17,19 +17,7 @@ function setloaders(isProd) {
         {
             test: /\.(js)$/,
             use: [{
-                loader: 'babel-loader',
-                options: {
-                    presets: [
-                        ['env', {
-                            targets: {
-                                browsers: ['last 2 Chrome versions', 'last 2 Firefox versions', 'last 2 Edge versions', 'last 2 Safari versions', 'ie 11']
-                            },
-                            modules: false,
-                            useBuiltIns: true
-                        }],
-                        'stage-0'
-                    ]
-                }
+                loader: 'babel-loader'
             }],
             include: resolveModulesPath
         }
@@ -70,7 +58,8 @@ module.exports = function () {
     const config = {
         devtool: isProd ? 'hidden-source-map' : 'cheap-module-source-map',
         entry: {
-            [pkg.name] : './src/index'
+            [pkg.name] : './src/index.js',
+            'tests' : './demo/tests/index.js'
         },
         performance: {
             hints: isProd ? 'warning' : false

@@ -1,0 +1,94 @@
+html {
+            font-size: 10px;
+        }
+        
+        body {
+            margin: 4rem;
+            font-family: sans-serif;
+            font-size: 1.3rem;
+        }
+        
+        .toggle-view {
+            display: flex;
+            flex-direction: column;
+            margin: 2rem 0;
+        }
+        
+        .view-wrapper {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            color: #333;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .view-wrapper:after {
+            content: "view: " attr(view);
+            display: block;
+            background-color: #FFBB33;
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 2px 6px;
+            border-top-right-radius: 4px;
+        }
+        
+        .toggle-view[view="list"] .view-wrapper {
+            margin: 0;
+        }
+        
+        .toggle-view[view="list"] article {
+            display: block;
+        }
+        
+        .toggle-view[view="list"] article:not(:last-child) {
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .toggle-view[view="table"] .view-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        
+        .toggle-view[view="table"] article {
+            flex: 1 0 calc(50% - (4% + 2px));
+        }
+        
+        .toggle-view[view="table"] article:not(:nth-last-child(-n+2)) {
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .toggle-view[view="table"] article:nth-child(2n+2) {
+            border-left: 1px solid #ccc;
+        }
+        
+        .view-wrapper strong,
+        .view-wrapper img {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .view-wrapper img {
+            width: 4rem;
+            margin: 0 1rem 0 0;
+        }
+        
+        .view-wrapper article {
+            padding: 1rem;
+        }
+        
+        .switch-page {
+            align-self: flex-end;
+            margin: 1rem 0;
+        }
+        
+        .switch-page button {
+            margin: 0 0.3rem;
+            cursor: pointer;
+            outline: 0;
+        }
+        
+        button.is-active {
+            background-color: #FFBB33;
+        }

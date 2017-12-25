@@ -14,5 +14,9 @@
             "useBuiltIns": true
         }],
         "stage-0"
+    ],
+    "plugins": [
+        "transform-object-rest-spread",
+        ["babel-plugin-transform-builtin-classes", { "globals": ["HTMLElement"] }]
     ]
 }

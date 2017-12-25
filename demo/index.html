@@ -1,111 +1,32 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Demo page</title>
-        <style>
-            html{ font-size: 10px; }
-            body {
-                margin: 4rem;
-                font-family: sans-serif;
-                font-size: 1.3rem;
-            }
-            toggle-view {
-                display: block;
-            }
 
-            .view-wrapper {
-              border: 1px solid #ccc;
-              border-radius: 6px;
-              color: #333;
-              cursor: pointer;
-              position: relative;
-            }
+<head>
+    <meta charset="utf-8">
+    <title>Demo page</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.5.0/document-register-element.js"></script>
+    <!-- <script defer type="module" src="../demo/test-wc-ele/test-wc-ele.js"></script> -->
+    <script src="../dist/tests.js"></script>
+</head>
 
-            .view-wrapper:after {
-              content: "view: " attr(view);
-              display: block;
-              background-color: #FFBB33;
-              position: absolute;
-              top: 0;
-              right: 0;
-              padding: 2px 6px;
-              border-top-right-radius: 4px;
-            }
+<body>
+    <h2>Demo</h2>
+    <header-text-lit h-level="1" text="Title text component: lit-html"></header-text-lit>
+    <toggle-view-lit
+        class="toggle-view"
+        view="table"
+        source-url="https://reqres.in/api/users?per_page=4">
+    </toggle-view-lit>
 
-            toggle-view[view="list"] .view-wrapper {
-              margin: 0;
-            }
+    <header-text-hyper h-level="1" text="Title text component: hyper-html"></header-text-hyper>
+    <toggle-view-hyper
+        class="toggle-view"
+        view="list"
+        source-url="https://reqres.in/api/users?per_page=4">
+    </toggle-view-hyper>
+    
+    <p>note: Demo works only on Chrome as I'm using JS module import directly without bundling!</p>
+</body>
 
-            toggle-view[view="list"] article {
-              display: block;
-            }
-
-            toggle-view[view="list"] article:not(:last-child) {
-              border-bottom: 1px solid #ccc;
-            }
-
-            toggle-view[view="table"] .view-wrapper {
-                display: flex;
-                flex-wrap: wrap;
-            }
-
-            toggle-view[view="table"] article {
-              flex: 1 0 calc(50% - (4% + 2px));
-            }
-
-            toggle-view[view="table"] article:not(:nth-last-child(-n+2)) {
-              border-bottom: 1px solid #ccc;
-            }
-
-            toggle-view[view="table"] article:nth-child(2n+2) {
-              border-left: 1px solid #ccc;
-            }
-
-            .view-wrapper strong,
-            .view-wrapper img {
-              display: inline-block;
-              vertical-align: middle;
-            }
-
-            .view-wrapper img {
-              width: 4rem;
-              margin: 0 1rem 0 0;
-            }
-
-            .view-wrapper article {
-              padding: 1rem;
-            }
-
-            .switch-page {
-                float: right;
-                margin: 1rem 0;
-            }
-
-            .switch-page button {
-                margin: 0 0.3rem;
-                cursor: pointer;
-                outline: 0;
-            }
-            button.is-active {
-                background-color: #FFBB33;
-            }
-        </style>
-        <!-- <script src="https://unpkg.com/baseui-wc-polyfills/dist/baseui-wc-polyfills.min.js"></script>
-        <script>baseuiWcPolyfills.ready();</script> -->
-        <script defer type="module" src="../demo/test-wc-ele/test-wc-ele.js"></script>
-    </head>
-    <body>
-        <h2>Demo</h2>
-        <header-text h-level="1" text="Title text component"></header-text>
-
-        <toggle-view
-            view="table"
-            source-url="https://reqres.in/api/users?per_page=4">
-        </toggle-view>
-
-        <br />
-        <br />
-        note: Demo works only on Chrome as I'm using JS module import directly without bundling!
-    </body>
 </html>
