@@ -5,24 +5,25 @@
     <meta charset="utf-8">
     <title>Demo page</title>
     <link rel="stylesheet" href="./styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.5.0/document-register-element.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.5.0/document-register-element.js"></script> -->
     <!-- <script defer type="module" src="../demo/test-wc-ele/test-wc-ele.js"></script> -->
     <script src="../dist/tests.js"></script>
 </head>
 
 <body>
-    <h2>Demo</h2>
-    <header-text-lit h-level="1" text="Title text component: lit-html"></header-text-lit>
+    <h1>Demo</h1>
+    <header-text-lit text="Title text component: lit-html"></header-text-lit>
+    <test-comp text="Title text component: test comp"></test-comp>
     <toggle-view-lit
         class="toggle-view"
-        view="table"
+        view="list"
         source-url="https://reqres.in/api/users?per_page=4">
     </toggle-view-lit>
 
-    <header-text-hyper h-level="1" text="Title text component: hyper-html"></header-text-hyper>
+    <header-text-hyper text="Title text component: hyper-html"></header-text-hyper>
     <toggle-view-hyper
         class="toggle-view"
-        view="list"
+        view="table"
         source-url="https://reqres.in/api/users?per_page=4">
     </toggle-view-hyper>
     

@@ -15,13 +15,11 @@ export { html, renderFn };
  * HOC which uses litHtml underneath to render custome elements
  */
 class BaseCustomElementWithLitHTML extends BaseCustomElement {
-    get template() {
+    get domRender() {
         return (...args) => renderFn(html(...args), this.renderRoot);
     }
 
-    get html() {
-        return html;
-    }
+    get html() { return html; }
 }
 
 export default BaseCustomElementWithLitHTML;

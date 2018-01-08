@@ -1,4 +1,4 @@
-import { toCamelCase, serializeAttrValue } from './helpers/index.js';
+import { toCamelCase, serializeAttrValue } from '../../helpers/index.js';
 
 /**
  * This module create property instance and get/set for all attributes and observedAttributes
@@ -23,7 +23,8 @@ const BootstrapElement = superclass => class extends superclass {
                 return serializeAttrValue(name, this.getAttribute(name));
             },
             set(value) {
-                this.setAttribute(name, value);
+                const checkedValue = (typeof value !== 'string') ? JSON.stringify(value) : value;
+                this.setAttribute(name, checkedValue);
             }
         });
     }
@@ -33,15 +34,42 @@ const BootstrapElement = superclass => class extends superclass {
      * @param {array} attributes list of attributes added to the component
      * @param {array} observedAttributes list of observed attributes
      */
-    createAttributesToProperties(attributes, observedAttributes) {
+    createAttributesToProperties(attributes = {}, observedAttributes = []) {
         // attributes to properties
         Object.keys(attributes).forEach((attr) => {
             const attrName = attributes[attr].name;
             this.defineProp(attrName);
         });
 
+        if (observedAttributes.length === 0) return;
+
         // observedAttributes to properties
         observedAttributes.forEach(this.defineProp.bind(this));
+    }
+
+    ObservePropertyChanges(observedProps = []) {
+        const classInstance = this;
+        const classProto = Object.getPrototypeOf(classInstance);
+
+        const setPropertyObserver = (prop) => {
+            if (prop in classProto) return;
+
+            Object.defineProperty(this, prop, {
+                configurable: true,
+                get() {
+                    return this[`_${prop}`];
+                },
+                set(value) {
+                    this[`_${prop}`] = value;
+
+                    // auto re-render when property value changed
+                    if (this.isFirstRender || typeof this._beforeRender !== 'function') return;
+                    this._beforeRender();
+                }
+            });
+        };
+
+        observedProps.forEach(setPropertyObserver);
     }
 
     /**

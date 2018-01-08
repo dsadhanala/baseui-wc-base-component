@@ -1,4 +1,12 @@
 /**
+ * set context to allow CE polyfill work as expected
+ */
+export class HTMLCustomElement extends HTMLElement {
+    constructor(_) { return (_ = super(_)).init(), _; } // eslint-disable-line
+    init() { } // eslint-disable-line
+}
+
+/**
  * serialize attribute value from string to number/object/boolean/null or string
  * this also checks if the given attribute is a boolean attribute(named as `has-*`) without value, then returns as boolean
  * @param {string} attrName key/name of the attribute
