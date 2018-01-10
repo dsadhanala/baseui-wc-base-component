@@ -1,11 +1,5 @@
-import { toCamelCase } from '../mixins/bootstrap-element/helpers/index.js';
+import { toCamelCase, HTMLCustomElement } from '../helpers/index.js';
 import BootstrapElement from '../mixins/bootstrap-element/index.js';
-
-// set context to allow CE polyfill work as expected
-class HTMLCustomElement extends HTMLElement {
-    constructor(_) { return (_ = super(_))._init(), _; } // eslint-disable-line
-    _init() {}
-}
 
 /**
  * custom element base class
@@ -18,7 +12,8 @@ class HTMLCustomElement extends HTMLElement {
 class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
     static get withShadowDom() { return false; }
 
-    _init() {
+    init() {
+        this.isFirstRender = true;
         this.renderRoot = this;
 
         if (this.constructor.withShadowDom) {
@@ -26,7 +21,18 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
             this.renderRoot = this.shadowRoot;
         }
 
+        // property observer to listen for value changes
+        const { observedProps } = this.constructor;
+        if (observedProps) this.ObservePropertyChanges(observedProps);
+
         this.willConnect();
+    }
+
+    handleEvent(e) {
+        const hasInstanceMethod = `on${e.type}`;
+        if (!this[hasInstanceMethod] || (typeof this[hasInstanceMethod] !== 'function')) return;
+
+        this[hasInstanceMethod](e);
     }
 
     connectedCallback() {
@@ -34,13 +40,14 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
     }
 
     _create() {
-        const attributes         = this.attributes || {};
-        const observedAttributes = this.constructor.observedAttributes || [];
+        // poxy attributes & observed attributes as properties
+        const { attributes }         = this;
+        const { observedAttributes } = this.constructor;
         this.createAttributesToProperties(attributes, observedAttributes);
 
-        this.didConnected();
+        this.onConnect();
         this._beforeRender();
-        this.set('is-enhanced', '');
+        this.set('enhanced', '');
     }
 
     attributeChangedCallback(attrName, oldVal, newVal) {
@@ -53,6 +60,7 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
     }
 
     _beforeRender() {
+        // console.time(this.constructor.is.name);
         this.willRender();
 
         if (this.shouldRender) return;
@@ -62,9 +70,7 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
             this.shouldRender = false;
 
             this.set('is-rendering', '');
-            console.time(this.constructor.is.name);
             this.render();
-            console.timeEnd(this.constructor.is.name);
             this._afterRender();
         };
 
@@ -73,15 +79,22 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
     }
 
     _afterRender() {
+        if (this.isFirstRender) {
+            this.isFirstRender = false;
+            this.didConnected();
+        }
+
         this.remove('is-rendering');
         this.didRendered();
+        // console.timeEnd(this.constructor.is.name);
     }
 
     willConnect() {}
-    didConnected() {}
+    onConnect() {}
     willRender() {}
     render() {}
     didRendered() {}
+    didConnected() {}
 }
 
 export default BaseCustomElement;

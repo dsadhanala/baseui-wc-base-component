@@ -5,7 +5,7 @@
   "main": "dist/baseui-wc-base-component.js",
   "module": "src/index.js",
   "scripts": {
-    "start": "npm install && npm run server",
+    "start": "npm i && npm run server",
     "clean": "test -d 'dist' && rm -r dist/* || echo 'Build folder is clean!'",
     "lint": "./node_modules/.bin/eslint  ./src/**/*.js --quiet",
     "webpackServer": "./node_modules/.bin/webpack-dev-server --config webpack.config.js",
@@ -32,7 +32,8 @@
   },
   "homepage": "https://github.com/dsadhanala/wc-base-component#readme",
   "dependencies": {
-    "document-register-element": "^1.7.0",
+    "baseui-wc-utils": "0.0.4",
+    "hyperhtml": "^2.4.3",
     "lit-html": "^0.7.1"
   },
   "devDependencies": {
@@ -40,22 +41,23 @@
     "babel-eslint": "^8.0.2",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-builtin-classes": "^0.6.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.24.1",
+    "document-register-element": "^1.7.0",
     "eslint": "^4.11.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.4.0",
-    "hyperhtml": "^2.4.3",
     "jsdom": "^11.5.1",
+    "karma": "^2.0.0",
     "karma-jsdom-launcher": "^6.1.2",
     "live-server": "^1.2.0",
     "lodash.camelcase": "^4.3.0",
     "prettier-eslint": "^8.6.0",
     "uglifyjs-webpack-plugin": "^1.1.4",
     "webpack": "^3.8.1",
-    "webpack-dashboard": "^1.0.0",
     "webpack-dev-server": "^2.9.3"
   }
 }

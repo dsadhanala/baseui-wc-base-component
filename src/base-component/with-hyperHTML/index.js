@@ -18,13 +18,11 @@ export const renderFn = (template, renderRoot) => bind(renderRoot)(template);
  * HOC which uses HyperHTML underneath to render custome elements
  */
 class BaseCustomElementWithHyperHTML extends BaseCustomElement {
-    get template() {
+    get domRender() {
         return (...args) => bind(this.renderRoot)(...args);
     }
 
-    get html() {
-        return html;
-    }
+    get html() { return html; }
 }
 
 export default BaseCustomElementWithHyperHTML;

@@ -1,10 +1,11 @@
 /* eslint-disable */
 // TODO move this to common build
-const webpack           = require('webpack');
+const webpack            = require('webpack');
 const path               = require('path');
-const Dashboard          = require('webpack-dashboard');
-const DashboardPlugin    = require('webpack-dashboard/plugin');
+// const Dashboard          = require('webpack-dashboard');
+// const DashboardPlugin    = require('webpack-dashboard/plugin');
 const camelCase          = require('lodash.camelcase');
+const UglifyJsPlugin     = require('uglifyjs-webpack-plugin');
 
 const pkg                = require(path.join(process.cwd(), 'package.json'));
 const ENV                = process.env.NODE_ENV || 'development';
@@ -39,6 +40,12 @@ function setPlugins(isProd) {
             'process.env.NODE_ENV': JSON.stringify(ENV)
         })
     ];
+
+    if (isProd) {
+        plugins.push(
+            new UglifyJsPlugin({ parallel: 4, sourceMap: true })
+        );
+    }
 
     if (!isProd) {
         // const dashboard = new Dashboard();
