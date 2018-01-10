@@ -1,7 +1,7 @@
 import { createStore, combineReducers } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 import { trigger } from 'baseui-wc-utils/src/dom/event-handlers';
-import { BaseUICustomElement } from '../../baseui-wc-base-component';
+import { BaseUICustomElement } from '../index';
 
 const stores = {};
 
@@ -9,7 +9,7 @@ class PageStore extends BaseUICustomElement {
     static get is() { return { name: 'page-store' }; }
 
     static reduceReducers(...reducers) {
-        return (previous, current) => reducers.reduce((p, r) => r(p, current), previous);
+        return (prv, cur) => reducers.reduce((p, r) => r(p, cur), prv);
     }
 
     didConnected() {

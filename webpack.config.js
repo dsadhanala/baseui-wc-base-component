@@ -2,9 +2,8 @@
 // TODO move this to common build
 const webpack            = require('webpack');
 const path               = require('path');
-// const Dashboard          = require('webpack-dashboard');
-// const DashboardPlugin    = require('webpack-dashboard/plugin');
-const camelCase          = require('lodash.camelcase');
+const Dashboard          = require('webpack-dashboard');
+const DashboardPlugin    = require('webpack-dashboard/plugin');
 const UglifyJsPlugin     = require('uglifyjs-webpack-plugin');
 
 const pkg                = require(path.join(process.cwd(), 'package.json'));
@@ -12,6 +11,10 @@ const ENV                = process.env.NODE_ENV || 'development';
 const nodeModulesPath    = path.resolve(__dirname, './node_modules');
 const modulesPath        = path.resolve(__dirname, './src');
 const resolveModulesPath = [modulesPath, nodeModulesPath];
+
+function toCamelCase(word) {
+    return word.replace(/\b(_|-)([a-z])/g, (s, f, c) => c.toUpperCase());
+}
 
 function setloaders(isProd) {
     return [
@@ -48,11 +51,11 @@ function setPlugins(isProd) {
     }
 
     if (!isProd) {
-        // const dashboard = new Dashboard();
+        const dashboard = new Dashboard();
 
         plugins.push(
-            new webpack.HotModuleReplacementPlugin()
-            // new DashboardPlugin(dashboard.setData)
+            new webpack.HotModuleReplacementPlugin(),
+            new DashboardPlugin(dashboard.setData)
         );
     }
 
@@ -75,7 +78,7 @@ module.exports = function () {
             path: path.join(__dirname, 'dist'),
             filename: '[name].js',
             publicPath: 'dist/',
-            library: camelCase(pkg.name),
+            library: toCamelCase(pkg.name),
             libraryTarget: 'umd',
             umdNamedDefine: true
         },
@@ -86,7 +89,7 @@ module.exports = function () {
             host: '0.0.0.0',
             port: 1919,
             hot: true,
-            // quiet: true,
+            quiet: true,
             historyApiFallback: true,
             contentBase: './'
         },
