@@ -19,6 +19,7 @@
         "stage-0"
     ],
     "plugins": [
+        "external-helpers",
         "transform-object-rest-spread",
         ["babel-plugin-transform-builtin-classes", { "globals": ["HTMLElement"] }]
     ]

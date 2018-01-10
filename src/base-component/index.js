@@ -1,4 +1,6 @@
-import { toCamelCase, HTMLCustomElement } from '../helpers/index.js';
+/* eslint-disable class-methods-use-this */
+import { toCamelCase } from 'baseui-wc-utils/src/helpers';
+import { HTMLCustomElement } from '../helpers/index.js';
 import BootstrapElement from '../mixins/bootstrap-element/index.js';
 
 /**

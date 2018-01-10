@@ -7,12 +7,14 @@
   "scripts": {
     "start": "npm i && npm run server",
     "clean": "test -d 'dist' && rm -r dist/* || echo 'Build folder is clean!'",
+    "docs": "./node_modules/.bin/jsdoc -c jsdoc.json",
     "lint": "./node_modules/.bin/eslint  ./src/**/*.js --quiet",
     "webpackServer": "./node_modules/.bin/webpack-dev-server --config webpack.config.js",
-    "prod": "npm run clean && NODE_ENV=production ./node_modules/.bin/webpack --config webpack.config.js",
+    "wpBuild": "npm run clean && ./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/webpack --config webpack.config.js",
+    "rollupBuild": "npm run clean && ./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/rollup -c",
     "server": "npm run webpackServer",
-    "bundleServ": "./node_modules/.bin/live-server --port=2929 --host=0.0.0.0 --open='./demo/'",
-    "release": "npm run prod"
+    "bundleServ": "./node_modules/.bin/live-server --port=1919 --host=0.0.0.0 --open='./demo/'",
+    "release": "npm run lint && npm run rollupBuild && npm run docs"
   },
   "repository": {
     "type": "git",
@@ -67,8 +69,10 @@
     "prettier-eslint": "^8.7.1",
     "rollup": "^0.53.3",
     "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-uglify": "^2.0.1",
+    "uglify-es": "^3.3.5",
     "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0",
     "webpack-dashboard": "0.4.0",

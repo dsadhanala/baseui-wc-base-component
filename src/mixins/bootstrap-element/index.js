@@ -1,4 +1,5 @@
-import { toCamelCase, serializeAttrValue } from '../../helpers/index.js';
+import { toCamelCase } from 'baseui-wc-utils/src/helpers';
+import { serializeAttrValue } from '../../helpers/index.js';
 
 /**
  * This module create property instance and get/set for all attributes and observedAttributes
