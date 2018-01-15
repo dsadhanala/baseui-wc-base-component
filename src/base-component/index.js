@@ -1,13 +1,13 @@
 /* eslint-disable class-methods-use-this */
-import { toCamelCase } from 'baseui-wc-utils/src/helpers';
-import { HTMLCustomElement } from '../helpers/index.js';
+import { toCamelCase, HTMLCustomElement } from '../helpers';
 import BootstrapElement from '../mixins/bootstrap-element/index.js';
 
 /**
  * custom element base class
  * below methods available to make this base element flexible
- *  - willConnect() this will be triggered before connectedCollaback()
- *  - didConnected() this will be triggered after connectedCallback() and before willRender()
+ *  - willConnect() this will be triggered before connectedCallback()
+ *  - onConnect() this will be triggered on connectedCallback()
+ *  - didConnected() this will be triggered only once after didRendered()
  *  - willRender() will be triggered before render()
  *  - didRendered() will be triggered after render()
  */
@@ -38,7 +38,8 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
     }
 
     connectedCallback() {
-        this._create();
+        // delay execution of connectedCallback to make sure dynamic data added attributes are available to consume
+        window.requestAnimationFrame(this._create.bind(this));
     }
 
     _create() {
@@ -62,7 +63,6 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
     }
 
     _beforeRender() {
-        // console.time(this.constructor.is.name);
         this.willRender();
 
         if (this.shouldRender) return;
@@ -88,7 +88,6 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
 
         this.remove('is-rendering');
         this.didRendered();
-        // console.timeEnd(this.constructor.is.name);
     }
 
     willConnect() {}

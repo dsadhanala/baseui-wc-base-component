@@ -1,4 +1,4 @@
-import { BaseUICustomElementWithLitHTML, BaseUICustomElement } from '../../src';
+import { BaseUICustomElementWithLitHTML, BaseUICustomElement } from '../../dist/baseui-wc-base-component.js';
 
 /**
  ************************************** HeaderText mixin **************************************
@@ -33,19 +33,15 @@ const HeaderText = superclass => class extends superclass {
  * HeaderTextLit
  * @extends HeaderText with BaseUICustomElementWithLitHTML
  */
-class HeaderTextLit extends HeaderText(BaseUICustomElementWithLitHTML) {
-    static get is() { return { name: 'header-text-lit' }; }
-}
-customElements.define(HeaderTextLit.is.name, HeaderTextLit);
+class HeaderTextLit extends HeaderText(BaseUICustomElementWithLitHTML) {}
+customElements.define('header-text-lit', HeaderTextLit);
 
 /**
  * HeaderTextHyper
  * @extends HeaderText with BaseUICustomElement
  */
-class HeaderTextHyper extends HeaderText(BaseUICustomElement) {
-    static get is() { return { name: 'header-text-hyper' }; }
-}
-customElements.define(HeaderTextHyper.is.name, HeaderTextHyper);
+class HeaderTextHyper extends HeaderText(BaseUICustomElement) {}
+customElements.define('header-text-hyper', HeaderTextHyper);
 
 
 /**
@@ -98,8 +94,6 @@ const ToggleView = superclass => class extends superclass {
  * @extends ToggleView with BaseUICustomElementWithLitHTML
  */
 class ToggleViewLit extends ToggleView(BaseUICustomElementWithLitHTML) {
-    static get is() { return { name: 'toggle-view-lit' }; }
-
     render() {
         const {
             html, domRender, view, list, toggleHandler, userSwitchHandler
@@ -127,15 +121,13 @@ class ToggleViewLit extends ToggleView(BaseUICustomElementWithLitHTML) {
     }
 }
 
-window.customElements.define(ToggleViewLit.is.name, ToggleViewLit);
+window.customElements.define('toggle-view-lit', ToggleViewLit);
 
 /**
  * ToggleViewHyper
  * @extends ToggleView with BaseUICustomElement
  */
 class ToggleViewHyper extends ToggleView(BaseUICustomElement) {
-    static get is() { return { name: 'toggle-view-hyper' }; }
-
     render() {
         const {
             html, domRender, view, list, toggleHandler, userSwitchHandler
@@ -164,4 +156,4 @@ class ToggleViewHyper extends ToggleView(BaseUICustomElement) {
     }
 }
 
-window.customElements.define(ToggleViewHyper.is.name, ToggleViewHyper);
+window.customElements.define('toggle-view-hyper', ToggleViewHyper);

@@ -1,27 +1,29 @@
-import { createStore, combineReducers } from 'redux';
-import { devToolsEnhancer } from 'redux-devtools-extension';
-import { trigger } from 'baseui-wc-utils/src/dom/event-handlers';
-import { BaseUICustomElement } from '../index';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import reduxLogger from 'redux-logger';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { trigger } from '../helpers';
+import BaseCustomElement from '../base-component';
+import { PAGE_STORE, STORE_NAME, EVENT_STORE_READY, EVENT_STORE_CHANGE } from './consts';
 
 const stores = {};
 
-class PageStore extends BaseUICustomElement {
-    static get is() { return { name: 'page-store' }; }
-
-    static reduceReducers(...reducers) {
-        return (prv, cur) => reducers.reduce((p, r) => r(p, cur), prv);
+class PageStore extends BaseCustomElement {
+    static mergeReducers(...reducers) {
+        return (prevState, action) => reducers.reduce((state, reducer) => reducer(state, action), prevState);
     }
 
     didConnected() {
         this.rootReducer = (s = {}) => s;
-        this.storeName   = 'PAGE_STORE';
+        this.storeName = `${STORE_NAME}`;
         this.asyncReducers = {};
 
-        this.onStateChanage     = this.onStateChanage.bind(this);
-        this.createReducer      = this.createReducer.bind(this);
+        this.onStateChanage = this.onStateChanage.bind(this);
+        this.createReducer = this.createReducer.bind(this);
         this.injectAsyncReducer = this.injectAsyncReducer.bind(this);
 
-        this.initiateStore();
+        if (!stores[this.storeName]) {
+            this.initiateStore();
+        }
 
         // notify store ready
         this.onStoreReady();
@@ -35,20 +37,23 @@ class PageStore extends BaseUICustomElement {
     }
 
     onStoreReady() {
-        trigger('storeready', this, { store: this.getStore() });
+        trigger(`${EVENT_STORE_READY}`, this, { store: this.getStore() });
     }
 
     onStateChanage() {
-        trigger('statechange', this, { state: this.getState() });
+        trigger(`${EVENT_STORE_CHANGE}`, this, { state: this.getState() });
     }
 
     initiateStore(initialState = {}) {
         const { storeName, createReducer } = this;
+        let middleware = s => s;
 
-        if (stores[storeName]) return;
+        if (process.env.NODE_ENV !== 'production') {
+            middleware = applyMiddleware(reduxLogger);
+        }
 
         stores[storeName] = {
-            store: createStore(createReducer(), initialState, devToolsEnhancer())
+            store: createStore(createReducer(), initialState, composeWithDevTools(middleware))
         };
 
         // add injectAsyncReducer to the store API
@@ -82,6 +87,6 @@ class PageStore extends BaseUICustomElement {
     }
 }
 
-window.customElements.define(PageStore.is.name, PageStore);
+window.customElements.define(`${PAGE_STORE}`, PageStore);
 
 export default PageStore;
