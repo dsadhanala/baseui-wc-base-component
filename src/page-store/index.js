@@ -11,7 +11,7 @@ class PageStore extends BaseCustomElement {
         return (prevState, action) => reducers.reduce((state, reducer) => reducer(state, action), prevState);
     }
 
-    didConnected() {
+    didConnect() {
         this.rootReducer = (s = {}) => s;
         this.storeName = `${STORE_NAME}`;
         this.asyncReducers = {};

@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { toCamelCase, serializeAttrValue } from '../../helpers/index.js';
 
 /**
@@ -140,7 +141,7 @@ const BootstrapElement = superclass => class extends superclass {
      * @return {array} HTMLElements that are matched
      */
     findAll(selector, context = this) {
-        return context.querySelectorAll(selector)
+        return context.querySelectorAll(selector);
     }
 
     /**

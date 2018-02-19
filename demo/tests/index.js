@@ -12,7 +12,7 @@ const HeaderText = superclass => class extends superclass {
     }
 
     onClickCallback() {
-        this.setState((prevState) => ({ count: prevState.count + 1}));
+        this.setState((prevState) => ({ count: prevState.count + 1 }));
     }
 
     render() {
@@ -42,7 +42,6 @@ customElements.define('header-text-lit', HeaderTextLit);
 class HeaderTextHyper extends HeaderText(BaseUICustomElement) {}
 customElements.define('header-text-hyper', HeaderTextHyper);
 
-
 /**
  ************************************** ToggleView mixin **************************************
  */
@@ -67,7 +66,7 @@ const ToggleView = superclass => class extends superclass {
         const page = this.page || 1;
         const apiURL = `${this.sourceUrl}&page=${page}`;
         const list = await fetch(apiURL).then(res => res.json());
-        
+
         this.setState({ list });
     }
 

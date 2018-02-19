@@ -44,7 +44,7 @@ Component lifecycle methods:
 
     Shallow merge changes and perform re-render
 
-See below examples or this [codepen](https://codepen.io/dsadhanala/pen/XZZKej) to understand how you can create customElements extends from this module.
+See below examples or this [codepen](https://codepen.io/dsadhanala/pen/XZZKej) (for advance example) to understand how you can create customElements extends from this module.
 
 #### Example with hyperHTML
 
@@ -60,17 +60,21 @@ class HeaderTextHyper extends BaseUICustomElement {
     }
 
     onClickCallback() {
-        this.setState((prevState) => ({ count: prevState.count + 1}));
+        this.setState((prevState) => ({ count: prevState.count + 1 }));
     }
 
     render() {
         const { domRender, text, onClickCallback } = this;
+        const clickCount = (this.state.count) ? ` -> click count ${this.state.count}` : '';
 
         return domRender`
-            <h2 class="header-text__htext"><span onclick="${onClickCallback}">${text}</span></h2>
+            <h2 class="header-text__htext">
+                <span onclick="${onClickCallback}">${text}</span>
+                <span>${clickCount}</span>
+            </h2>
         `;
     }
-};
+}
 
 customElements.define('header-text-hyper', HeaderTextHyper);
 ```
@@ -96,17 +100,21 @@ class HeaderTextLit extends BaseUICustomElementWithLitHTML {
     }
 
     onClickCallback() {
-        this.setState((prevState) => ({ count: prevState.count + 1}));
+        this.setState((prevState) => ({ count: prevState.count + 1 }));
     }
 
     render() {
         const { domRender, text, onClickCallback } = this;
+        const clickCount = (this.state.count) ? ` -> click count ${this.state.count}` : '';
 
         return domRender`
-            <h2 class="header-text__htext"><span onclick="${onClickCallback}">${text}</span></h2>
+            <h2 class="header-text__htext">
+                <span onclick="${onClickCallback}">${text}</span>
+                <span>${clickCount}</span>
+            </h2>
         `;
     }
-};
+}
 
 customElements.define('header-text-lit', HeaderTextLit);
 ```

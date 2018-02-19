@@ -1,6 +1,6 @@
 {
   "name": "baseui-wc-base-component",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "re-usable base component for custom elements",
   "main": "dist/baseui-wc-base-component.js",
   "module": "src/index.js",
