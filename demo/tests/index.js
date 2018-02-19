@@ -1,4 +1,4 @@
-import { BaseUICustomElementWithLitHTML, BaseUICustomElement } from '../../dist/baseui-wc-base-component.js';
+import { BaseUICustomElementWithLitHTML, BaseUICustomElement } from '../../src/index.js';
 
 /**
  ************************************** HeaderText mixin **************************************
@@ -6,25 +6,24 @@ import { BaseUICustomElementWithLitHTML, BaseUICustomElement } from '../../dist/
 const HeaderText = superclass => class extends superclass {
     static get observedAttributes() { return ['text']; }
 
-    constructor() {
-        super();
-    }
-
     willConnect() {
-        this.count = 0;
+        this.state = { count: 0 };
         this.onClickCallback = this.onClickCallback.bind(this);
     }
 
     onClickCallback() {
-        this.count += 1;
-        this.text = `Changed Title on Click ${this.count}`;
+        this.setState((prevState) => ({ count: prevState.count + 1}));
     }
 
     render() {
         const { domRender, text, onClickCallback } = this;
+        const clickCount = (this.state.count) ? ` -> click count ${this.state.count}` : '';
 
         return domRender`
-            <h2 class="header-text__htext"><span onclick="${onClickCallback}">${text}</span></h2>
+            <h2 class="header-text__htext">
+                <span onclick="${onClickCallback}">${text}</span>
+                <span>${clickCount}</span>
+            </h2>
         `;
     }
 };
@@ -49,7 +48,7 @@ customElements.define('header-text-hyper', HeaderTextHyper);
  */
 const ToggleView = superclass => class extends superclass {
     static get observedAttributes() { return ['view']; }
-    static get observedProps() { return ['list']; }
+    // static get observedProps() { return ['list']; }
 
     willConnect() {
         this.state = {
@@ -60,14 +59,16 @@ const ToggleView = superclass => class extends superclass {
         this.userSwitchHandler = this.userSwitchHandler.bind(this);
     }
 
-    didConnected() {
+    didConnect() {
         this.fetchList();
     }
 
     async fetchList() {
         const page = this.page || 1;
         const apiURL = `${this.sourceUrl}&page=${page}`;
-        this.list = await fetch(apiURL).then(res => res.json());
+        const list = await fetch(apiURL).then(res => res.json());
+        
+        this.setState({ list });
     }
 
     toggleHandler() {
@@ -96,8 +97,10 @@ const ToggleView = superclass => class extends superclass {
 class ToggleViewLit extends ToggleView(BaseUICustomElementWithLitHTML) {
     render() {
         const {
-            html, domRender, view, list, toggleHandler, userSwitchHandler
+            html, domRender, view, toggleHandler, userSwitchHandler
         } = this;
+
+        const { list } = this.state;
 
         if (!list || list.length === 0) return false;
 
@@ -130,8 +133,10 @@ window.customElements.define('toggle-view-lit', ToggleViewLit);
 class ToggleViewHyper extends ToggleView(BaseUICustomElement) {
     render() {
         const {
-            html, domRender, view, list, toggleHandler, userSwitchHandler
+            html, domRender, view, toggleHandler, userSwitchHandler
         } = this;
+
+        const { list } = this.state;
 
         if (!list || list.length === 0) return false;
 

@@ -39,17 +39,6 @@ export function serializeAttrValue(attrName, value) {
 }
 
 /**
- * trigger native/custom event and pass data between components
- * @param {object} target element reference on which event needs to be triggerd
- * @param {string} eventName custom event name
- * @param {object} eventData custom event data to share
- */
-export function trigger(eventName, target, eventData) {
-    const triggerEvent = (!eventData) ? new Event(eventName) : new CustomEvent(eventName, { detail: eventData || {} });
-    target.dispatchEvent(triggerEvent);
-}
-
-/**
  * Converts string hyphennated to camelcase
  * @param {string} word data that passed to the function
  * @return {string} word converted string

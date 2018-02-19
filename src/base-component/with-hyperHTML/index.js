@@ -15,7 +15,7 @@ export const html = (...args) => wire()(...args);
 export const renderFn = (template, renderRoot) => bind(renderRoot)(template);
 
 /**
- * HOC which uses HyperHTML underneath to render custome elements
+ * DOM rendering with HyperHTML which extendes from base custom element
  */
 class BaseCustomElementWithHyperHTML extends BaseCustomElement {
     get domRender() {

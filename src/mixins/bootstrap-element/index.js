@@ -47,31 +47,6 @@ const BootstrapElement = superclass => class extends superclass {
         observedAttributes.forEach(this.defineProp.bind(this));
     }
 
-    ObservePropertyChanges(observedProps = []) {
-        const classInstance = this;
-        const classProto = Object.getPrototypeOf(classInstance);
-
-        const setPropertyObserver = (prop) => {
-            if (prop in classProto) return;
-
-            Object.defineProperty(this, prop, {
-                configurable: true,
-                get() {
-                    return this[`_${prop}`];
-                },
-                set(value) {
-                    this[`_${prop}`] = value;
-
-                    // auto re-render when property value changed
-                    if (this.isFirstRender || typeof this._beforeRender !== 'function') return;
-                    this._beforeRender();
-                }
-            });
-        };
-
-        observedProps.forEach(setPropertyObserver);
-    }
-
     /**
      * has attribute
      * @param {string} attribute name
@@ -103,6 +78,100 @@ const BootstrapElement = superclass => class extends superclass {
      */
     remove(attr) {
         return this.removeAttribute(attr);
+    }
+
+    /**
+     * helper function to add class name using classList
+     * @param {object} element DOM element
+     * @param {string} className string of class name
+     * @return {object} element DOM element
+     */
+    addClass(element, className) {
+        element.classList.add(className);
+        return element;
+    }
+
+    /**
+     * helper function to remove class name using classList
+     * @param {object} element DOM element
+     * @param {string} className string of class name
+     * @return {object} element DOM element
+     */
+    removeClass(element, className) {
+        element.classList.remove(className);
+        return element;
+    }
+
+    /**
+     * helper function to check for has class name using classList
+     * @param {object} element DOM element
+     * @param {string} className string of class name
+     * @return {boolean} contains true/false
+     */
+    hasClass(element, className) {
+        return element.classList.contains(className);
+    }
+
+    /**
+     * helper function to toggle class name using classList
+     * @param {object} element DOM element
+     * @param {string} className string of class name
+     * @param {boolean} force boolean to use force optionally
+     * @return {object} element DOM element
+     */
+    toggleClass(element, className, force) {
+        return element.classList.toggle(className, force);
+    }
+
+    /**
+     * helper to find child nodes rendered inside
+     * @param {string} selector that is used to search the DOM node
+     * @param {object} context HTMLElement in which search should be performed
+     * @return {object} HTMLElement
+     */
+    find(selector, context = this) {
+        return context.querySelector(selector);
+    }
+
+    /**
+     * helper to find all child nodes rendered inside
+     * @param {string} selector that is used to search the DOM node
+     * @param {object} context HTMLElement in which search should be performed
+     * @return {array} HTMLElements that are matched
+     */
+    findAll(selector, context = this) {
+        return context.querySelectorAll(selector)
+    }
+
+    /**
+     * simplyfied event handler function
+     * @param {object} target HTML element that needs event to be added
+     * @param {string} eventName event type ex: click, blur, etc.
+     * @param {function} callback function that needs to be triggerd
+     */
+    on(eventName, target, callback) {
+        target.addEventListener(eventName, callback, false);
+    }
+
+    /**
+     * simplyfied event handler function to remove events
+     * @param {object} target HTML element that needs event to be added
+     * @param {string} eventName event type ex: click, blur, etc.
+     * @param {function} callback function that needs to be triggerd
+     */
+    off(eventName, target, callback) {
+        target.removeEventListener(eventName, callback, false);
+    }
+
+    /**
+     * trigger native/custom event and pass data between components
+     * @param {object} target element reference on which event needs to be triggerd
+     * @param {string} eventName custom event name
+     * @param {object} eventData custom event data to share
+     */
+    trigger(eventName, target, eventData) {
+        const triggerEvent = (!eventData) ? new Event(eventName) : new CustomEvent(eventName, { detail: eventData || {} });
+        target.dispatchEvent(triggerEvent);
     }
 };
 

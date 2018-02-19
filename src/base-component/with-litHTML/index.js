@@ -12,7 +12,7 @@ import BaseCustomElement from '../index.js';
 export { html, renderFn };
 
 /**
- * HOC which uses litHtml underneath to render custome elements
+ * DOM rendering with litHtml which extendes from base custom element
  */
 class BaseCustomElementWithLitHTML extends BaseCustomElement {
     get domRender() {

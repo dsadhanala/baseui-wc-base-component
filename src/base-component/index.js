@@ -7,25 +7,23 @@ import BootstrapElement from '../mixins/bootstrap-element/index.js';
  * below methods available to make this base element flexible
  *  - willConnect() this will be triggered before connectedCallback()
  *  - onConnect() this will be triggered on connectedCallback()
- *  - didConnected() this will be triggered only once after didRendered()
+ *  - didConnect() this will be triggered only once after didRender()
  *  - willRender() will be triggered before render()
- *  - didRendered() will be triggered after render()
+ *  - didRender() will be triggered after render()
+ *  - setState() this helps shallow merge changes and allow re-render
  */
 class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
     static get withShadowDom() { return false; }
 
     init() {
         this.isFirstRender = true;
+        this.isCreated = false;
         this.renderRoot = this;
 
         if (this.constructor.withShadowDom) {
             this.attachShadow({ mode: 'open' });
             this.renderRoot = this.shadowRoot;
         }
-
-        // property observer to listen for value changes
-        const { observedProps } = this.constructor;
-        if (observedProps) this.ObservePropertyChanges(observedProps);
 
         this.willConnect();
     }
@@ -48,13 +46,14 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
         const { observedAttributes } = this.constructor;
         this.createAttributesToProperties(attributes, observedAttributes);
 
+        this.isCreated = true;
         this.onConnect();
         this._beforeRender();
         this.set('enhanced', '');
     }
 
     attributeChangedCallback(attrName, oldVal, newVal) {
-        if (!oldVal || oldVal === newVal) return;
+        if (!this.isCreated || oldVal === newVal) return;
 
         const propName = toCamelCase(attrName);
         this[propName] = newVal;
@@ -65,37 +64,33 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
     _beforeRender() {
         this.willRender();
 
-        if (this.shouldRender) return;
-        this.shouldRender = true;
-
-        const asynCallback = () => {
-            this.shouldRender = false;
-
-            this.set('is-rendering', '');
-            this.render();
-            this._afterRender();
-        };
-
-        // batch render to improve performance
-        Promise.resolve().then(asynCallback);
+        this.set('is-rendering', '');
+        this.render();
+        this._afterRender();
     }
 
     _afterRender() {
         if (this.isFirstRender) {
             this.isFirstRender = false;
-            this.didConnected();
+            this.didConnect();
         }
 
         this.remove('is-rendering');
-        this.didRendered();
+        this.didRender();
+    }
+
+    setState(state, callback) {
+        const nextState = (typeof state === 'function') ? state.call(this, this.state, this) : state;
+        this.state = { ...this.state, ...nextState };
+        this.render();
     }
 
     willConnect() {}
     onConnect() {}
     willRender() {}
     render() {}
-    didRendered() {}
-    didConnected() {}
+    didRender() {}
+    didConnect() {}
 }
 
 export default BaseCustomElement;

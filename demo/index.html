@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <title>Demo page</title>
     <link rel="stylesheet" href="./styles.css">
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/1.5.0/document-register-element.js"></script> -->
-    <script defer type="module" src="./tests/index.js"></script>
-    <!-- <script src="../dist/tests.js"></script> -->
+    <script src="https://unpkg.com/document-register-element@1.7.2/build/document-register-element.js"></script>
+    <!-- <script defer type="module" src="./tests/index.js"></script> -->
+    <script src="../dist/tests.js"></script>
 </head>
 
 <body>
@@ -26,8 +26,6 @@
         view="table"
         source-url="https://reqres.in/api/users?per_page=4">
     </toggle-view-hyper>
-
-    <p>note: Demo works only on Chrome as I'm using JS module import directly without bundling!</p>
 </body>
 
 </html>

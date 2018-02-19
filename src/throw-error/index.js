@@ -1,4 +1,4 @@
-export default function (reason) {
+function throwError(reason) {
     const newErr = new Error(reason);
 
     return (e) => {
@@ -6,3 +6,5 @@ export default function (reason) {
         throw newErr;
     };
 }
+
+export default throwError;

@@ -1,6 +1,6 @@
 {
   "name": "baseui-wc-base-component",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "re-usable base component for custom elements",
   "main": "dist/baseui-wc-base-component.js",
   "module": "src/index.js",
@@ -8,13 +8,13 @@
     "start": "npm i && npm run server",
     "clean": "test -d 'dist' && rm -r dist/* || echo 'Build folder is clean!'",
     "docs": "./node_modules/.bin/jsdoc -c jsdoc.json",
-    "lint": "./node_modules/.bin/eslint  ./src/**/*.js --quiet",
+    "lint": "./node_modules/.bin/eslint --fix  ./src/**/*.js --quiet",
     "webpackServer": "./node_modules/.bin/webpack-dev-server --config webpack.config.js",
     "wpBuild": "npm run clean && ./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/webpack --config webpack.config.js",
     "rollupBuild": "npm run clean && ./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/rollup -c",
     "server": "npm run webpackServer",
     "bundleServ": "./node_modules/.bin/live-server --port=1919 --host=0.0.0.0 --open='./demo/'",
-    "release": "npm run lint && npm run rollupBuild && npm run docs"
+    "release": "npm run lint && npm run wpBuild && npm run docs"
   },
   "repository": {
     "type": "git",
@@ -61,21 +61,21 @@
     "eslint-plugin-react": "^7.5.1",
     "jsdoc": "^3.4.2",
     "jsdom": "^11.5.1",
-    "karma": "^1.7.1",
+    "karma": "^2.0.0",
     "karma-jsdom-launcher": "^6.1.2",
     "live-server": "^1.2.0",
     "minami": "^1.1.1",
     "open-browser-webpack-plugin": "^0.0.5",
     "prettier-eslint": "^8.7.1",
-    "rollup": "^0.53.3",
+    "rollup": "^0.56.1",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-uglify": "^2.0.1",
+    "rollup-plugin-uglify": "^3.0.0",
     "uglify-es": "^3.3.5",
     "uglifyjs-webpack-plugin": "^1.1.6",
     "webpack": "^3.10.0",
-    "webpack-dashboard": "0.4.0",
+    "webpack-dashboard": "1.1.1",
     "webpack-dev-server": "^2.10.1"
   }
 }

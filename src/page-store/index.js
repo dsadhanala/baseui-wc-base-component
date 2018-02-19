@@ -1,7 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import reduxLogger from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { trigger } from '../helpers';
 import BaseCustomElement from '../base-component';
 import { PAGE_STORE, STORE_NAME, EVENT_STORE_READY, EVENT_STORE_CHANGE } from './consts';
 
@@ -37,11 +36,11 @@ class PageStore extends BaseCustomElement {
     }
 
     onStoreReady() {
-        trigger(`${EVENT_STORE_READY}`, this, { store: this.getStore() });
+        this.trigger(`${EVENT_STORE_READY}`, this, { store: this.getStore() });
     }
 
     onStateChanage() {
-        trigger(`${EVENT_STORE_CHANGE}`, this, { state: this.getState() });
+        this.trigger(`${EVENT_STORE_CHANGE}`, this, { state: this.getState() });
     }
 
     initiateStore(initialState = {}) {
