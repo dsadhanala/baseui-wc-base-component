@@ -24,6 +24,14 @@ const BootstrapElement = superclass => class extends superclass {
                 return serializeAttrValue(name, this.getAttribute(name));
             },
             set(value) {
+                /*
+                 * This method is called when an observable property is removed
+                 * even if the component has already rendered as a result. The
+                 * call to setAttribute triggers a re-render.
+                 * To prevent this behavior, filter out the unnecessary calls.
+                 */
+                if (!this.getAttribute(name)) return;
+
                 const checkedValue = (typeof value !== 'string') ? JSON.stringify(value) : value;
                 this.setAttribute(name, checkedValue);
             }
