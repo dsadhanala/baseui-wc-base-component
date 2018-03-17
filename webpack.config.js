@@ -17,15 +17,30 @@ function toCamelCase(word) {
 }
 
 function setloaders(isProd) {
-    return [
-        {
-            test: /\.(js)$/,
-            use: [{
-                loader: 'babel-loader'
-            }],
-            include: resolveModulesPath
-        }
-    ];
+    return [{
+        test: /\.(js)$/,
+        use: [{
+            loader: 'babel-loader',
+            options: {
+                babelrc: false,
+                cacheDirectory: true,
+                presets: [
+                    'stage-0',
+                    ['env',
+                        {
+                            targets: { browsers: ['last 2 Chrome versions', 'last 2 Firefox versions', 'last 2 Edge versions', 'last 2 Safari versions', 'ie 11']},
+                            modules: false,
+                            useBuiltIns: true
+                        }
+                    ]
+                ],
+                plugins: [
+                    'transform-object-rest-spread',
+                    ['babel-plugin-transform-builtin-classes', { globals: ['HTMLElement'] }]
+                ]
+            }
+        }]
+    }];
 }
 
 function setPlugins(isProd) {
@@ -51,11 +66,11 @@ function setPlugins(isProd) {
     }
 
     if (!isProd) {
-        const dashboard = new Dashboard();
+        // const dashboard = new Dashboard();
 
         plugins.push(
             new webpack.HotModuleReplacementPlugin(),
-            new DashboardPlugin(dashboard.setData)
+            // new DashboardPlugin(dashboard.setData)
         );
     }
 
@@ -66,6 +81,7 @@ module.exports = function () {
     const isProd = (ENV === 'production');
 
     const config = {
+        mode: ENV,
         devtool: isProd ? 'hidden-source-map' : 'cheap-module-source-map',
         entry: {
             [pkg.name] : './src/index.js',
@@ -89,7 +105,7 @@ module.exports = function () {
             host: '0.0.0.0',
             port: 1919,
             hot: true,
-            quiet: true,
+            // quiet: true,
             historyApiFallback: true,
             contentBase: './'
         },

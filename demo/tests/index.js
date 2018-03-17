@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import { BaseUICustomElementWithLitHTML, BaseUICustomElement } from '../../src/index.js';
 
 /**

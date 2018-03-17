@@ -53,10 +53,26 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
     }
 
     attributeChangedCallback(attrName, oldVal, newVal) {
+        /**
+         * to optimize and avoid unnecessary re-rendering when attribte values changed
+         * this condition checks for below three things
+         * {isCreated} check if element connected, if no, avoid re-render
+         * {oldVal === newVal} check if current and new value for this attribute are same, if yes, then avoid re-render
+         */
         if (!this.isCreated || oldVal === newVal) return;
 
         const propName = toCamelCase(attrName);
-        this[propName] = newVal;
+
+        /**
+         * check if attribute changed due to removeAttribute or change of value
+         * if removed, delete property set on element instance
+         * else, update property with the new value
+         */
+        if (newVal === null) {
+            delete this[propName];
+        } else {
+            this[propName] = newVal;
+        }
 
         this._beforeRender();
     }
