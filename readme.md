@@ -1,5 +1,5 @@
 # Base UI: base custom element
-This base element allows you to choose either `lit-html` or `hyperHTML` to efficiently render and re-render templates to DOM, while keeping the component creation API same.
+This base component allows you to create a customElement without repeated bootstrapping code, you can choose your own rendering library(vdom, preact, etc.) or you can choose from the provided wrapped component from `lit-html` or `hyperHTML` to efficiently render/re-render templates to DOM, while keeping the component creation API same.
 
 #### Install
 ```
@@ -49,7 +49,7 @@ See below examples or this [codepen](https://codepen.io/dsadhanala/pen/XZZKej) (
 #### Example with hyperHTML
 
 ```
-import { BaseUICustomElement } from 'baseui-wc-base-component';
+import BaseCustomElementWithHyperHTML from 'baseui-wc-base-component/with-hyperHTML';
 
 class HeaderTextHyper extends BaseUICustomElement {
     static get observedAttributes() { return ['text']; }
@@ -89,7 +89,7 @@ HTML:
 #### Example with litHTML
 
 ```
-import { BaseUICustomElementWithLitHTML } from 'baseui-wc-base-component';
+import BaseCustomElementWithLitHTML from 'baseui-wc-base-component/with-litHTML';
 
 class HeaderTextLit extends BaseUICustomElementWithLitHTML {
     static get observedAttributes() { return ['text']; }

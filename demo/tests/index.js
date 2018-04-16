@@ -1,5 +1,6 @@
 import 'babel-polyfill';
-import { BaseUICustomElementWithLitHTML, BaseUICustomElement } from '../../src/index.js';
+import BaseUICustomElementWithLitHTML from '../../src/with-litHTML';
+import BaseUICustomElementWithHyperHTML from '../../src/with-hyperHTML';
 
 /**
  ************************************** HeaderText mixin **************************************
@@ -38,9 +39,9 @@ customElements.define('header-text-lit', HeaderTextLit);
 
 /**
  * HeaderTextHyper
- * @extends HeaderText with BaseUICustomElement
+ * @extends HeaderText with BaseUICustomElementWithHyperHTML
  */
-class HeaderTextHyper extends HeaderText(BaseUICustomElement) {}
+class HeaderTextHyper extends HeaderText(BaseUICustomElementWithHyperHTML) {}
 customElements.define('header-text-hyper', HeaderTextHyper);
 
 /**
@@ -48,7 +49,6 @@ customElements.define('header-text-hyper', HeaderTextHyper);
  */
 const ToggleView = superclass => class extends superclass {
     static get observedAttributes() { return ['view']; }
-    // static get observedProps() { return ['list']; }
 
     willConnect() {
         this.state = {
@@ -80,8 +80,8 @@ const ToggleView = superclass => class extends superclass {
         this.fetchList();
     }
 
-    static buildList(listItem, html) {
-        return listItem.map(item => html`
+    static buildList(listItems, html) {
+        return listItems.map(item => html(item)`
             <article>
                 <img src="${item.avatar}" alt="${`${item.first_name}, ${item.last_name}`}" />
                 <strong>${item.first_name}, ${item.last_name}</strong>
@@ -97,7 +97,7 @@ const ToggleView = superclass => class extends superclass {
 class ToggleViewLit extends ToggleView(BaseUICustomElementWithLitHTML) {
     render() {
         const {
-            html, domRender, view, toggleHandler, userSwitchHandler
+            html, htmlWithContext, domRender, view, toggleHandler, userSwitchHandler
         } = this;
 
         const { list } = this.state;
@@ -115,7 +115,7 @@ class ToggleViewLit extends ToggleView(BaseUICustomElementWithLitHTML) {
 
         return domRender`
             <section view$="${view}" onclick="${toggleHandler}" class="view-wrapper">
-                ${this.constructor.buildList(list.data, html)}
+                ${this.constructor.buildList(list.data, htmlWithContext)}
             </section>
             <div class="switch-page">
                 <label>Go to page:</label>${buildPageList(list.total_pages, list.page, userSwitchHandler)}
@@ -128,12 +128,12 @@ window.customElements.define('toggle-view-lit', ToggleViewLit);
 
 /**
  * ToggleViewHyper
- * @extends ToggleView with BaseUICustomElement
+ * @extends ToggleView with BaseUICustomElementWithHyperHTML
  */
-class ToggleViewHyper extends ToggleView(BaseUICustomElement) {
+class ToggleViewHyper extends ToggleView(BaseUICustomElementWithHyperHTML) {
     render() {
         const {
-            html, domRender, view, toggleHandler, userSwitchHandler
+            html, htmlWithContext, domRender, view, toggleHandler, userSwitchHandler
         } = this;
 
         const { list } = this.state;
@@ -152,7 +152,7 @@ class ToggleViewHyper extends ToggleView(BaseUICustomElement) {
 
         return domRender`
             <section view="${view}" onclick="${toggleHandler}" class="view-wrapper">
-                ${this.constructor.buildList(list.data, html)}
+                ${this.constructor.buildList(list.data, htmlWithContext)}
             </section>
             <div class="switch-page">
                 <label>Go to page:</label>${buildPageList(list.total_pages, list.page, userSwitchHandler)}

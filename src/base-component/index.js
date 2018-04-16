@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
-import { toCamelCase, HTMLCustomElement } from '../helpers';
-import BootstrapElement from '../mixins/bootstrap-element/index.js';
+import { toCamelCase, HTMLCustomElement } from './helpers';
+import BootstrapElement from './bootstrap-element/index.js';
 
 /**
  * custom element base class
@@ -18,11 +18,9 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
     init() {
         this.isFirstRender = true;
         this.isCreated = false;
-        this.renderRoot = this;
 
         if (this.constructor.withShadowDom) {
             this.attachShadow({ mode: 'open' });
-            this.renderRoot = this.shadowRoot;
         }
 
         this.willConnect();
@@ -36,17 +34,19 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
     }
 
     connectedCallback() {
-        // delay execution of connectedCallback to make sure dynamic data added attributes are available to consume
+        // delay execution of connectedCallback to make sure dynamic data added to  the attributes are available to consume
         window.requestAnimationFrame(this._create.bind(this));
     }
 
     _create() {
-        // poxy attributes & observed attributes as properties
         const { attributes }         = this;
         const { observedAttributes } = this.constructor;
+
+        // poxy attributes & observed attributes as properties
         this.createAttributesToProperties(attributes, observedAttributes);
 
         this.isCreated = true;
+
         this.onConnect();
         this._beforeRender();
         this.set('enhanced', '');

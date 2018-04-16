@@ -1,16 +1,18 @@
 import { bind, wire } from 'hyperhtml/esm/index.js';
-import BaseCustomElement from '../index.js';
+import BaseCustomElement from '../base-component';
 
 /**
  *
- * @param {object} template literal which needs to be wired
+ * @param {object} template literal that needs to be wired
  */
 export const html = (...args) => wire()(...args);
+
+export const htmlWithContext = wire;
 
 /**
  *
  * @param {object} template literal that needs to be rendered
- * @param {*} renderRoot defines where to render
+ * @param {HTMLElement} renderRoot defines where to render
  */
 export const renderFn = (template, renderRoot) => bind(renderRoot)(template);
 
@@ -19,10 +21,11 @@ export const renderFn = (template, renderRoot) => bind(renderRoot)(template);
  */
 class BaseCustomElementWithHyperHTML extends BaseCustomElement {
     get domRender() {
-        return (...args) => bind(this.renderRoot)(...args);
+        return (...args) => bind(this.shadowRoot || this)(...args);
     }
 
     get html() { return html; }
+    get htmlWithContext() { return htmlWithContext; }
 }
 
 export default BaseCustomElementWithHyperHTML;
