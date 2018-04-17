@@ -2,12 +2,9 @@
 
 [![npm](https://img.shields.io/npm/v/baseui-wc-base-component.svg)](https://www.npmjs.com/package/baseui-wc-base-component)
 [![license](https://img.shields.io/npm/l/baseui-wc-base-component.svg)](https://opensource.org/licenses/MIT)
-
-**gzip size:**
-
-[![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/base-component.min.js?compression=gzip&label=base component)](https://unpkg.com/baseui-wc-base-component/dist/base-component.min.js)
-[![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/with-hyperHTML.min.js?compression=gzip&label=with hyperHTML)](https://unpkg.com/baseui-wc-base-component/dist/with-hyperHTML.min.js)
-[![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/with-litHTML.min.js?compression=gzip&label=with litHTML)](https://unpkg.com/baseui-wc-base-component/dist/with-litHTML.min.js)
+[![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/base-component.min.js?compression=gzip&label=baseComponent)](https://unpkg.com/baseui-wc-base-component/dist/base-component.min.js)
+[![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/with-hyperHTML.min.js?compression=gzip&label=withHyperHTML)](https://unpkg.com/baseui-wc-base-component/dist/with-hyperHTML.min.js)
+[![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/with-litHTML.min.js?compression=gzip&label=withLitHTML)](https://unpkg.com/baseui-wc-base-component/dist/with-litHTML.min.js)
 
 This base component allows you to create a customElement without repeated bootstrapping code.
 Optionally you can use rendering library of your choice(vdom, preact, etc.) or just vanilla JS.
@@ -42,12 +39,14 @@ define('module_name', ['baseui-wc-base-component'], function (BaseComponent){});
 | `willConnect`| before the component gets attached to the DOM (use this instead of constructor) |
 | `onConnect`  | on connectedCallback trigger                                                    |
 | `didConnect` | after the component gets attached to the DOM (only once, after first render)    |
-| `willRender` | before `render()`.                                                              |
+| `willRender` | before `render()`                                                               |
 | `didRender`  | after `render()`                                                                |
 | `setState`   | shallow merge state changes and perform re-render                               |
 
 ## Simple component example and comparison with all variations:
 Please refer below code examples with very basic component which updates text when clicked.
+
+To see the preview of below examples refer this [codepen](https://codepen.io/dsadhanala/pen/jxNNZG)
 
 ### with BaseCustomElement
 Optionally you can use rendering library of your choice or just vanilla JS.
