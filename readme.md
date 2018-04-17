@@ -1,8 +1,13 @@
 # Base UI: base custom element
 
-- base-custom-element: [![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/base-component.min.js?compression=gzip)](https://unpkg.com/baseui-wc-base-component/dist/base-component.min.js)
-- with-hyperHTML: [![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/with-hyperHTML.min.js?compression=gzip)](https://unpkg.com/baseui-wc-base-component/dist/with-hyperHTML.min.js)
-- with-litHTML: [![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/with-litHTML.min.js?compression=gzip)](https://unpkg.com/baseui-wc-base-component/dist/with-litHTML.min)
+[![npm](https://img.shields.io/npm/v/baseui-wc-base-component.svg)](https://www.npmjs.com/package/baseui-wc-base-component)
+[![license](https://img.shields.io/npm/l/baseui-wc-base-component.svg)](https://opensource.org/licenses/MIT)
+
+**gzip size:**
+
+[![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/base-component.min.js?compression=gzip&label=base component)](https://unpkg.com/baseui-wc-base-component/dist/base-component.min.js)
+[![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/with-hyperHTML.min.js?compression=gzip&label=with hyperHTML)](https://unpkg.com/baseui-wc-base-component/dist/with-hyperHTML.min.js)
+[![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/with-litHTML.min.js?compression=gzip&label=with litHTML)](https://unpkg.com/baseui-wc-base-component/dist/with-litHTML.min.js)
 
 This base component allows you to create a customElement without repeated bootstrapping code.
 Optionally you can use rendering library of your choice(vdom, preact, etc.) or just vanilla JS.
