@@ -5,12 +5,14 @@
     <meta charset="utf-8">
     <title>Test baseUI custom element</title>
     <link rel="stylesheet" href="./styles.css">
-    <script src="https://unpkg.com/document-register-element@1.7.2/build/document-register-element.js"></script>
+    <script src="https://unpkg.com/@webcomponents/custom-elements@1.1.0/custom-elements.min.js"></script>
     <script src="../dist/tests.js"></script>
 </head>
 
 <body>
     <h1>Demo</h1>
+
+    <header-text-base text="Rendered with base-custom-element"></header-text-base>
 
     <header-text-lit text="Rendered with lit-html"></header-text-lit>
     <toggle-view-lit

@@ -96,3 +96,8 @@ button.is-active {
 .header-text__htext span {
     cursor: pointer;
 }
+
+header-text-base {
+    margin: 4rem 0;
+    display: block;
+}

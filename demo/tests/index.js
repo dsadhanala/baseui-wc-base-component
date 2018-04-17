@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import BaseCustomElement from '../../src/base-component';
 import BaseUICustomElementWithLitHTML from '../../src/with-litHTML';
 import BaseUICustomElementWithHyperHTML from '../../src/with-hyperHTML';
 
@@ -29,6 +30,34 @@ const HeaderText = superclass => class extends superclass {
         `;
     }
 };
+
+/**
+ * HeaderTextBase
+ * @extends HeaderText with BaseCustomElement
+ */
+class HeaderTextBase extends HeaderText(BaseCustomElement) {
+    didRender() {
+        const clickHandlerEle = this.find('[js-click-handler]');
+        this.on('click', clickHandlerEle, this);
+    }
+
+    onclick() {
+        this.onClickCallback();
+    }
+
+    render() {
+        const { text } = this;
+        const clickCount = (this.state.count) ? ` -> click count ${this.state.count}` : '';
+
+        this.innerHTML = `
+            <h2 class="header-text__htext">
+                <span js-click-handler>${text}</span>
+                <span>${clickCount}</span>
+            </h2>
+        `;
+    }
+}
+customElements.define('header-text-base', HeaderTextBase);
 
 /**
  * HeaderTextLit

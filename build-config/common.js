@@ -7,11 +7,11 @@ const ENV    = process.env.NODE_ENV || 'development';
 const isProd = (ENV === 'production');
 
 const entry = {
-    index:                 './src/index.js',
-    'base-custom-element': './src/base-component/index',
-    'with-hyperHTML':      './src/with-hyperHTML/index',
-    'with-litHTML':        './src/with-litHTML/index',
-    'throw-error':         './src/throw-error/index'
+    index:            './src/index.js',
+    'base-component': './src/base-component/index',
+    'with-hyperHTML': './src/with-hyperHTML/index',
+    'with-litHTML':   './src/with-litHTML/index',
+    'throw-error':    './src/throw-error/index'
 };
 
 module.exports = {

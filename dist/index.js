@@ -570,7 +570,7 @@ var base_component_BaseCustomElement = function (_BootstrapElement) {
         value: function setState(state) {
             var nextState = typeof state === 'function' ? state.call(this, this.state, this) : state;
             this.state = _extends({}, this.state, nextState);
-            this.render();
+            this._beforeRender();
         }
     }, {
         key: 'willConnect',

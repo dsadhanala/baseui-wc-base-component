@@ -1,57 +1,101 @@
 # Base UI: base custom element
-This base component allows you to create a customElement without repeated bootstrapping code, you can choose your own rendering library(vdom, preact, etc.) or you can choose from the provided wrapped component from `lit-html` or `hyperHTML` to efficiently render/re-render templates to DOM, while keeping the component creation API same.
 
-#### Install
+- base-custom-element: [![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/base-component.min.js?compression=gzip)](https://unpkg.com/baseui-wc-base-component/dist/base-component.min.js)
+- with-hyperHTML: [![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/with-hyperHTML.min.js?compression=gzip)](https://unpkg.com/baseui-wc-base-component/dist/with-hyperHTML.min.js)
+- with-litHTML: [![gzip size](http://img.badgesize.io/https://unpkg.com/baseui-wc-base-component/dist/with-litHTML.min.js?compression=gzip)](https://unpkg.com/baseui-wc-base-component/dist/with-litHTML.min)
+
+This base component allows you to create a customElement without repeated bootstrapping code.
+Optionally you can use rendering library of your choice(vdom, preact, etc.) or just vanilla JS.
+You can also choose from the provided wrapped component with `lit-html` or `hyperHTML` to efficiently render/re-render templates to DOM, while keeping the component creation API same.
+
+## Install
 ```
 npm i baseui-wc-base-component
 ```
 
-It's a UMD bundle so can be imported into ES6/CJS/AMD modules in node or in browser environment
+Since it's an UMD bundle, this can be imported into ES6/CJS/AMD modules in node or in browser environment
 
-```
-import { BaseUICustomElement } from 'baseui-wc-base-component';
-const { BaseUICustomElement } = require('baseui-wc-base-component');
-define('module_name', ['baseui-wc-base-component'], function (BaseUICustomElement){});
+**Node:**
+```js
+// ES6
+import { BaseComponent } from 'baseui-wc-base-component';
+// CJS
+const { BaseComponent } = require('baseui-wc-base-component');
+// AMD
+define('module_name', ['baseui-wc-base-component'], function (BaseComponent){});
 ```
 
-Browser
-```
+**Browser:**
+```js
 <script src="https://unpkg.com/baseui-wc-base-component/dist/baseui-wc-base-component.js"></script>
 ```
 
-Component lifecycle methods:
-1. **willConnect()**
+## Component lifecycle methods:
 
-    This will be triggered before connectedCallback(), kind of constructor where you can add properties and bind methods to instance.
+| Name         | When it gets called                                                             |
+|--------------|---------------------------------------------------------------------------------|
+| `willConnect`| before the component gets attached to the DOM (use this instead of constructor) |
+| `onConnect`  | on connectedCallback trigger                                                    |
+| `didConnect` | after the component gets attached to the DOM (only once, after first render)    |
+| `willRender` | before `render()`.                                                              |
+| `didRender`  | after `render()`                                                                |
+| `setState`   | shallow merge state changes and perform re-render                               |
 
-1. **onConnect()**
+## Simple component example and comparison with all variations:
+Please refer below code examples with very basic component which updates text when clicked.
 
-    This will be triggered when element added to the DOM and element upgraded to customElement
+### with BaseCustomElement
+Optionally you can use rendering library of your choice or just vanilla JS.
 
-1. **didConnect()**
+```js
+import BaseComponent from 'baseui-wc-base-component/base-component';
 
-    This will be triggered **only once**, right after first render complete
+class HeaderTextBase extends BaseComponent {
+    static get observedAttributes() { return ['text']; }
 
-1. **willRender()**
+    willConnect() {
+        this.state = { count: 0 };
+    }
 
-    This will be triggered before every render
+    didRender() {
+        const clickHandlerEle = this.find('[js-click-handler]');
+        this.on('click', clickHandlerEle, this);
+    }
 
-1. **didRender()**
+    onclick() {
+        this.setState((prevState) => ({ count: prevState.count + 1 }));
+    }
 
-    This will be triggered after every render
+    render() {
+        /* choose your own rendering library or use vanilla JS like below */
+        const { text } = this;
+        const clickCount = (this.state.count) ? ` -> click count ${this.state.count}` : '';
 
-1. **setState()**
+        this.innerHTML = `
+            <h2 class="header-text__htext">
+                <span js-click-handler>${text}</span>
+                <span>${clickCount}</span>
+            </h2>
+        `;
+    }
+}
 
-    Shallow merge changes and perform re-render
-
-See below examples or this [codepen](https://codepen.io/dsadhanala/pen/XZZKej) (for advance example) to understand how you can create customElements extends from this module.
-
-#### Example with hyperHTML
+customElements.define('header-text-base', HeaderTextBase);
 
 ```
-import BaseCustomElementWithHyperHTML from 'baseui-wc-base-component/with-hyperHTML';
 
-class HeaderTextHyper extends BaseUICustomElement {
+Usage in HTML:
+
+```html
+<header-text-base text="Rendered with base-custom-element"></header-text-base>
+```
+
+### with hyperHTML
+
+```js
+import BaseComponent from 'baseui-wc-base-component/with-hyperHTML';
+
+class HeaderTextHyper extends BaseComponent {
     static get observedAttributes() { return ['text']; }
 
     willConnect() {
@@ -79,19 +123,19 @@ class HeaderTextHyper extends BaseUICustomElement {
 customElements.define('header-text-hyper', HeaderTextHyper);
 ```
 
-HTML:
+Usage in HTML:
 
-```
+```html
 <header-text-hyper text="Title text component: hyper-html"></header-text-hyper>
 ```
 
 
-#### Example with litHTML
+### with litHTML
 
-```
-import BaseCustomElementWithLitHTML from 'baseui-wc-base-component/with-litHTML';
+```js
+import BaseComponent from 'baseui-wc-base-component/with-litHTML';
 
-class HeaderTextLit extends BaseUICustomElementWithLitHTML {
+class HeaderTextLit extends BaseComponent {
     static get observedAttributes() { return ['text']; }
 
     willConnect() {
@@ -119,10 +163,13 @@ class HeaderTextLit extends BaseUICustomElementWithLitHTML {
 customElements.define('header-text-lit', HeaderTextLit);
 ```
 
-HTML:
+Usage in HTML:
 
-```
+```html
 <header-text-hyper text="Title text component: hyper-html"></header-text-hyper>
 ```
 
-#### TODO add more docs
+## Complex example
+Refer [this codepen](https://codepen.io/dsadhanala/pen/XZZKej) to understand how you can create customElements that are extended from this package.
+
+## TODO add more docs

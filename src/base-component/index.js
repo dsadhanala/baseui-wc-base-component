@@ -98,7 +98,7 @@ class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
     setState(state) {
         const nextState = (typeof state === 'function') ? state.call(this, this.state, this) : state;
         this.state = { ...this.state, ...nextState };
-        this.render();
+        this._beforeRender();
     }
 
     willConnect() {}
