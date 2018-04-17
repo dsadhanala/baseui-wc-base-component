@@ -3187,15 +3187,15 @@ function throwError(reason) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _base_component_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BaseUICustomElement", function() { return _base_component_index__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BaseComponent", function() { return _base_component_index__WEBPACK_IMPORTED_MODULE_0__["default"]; });
 
 /* harmony import */ var _with_hyperHTML__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BaseUICustomElementWithHyperHTML", function() { return _with_hyperHTML__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withHyperHTML", function() { return _with_hyperHTML__WEBPACK_IMPORTED_MODULE_1__["default"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "htmlHyper", function() { return _with_hyperHTML__WEBPACK_IMPORTED_MODULE_1__["html"]; });
 
 /* harmony import */ var _with_litHTML__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BaseUICustomElementWithLitHTML", function() { return _with_litHTML__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withLitHTML", function() { return _with_litHTML__WEBPACK_IMPORTED_MODULE_2__["default"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "htmlLit", function() { return _with_litHTML__WEBPACK_IMPORTED_MODULE_2__["html"]; });
 

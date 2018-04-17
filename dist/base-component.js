@@ -2,11 +2,11 @@
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define("base-custom-element", [], factory);
+		define("base-component", [], factory);
 	else if(typeof exports === 'object')
-		exports["base-custom-element"] = factory();
+		exports["base-component"] = factory();
 	else
-		root["base-custom-element"] = factory();
+		root["base-component"] = factory();
 })(window, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
