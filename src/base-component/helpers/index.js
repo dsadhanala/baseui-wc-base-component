@@ -46,3 +46,12 @@ export function serializeAttrValue(attrName, value) {
 export function toCamelCase(word) {
     return word.replace(/\b(_|-)([a-z])/g, (s, f, c) => c.toUpperCase());
 }
+
+/**
+ * Converts string camelcase to hyphennated
+ * @param {string} word data that passed to the function
+ * @return {string} word converted string
+ */
+export function toHyphenCase(word) {
+    return word.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase();
+}

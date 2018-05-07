@@ -15,6 +15,18 @@ import BootstrapElement from './bootstrap-element/index.js';
 class BaseCustomElement extends BootstrapElement(HTMLCustomElement) {
     static get withShadowDom() { return false; }
 
+    static get is() { return this.element; }
+
+    static define(elementName) {
+        const { customElements } = window;
+        const isElementExist = customElements.get(elementName);
+
+        if (isElementExist) return;
+
+        this.element = elementName;
+        customElements.define(elementName, this);
+    }
+
     init() {
         this.isFirstRender = true;
         this.isCreated = false;

@@ -100,4 +100,5 @@ button.is-active {
 header-text-base {
     margin: 4rem 0;
     display: block;
+    user-select: none;
 }

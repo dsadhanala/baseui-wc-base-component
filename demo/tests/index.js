@@ -57,21 +57,21 @@ class HeaderTextBase extends HeaderText(BaseCustomElement) {
         `;
     }
 }
-customElements.define('header-text-base', HeaderTextBase);
+HeaderTextBase.define('header-text-base');
 
 /**
  * HeaderTextLit
  * @extends HeaderText with BaseUICustomElementWithLitHTML
  */
 class HeaderTextLit extends HeaderText(BaseUICustomElementWithLitHTML) {}
-customElements.define('header-text-lit', HeaderTextLit);
+HeaderTextLit.define('header-text-lit');
 
 /**
  * HeaderTextHyper
  * @extends HeaderText with BaseUICustomElementWithHyperHTML
  */
 class HeaderTextHyper extends HeaderText(BaseUICustomElementWithHyperHTML) {}
-customElements.define('header-text-hyper', HeaderTextHyper);
+HeaderTextHyper.define('header-text-hyper');
 
 /**
  ************************************** ToggleView mixin **************************************
@@ -152,8 +152,7 @@ class ToggleViewLit extends ToggleView(BaseUICustomElementWithLitHTML) {
         `;
     }
 }
-
-window.customElements.define('toggle-view-lit', ToggleViewLit);
+ToggleViewLit.define('toggle-view-lit');
 
 /**
  * ToggleViewHyper
@@ -189,5 +188,4 @@ class ToggleViewHyper extends ToggleView(BaseUICustomElementWithHyperHTML) {
         `;
     }
 }
-
-window.customElements.define('toggle-view-hyper', ToggleViewHyper);
+ToggleViewHyper.define('toggle-view-hyper');

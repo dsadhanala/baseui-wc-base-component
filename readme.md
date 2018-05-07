@@ -10,6 +10,9 @@ This base component allows you to create a customElement without repeated bootst
 Optionally you can use rendering library of your choice(vdom, preact, etc.) or just vanilla JS.
 You can also choose from the provided wrapped component with `lit-html` or `hyperHTML` to efficiently render/re-render templates to DOM, while keeping the component creation API same.
 
+> Note:
+If you use `customElements.define('element-name', ElementClass);` and import components more than once on the same page throws exception as it tries to register same element more than once. So use `ElementClass.define('element-name')` instead, which is a static method on the element instance helps prevent this issue.
+
 ## Install
 ```
 npm i baseui-wc-base-component
@@ -32,16 +35,17 @@ define('module_name', ['baseui-wc-base-component'], function (BaseComponent){});
 <script src="https://unpkg.com/baseui-wc-base-component/dist/baseui-wc-base-component.js"></script>
 ```
 
-## Component lifecycle methods:
+## Component methods:
 
-| Name         | When it gets called                                                             |
-|--------------|---------------------------------------------------------------------------------|
-| `willConnect`| before the component gets attached to the DOM (use this instead of constructor) |
-| `onConnect`  | on connectedCallback trigger                                                    |
-| `didConnect` | after the component gets attached to the DOM (only once, after first render)    |
-| `willRender` | before `render()`                                                               |
-| `didRender`  | after `render()`                                                                |
-| `setState`   | shallow merge state changes and perform re-render                               |
+| Name         | When it gets called                                                                                                                    |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| `willConnect`| before the component gets attached to the DOM (use this instead of constructor)                                                        |
+| `onConnect`  | on connectedCallback trigger                                                                                                           |
+| `didConnect` | after the component gets attached to the DOM (only once, after first render)                                                           |
+| `willRender` | before `render()`                                                                                                                      |
+| `didRender`  | after `render()`                                                                                                                       |
+| `setState`   | shallow merge state changes and perform re-render                                                                                      |
+| `define`     | register custom element, helps prevent throwing error when same element <br> is imported into other modules and try to register again  |
 
 ## Simple component example and comparison with all variations:
 Please refer below code examples with very basic component which updates text when clicked.
@@ -84,7 +88,7 @@ class HeaderTextBase extends BaseComponent {
     }
 }
 
-customElements.define('header-text-base', HeaderTextBase);
+HeaderTextBase.define('header-text-base');
 
 ```
 
@@ -124,7 +128,7 @@ class HeaderTextHyper extends BaseComponent {
     }
 }
 
-customElements.define('header-text-hyper', HeaderTextHyper);
+HeaderTextHyper.define('header-text-hyper');
 ```
 
 Usage in HTML:
@@ -164,7 +168,7 @@ class HeaderTextLit extends BaseComponent {
     }
 }
 
-customElements.define('header-text-lit', HeaderTextLit);
+HeaderTextLit.define('header-text-lit');
 ```
 
 Usage in HTML:
