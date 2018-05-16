@@ -1,6 +1,6 @@
 {
   "name": "baseui-wc-base-component",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "re-usable base customElement to avoid repeated bootstrap code, flexible to choose own rendering or use hyperHTML/LitHTML.",
   "main": "dist/baseui-wc-base-component.js",
   "module": "src/index.js",
@@ -38,7 +38,6 @@
   },
   "homepage": "https://github.com/dsadhanala/wc-base-component#readme",
   "dependencies": {
-    "document-register-element": "^1.8.1",
     "hyperhtml": "^2.10.1",
     "lit-html": "^0.10.0"
   },
