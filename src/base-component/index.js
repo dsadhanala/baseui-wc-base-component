@@ -5,6 +5,7 @@ import BootstrapElement from './bootstrap-element/index.js';
 /**
  * custom element base class
  * below methods available to make this base element flexible
+ *  - define('element-name') this will help register customElement only if it is not already deinfined
  *  - willConnect() this will be triggered before connectedCallback()
  *  - onConnect() this will be triggered on connectedCallback()
  *  - didConnect() this will be triggered only once after didRender()

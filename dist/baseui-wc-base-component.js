@@ -2,11 +2,11 @@
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define("index", [], factory);
+		define("baseui-wc-base-component", [], factory);
 	else if(typeof exports === 'object')
-		exports["index"] = factory();
+		exports["baseui-wc-base-component"] = factory();
 	else
-		root["index"] = factory();
+		root["baseui-wc-base-component"] = factory();
 })(window, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -105,7 +105,7 @@ var _fixBabelExtend = function (O) {
         o.__proto__ = p;
         return o;
     },
-        construct = (typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === 'object' ? Reflect.construct : function (Parent, args, Class) {
+        construct = (typeof Reflect === 'undefined' ? 'undefined' : _typeof(Reflect)) === 'object' ? Reflect.construct : function (Parent, args, Class) {
         var Constructor,
             a = [null];
         a.push.apply(a, args);
@@ -137,7 +137,7 @@ var HTMLCustomElement = _fixBabelExtend(function (_HTMLElement) {
 
 
     _createClass(HTMLCustomElement, [{
-        key: "init",
+        key: 'init',
         value: function init() {} // eslint-disable-line
 
     }]);
@@ -165,7 +165,7 @@ function serializeAttrValue(attrName, value) {
 
         if (isObjOrArray) {
             updatedValue = null;
-            console.error("Warning: Failed serializing attribute(" + attrName + ") value as JSON: " + value);
+            console.error('Warning: Failed serializing attribute(' + attrName + ') value as JSON: ' + value);
         }
     }
 
@@ -186,6 +186,15 @@ function toCamelCase(word) {
     return word.replace(/\b(_|-)([a-z])/g, function (s, f, c) {
         return c.toUpperCase();
     });
+}
+
+/**
+ * Converts string camelcase to hyphennated
+ * @param {string} word data that passed to the function
+ * @return {string} word converted string
+ */
+function toHyphenCase(word) {
+    return word.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase();
 }
 // CONCATENATED MODULE: ./src/base-component/bootstrap-element/index.js
 var bootstrap_element_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -460,6 +469,7 @@ function base_component_inherits(subClass, superClass) { if (typeof superClass !
 /**
  * custom element base class
  * below methods available to make this base element flexible
+ *  - define('element-name') this will help register customElement only if it is not already deinfined
  *  - willConnect() this will be triggered before connectedCallback()
  *  - onConnect() this will be triggered on connectedCallback()
  *  - didConnect() this will be triggered only once after didRender()
@@ -591,9 +601,27 @@ var base_component_BaseCustomElement = function (_BootstrapElement) {
         key: 'didConnect',
         value: function didConnect() {}
     }], [{
+        key: 'define',
+        value: function define(elementName) {
+            var _window = window,
+                customElements = _window.customElements;
+
+            var isElementExist = customElements.get(elementName);
+
+            if (isElementExist) return;
+
+            this.element = elementName;
+            customElements.define(elementName, this);
+        }
+    }, {
         key: 'withShadowDom',
         get: function get() {
             return false;
+        }
+    }, {
+        key: 'is',
+        get: function get() {
+            return this.element;
         }
     }]);
 
@@ -770,7 +798,7 @@ function defaultTemplateFactory(result) {
  * call `render` with the new result.
  *
  * @param result a TemplateResult created by evaluating a template tag like
- *     `html` or `svg.
+ *     `html` or `svg`.
  * @param container A DOM parent to render to. The entire contents are either
  *     replaced, or efficiently updated if the same result type was previous
  *     rendered there.
@@ -915,6 +943,7 @@ var Template = function Template(result, element) {
                     // Find the attribute name
                     var attributeNameInPart = lastAttributeNameRegex.exec(stringForPart)[1];
                     // Find the corresponding attribute
+                    // TODO(justinfagnani): remove non-null assertion
                     var attribute = attributes.getNamedItem(attributeNameInPart);
                     var stringsForAttributeValue = attribute.value.split(markerRegex);
                     this.parts.push(new TemplatePart('attribute', index, attribute.name, attributeNameInPart, stringsForAttributeValue));
@@ -931,16 +960,14 @@ var Template = function Template(result, element) {
                 var lastIndex = strings.length - 1;
                 // We have a part for each match found
                 partIndex += lastIndex;
-                // We keep this current node, but reset its content to the last
-                // literal part. We insert new literal nodes before this so that the
-                // tree walker keeps its position correctly.
-                node.textContent = strings[lastIndex];
                 // Generate a new text node for each literal section
                 // These nodes are also used as the markers for node parts
                 for (var _i = 0; _i < lastIndex; _i++) {
-                    parent.insertBefore(document.createTextNode(strings[_i]), node);
+                    parent.insertBefore(strings[_i] === '' ? document.createComment('') : document.createTextNode(strings[_i]), node);
                     this.parts.push(new TemplatePart('node', index++));
                 }
+                parent.insertBefore(strings[lastIndex] === '' ? document.createComment('') : document.createTextNode(strings[lastIndex]), node);
+                nodesToRemove.push(node);
             } else if (node.nodeType === 8 /* Node.COMMENT_NODE */ && node.nodeValue === marker) {
             var _parent = node.parentNode;
             // Add a new marker node to be the startNode of the Part if any of the
@@ -955,7 +982,7 @@ var Template = function Template(result, element) {
             // template. See https://github.com/PolymerLabs/lit-html/issues/147
             var previousSibling = node.previousSibling;
             if (previousSibling === null || previousSibling !== previousNode || previousSibling.nodeType !== Node.TEXT_NODE) {
-                _parent.insertBefore(document.createTextNode(''), node);
+                _parent.insertBefore(document.createComment(''), node);
             } else {
                 index--;
             }
@@ -965,7 +992,7 @@ var Template = function Template(result, element) {
             // We don't have to check if the next node is going to be removed,
             // because that node will induce a new marker if so.
             if (node.nextSibling === null) {
-                _parent.insertBefore(document.createTextNode(''), node);
+                _parent.insertBefore(document.createComment(''), node);
             } else {
                 index--;
             }
@@ -1485,15 +1512,16 @@ var lit_extended_svg = function svg(strings) {
  */
 var lit_extended_extendedPartCallback = function extendedPartCallback(instance, templatePart, node) {
     if (templatePart.type === 'attribute') {
-        if (templatePart.rawName.startsWith('on-')) {
+        if (templatePart.rawName.substr(0, 3) === 'on-') {
             var eventName = templatePart.rawName.slice(3);
             return new lit_extended_EventPart(instance, node, eventName);
         }
-        if (templatePart.name.endsWith('$')) {
+        var lastChar = templatePart.name.substr(templatePart.name.length - 1);
+        if (lastChar === '$') {
             var name = templatePart.name.slice(0, -1);
             return new AttributePart(instance, node, name, templatePart.strings);
         }
-        if (templatePart.name.endsWith('?')) {
+        if (lastChar === '?') {
             var _name = templatePart.name.slice(0, -1);
             return new lit_extended_BooleanAttributePart(instance, node, _name, templatePart.strings);
         }
@@ -1586,16 +1614,23 @@ var lit_extended_EventPart = function () {
         key: 'setValue',
         value: function setValue(value) {
             var listener = getValue(this, value);
-            var previous = this._listener;
-            if (listener === previous) {
+            if (listener === this._listener) {
                 return;
             }
-            this._listener = listener;
-            if (previous != null) {
-                this.element.removeEventListener(this.eventName, previous);
+            if (listener == null) {
+                this.element.removeEventListener(this.eventName, this);
+            } else if (this._listener == null) {
+                this.element.addEventListener(this.eventName, this);
             }
-            if (listener != null) {
-                this.element.addEventListener(this.eventName, listener);
+            this._listener = listener;
+        }
+    }, {
+        key: 'handleEvent',
+        value: function handleEvent(event) {
+            if (typeof this._listener === 'function') {
+                this._listener.call(this.element, event);
+            } else if (typeof this._listener.handleEvent === 'function') {
+                this._listener.handleEvent(event);
             }
         }
     }]);
@@ -1734,6 +1769,7 @@ try {
 
 
 // used to store template literals
+/* istanbul ignore next */
 var Map = G.Map || function Map() {
   var keys = [],
       values = [];
@@ -1748,13 +1784,15 @@ var Map = G.Map || function Map() {
 };
 
 // used to store wired content
+var ID = 0;
 var poorlyfills_WeakMap = G.WeakMap || function WeakMap() {
+  var key = UID + ID++;
   return {
     get: function get(obj) {
-      return obj[UID];
+      return obj[key];
     },
     set: function set(obj, value) {
-      Object.defineProperty(obj, UID, {
+      Object.defineProperty(obj, key, {
         configurable: true,
         value: value
       });
@@ -1814,18 +1852,24 @@ function Component_setup(content) {
     return component;
   };
   var get = function get(Class, info, context, id) {
+    var relation = info.get(Class) || relate(Class, info);
     switch (typeof id === 'undefined' ? 'undefined' : _typeof(id)) {
       case 'object':
       case 'function':
-        var wm = info.w || (info.w = new poorlyfills_WeakMap());
+        var wm = relation.w || (relation.w = new poorlyfills_WeakMap());
         return wm.get(id) || createEntry(wm, id, new Class(context));
       default:
-        var sm = info.p || (info.p = create(null));
+        var sm = relation.p || (relation.p = create(null));
         return sm[id] || (sm[id] = new Class(context));
     }
   };
+  var relate = function relate(Class, info) {
+    var relation = { w: null, p: null };
+    info.set(Class, relation);
+    return relation;
+  };
   var set = function set(context) {
-    var info = { w: null, p: null };
+    var info = new Map();
     children.set(context, info);
     return info;
   };
@@ -1838,8 +1882,7 @@ function Component_setup(content) {
     for: {
       configurable: true,
       value: function value(context, id) {
-        var info = children.get(context) || set(context);
-        return get(this, info, context, id == null ? 'default' : id);
+        return get(this, children.get(context) || set(context), context, id == null ? 'default' : id);
       }
     }
   });

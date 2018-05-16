@@ -105,7 +105,7 @@ var _fixBabelExtend = function (O) {
         o.__proto__ = p;
         return o;
     },
-        construct = (typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === 'object' ? Reflect.construct : function (Parent, args, Class) {
+        construct = (typeof Reflect === 'undefined' ? 'undefined' : _typeof(Reflect)) === 'object' ? Reflect.construct : function (Parent, args, Class) {
         var Constructor,
             a = [null];
         a.push.apply(a, args);
@@ -137,7 +137,7 @@ var HTMLCustomElement = _fixBabelExtend(function (_HTMLElement) {
 
 
     _createClass(HTMLCustomElement, [{
-        key: "init",
+        key: 'init',
         value: function init() {} // eslint-disable-line
 
     }]);
@@ -165,7 +165,7 @@ function serializeAttrValue(attrName, value) {
 
         if (isObjOrArray) {
             updatedValue = null;
-            console.error("Warning: Failed serializing attribute(" + attrName + ") value as JSON: " + value);
+            console.error('Warning: Failed serializing attribute(' + attrName + ') value as JSON: ' + value);
         }
     }
 
@@ -186,6 +186,15 @@ function toCamelCase(word) {
     return word.replace(/\b(_|-)([a-z])/g, function (s, f, c) {
         return c.toUpperCase();
     });
+}
+
+/**
+ * Converts string camelcase to hyphennated
+ * @param {string} word data that passed to the function
+ * @return {string} word converted string
+ */
+function toHyphenCase(word) {
+    return word.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase();
 }
 // CONCATENATED MODULE: ./src/base-component/bootstrap-element/index.js
 var bootstrap_element_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -460,6 +469,7 @@ function base_component_inherits(subClass, superClass) { if (typeof superClass !
 /**
  * custom element base class
  * below methods available to make this base element flexible
+ *  - define('element-name') this will help register customElement only if it is not already deinfined
  *  - willConnect() this will be triggered before connectedCallback()
  *  - onConnect() this will be triggered on connectedCallback()
  *  - didConnect() this will be triggered only once after didRender()
@@ -591,9 +601,27 @@ var base_component_BaseCustomElement = function (_BootstrapElement) {
         key: 'didConnect',
         value: function didConnect() {}
     }], [{
+        key: 'define',
+        value: function define(elementName) {
+            var _window = window,
+                customElements = _window.customElements;
+
+            var isElementExist = customElements.get(elementName);
+
+            if (isElementExist) return;
+
+            this.element = elementName;
+            customElements.define(elementName, this);
+        }
+    }, {
         key: 'withShadowDom',
         get: function get() {
             return false;
+        }
+    }, {
+        key: 'is',
+        get: function get() {
+            return this.element;
         }
     }]);
 

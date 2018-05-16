@@ -1,8 +1,8 @@
 {
   "name": "baseui-wc-base-component",
-  "version": "0.4.3",
+  "version": "0.4.5",
   "description": "re-usable base customElement to avoid repeated bootstrap code, flexible to choose own rendering or use hyperHTML/LitHTML.",
-  "main": "dist/",
+  "main": "dist/baseui-wc-base-component.js",
   "module": "src/index.js",
   "scripts": {
     "start": "npm i && npm run server",
@@ -10,11 +10,13 @@
     "docs": "./node_modules/.bin/jsdoc -c jsdoc.json",
     "lint": "./node_modules/.bin/eslint --fix  ./src/**/*.js --quiet",
     "build": "npm run clean && npm run build-dev && npm run build-min",
-    "build-dev": "./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/webpack --config webpack.prod.js",
-    "build-min": "./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/webpack --env.min --config webpack.prod.js",
-    "server": "./node_modules/.bin/webpack-dev-server --config webpack.dev.js",
+    "build-dev": "NODE_ENV=production ./node_modules/.bin/webpack --config webpack.prod.js",
+    "build-min": "NODE_ENV=production ./node_modules/.bin/webpack --env.min --config webpack.prod.js",
+    "server": "export BABEL_ENV=production && ./node_modules/.bin/webpack-dev-server --config webpack.dev.js",
     "bundleServ": "./node_modules/.bin/live-server --port=1919 --host=0.0.0.0 --open='./demo/'",
-    "release": "npm run lint && npm run build && npm run docs"
+    "release": "npm run lint && npm run build && npm run docs",
+    "test": "NODE_ENV=test jest --config jest.config.js",
+    "test:watch": "NODE_ENV=test jest --watch"
   },
   "repository": {
     "type": "git",
@@ -22,13 +24,12 @@
   },
   "keywords": [
     "web component",
-    "custom element",
-    "redux",
-    "base custom element",
-    "uses lit-html",
-    "uses hyper-html",
+    "customElement",
+    "baseUI customElement",
+    "customElement with lit-html",
+    "customElement with hyper-html",
     "ES6 template literals",
-    "ES6 mixins"
+    "ES6 mixin"
   ],
   "author": "dsadhanala@gmail.com",
   "license": "MIT",
@@ -37,31 +38,36 @@
   },
   "homepage": "https://github.com/dsadhanala/wc-base-component#readme",
   "dependencies": {
-    "hyperhtml": "^2.8.0",
-    "lit-html": "^0.9.0"
+    "document-register-element": "^1.8.1",
+    "hyperhtml": "^2.10.1",
+    "lit-html": "^0.10.0"
   },
   "devDependencies": {
-    "babel-core": "^6.18.2",
-    "babel-eslint": "^8.2.2",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-jest": "^22.4.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-builtin-classes": "^0.6.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
-    "cross-env": "^5.1.4",
+    "basichtml": "^0.16.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.7.0",
-    "jsdoc": "^3.4.2",
+    "eslint-plugin-react": "^7.8.2",
+    "jest": "^22.4.3",
+    "jest-environment-node": "^22.4.3",
+    "jsdoc": "^3.5.5",
     "live-server": "^1.2.0",
-    "minami": "^1.1.1",
+    "minami": "^1.2.3",
     "prettier-eslint": "^8.8.1",
-    "webpack": "^4.5.0",
-    "webpack-cli": "^2.0.14",
-    "webpack-dev-server": "^3.1.3",
+    "sizzle": "^2.3.3",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.3",
+    "webpack-dev-server": "^3.1.4",
     "webpack-merge": "^4.1.2"
   }
 }

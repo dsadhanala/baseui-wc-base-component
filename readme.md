@@ -56,7 +56,7 @@ To see the preview of below examples refer this [codepen](https://codepen.io/dsa
 Optionally you can use rendering library of your choice or just vanilla JS.
 
 ```js
-import BaseComponent from 'baseui-wc-base-component/base-component';
+import BaseComponent from 'baseui-wc-base-component/dist/base-component';
 
 class HeaderTextBase extends BaseComponent {
     static get observedAttributes() { return ['text']; }
@@ -101,7 +101,7 @@ Usage in HTML:
 ### with hyperHTML
 
 ```js
-import BaseComponent from 'baseui-wc-base-component/with-hyperHTML';
+import BaseComponent from 'baseui-wc-base-component/dist/with-hyperHTML';
 
 class HeaderTextHyper extends BaseComponent {
     static get observedAttributes() { return ['text']; }
@@ -141,7 +141,7 @@ Usage in HTML:
 ### with litHTML
 
 ```js
-import BaseComponent from 'baseui-wc-base-component/with-litHTML';
+import BaseComponent from 'baseui-wc-base-component/dist/with-litHTML';
 
 class HeaderTextLit extends BaseComponent {
     static get observedAttributes() { return ['text']; }
