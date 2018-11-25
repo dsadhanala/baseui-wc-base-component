@@ -1,0 +1,3 @@
+{
+    "extends": ["./build-config/tslint/default.json"]
+}

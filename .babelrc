@@ -1,38 +1,33 @@
 {
+    "presets": [
+        ["@babel/env", {
+            "targets": {
+                "browsers": [
+                    "last 2 Chrome versions",
+                    "last 2 Firefox versions",
+                    "last 2 Edge versions",
+                    "last 2 Safari versions"
+                ]
+            },
+            "modules": false,
+            "useBuiltIns": "usage"
+        }],
+        "@babel/typescript"
+    ],
+    "plugins": [
+        [
+            "@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }
+        ],
+        "@babel/proposal-class-properties",
+        "@babel/proposal-object-rest-spread"
+    ],
     "env": {
-        "production": {
-            "presets": [
-                "stage-0",
-                [
-                    "env", {
-                        "targets": {
-                            "browsers": ["last 2 Chrome versions", "last 2 Firefox versions", "last 2 Edge versions", "last 2 Safari versions", "ie 11"]
-                        },
-                        "modules": false,
-                        "useBuiltIns": true
-                    }
-                ]
-            ],
-            "plugins": [
-                "transform-object-rest-spread",
-                [
-                    "babel-plugin-transform-builtin-classes", {
-                        "globals": ["HTMLElement"]
-                    }
-                ]
-            ]
-        },
         "test": {
             "presets": [
-                ["env", {
-                    "targets" : { "node" : "current" },
+                ["@babel/env", {
+                    "targets": { "node": "current"},
                     "modules": "commonjs"
-                }],
-                "stage-0"
-            ],
-            "plugins": [
-                "transform-object-rest-spread",
-                [ "babel-plugin-transform-builtin-classes", { "globals": ["HTMLElement"] } ]
+                }]
             ]
         }
     }
