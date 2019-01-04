@@ -1,8 +1,12 @@
-function throwError(reason) {
-    const newErr = new Error(reason);
+interface IError {
+    originalError?: any;
+}
 
-    return (e) => {
-        newErr.originalError = e;
+function throwError(reason: string) {
+    const newErr = new Error(reason) as IError;
+
+    return (error: Error) => {
+        newErr.originalError = error;
         throw newErr;
     };
 }

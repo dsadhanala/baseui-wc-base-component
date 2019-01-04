@@ -2,7 +2,7 @@ const path = require('path');
 const plugins = require('./plugins')();
 const loaders = require('./loaders')();
 
-module.exports = function({ devServerHost, publicPath }) {
+module.exports = function () {
     const currentRoot = path.join(process.cwd());
     const ENV = process.env.NODE_ENV || 'development';
     const isProd = process.env.NODE_ENV === 'production';
@@ -12,8 +12,7 @@ module.exports = function({ devServerHost, publicPath }) {
         mode: ENV,
         target: 'web',
         output: {
-            // publicPath: '/',
-            path: path.join(currentRoot, publicPath),
+            publicPath: '/',
             filename: '[name].js'
         },
         module: {
@@ -21,6 +20,9 @@ module.exports = function({ devServerHost, publicPath }) {
         },
         plugins: [...plugins],
         resolve: {
+            alias: {
+                '@rootSrc': path.join(currentRoot, 'src/')
+            },
             extensions: ['.ts', '.js', '.json']
         },
         performance: {

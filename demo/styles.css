@@ -23,7 +23,7 @@ body {
 }
 
 .view-wrapper:after {
-    content: "view: " attr(view);
+    content: "view: "attr(view);
     display: block;
     background-color: #FFBB33;
     position: absolute;

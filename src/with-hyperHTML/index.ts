@@ -1,8 +1,6 @@
 import { bind, wire } from 'hyperhtml/esm';
-import { default as BaseCustomElement } from '../base-component';
-
-export type TemplateArgs = [TemplateStringsArray, any[]];
-
+import { TemplateArgs } from '../_global-types';
+import { default as BaseUICustomElement } from '../base-component/custom-element';
 /**
  *
  * @param {array} template literal that needs to be wired
@@ -27,9 +25,9 @@ export const renderFn = (template: TemplateStringsArray, renderRoot: HTMLElement
 /**
  * DOM rendering with HyperHTML which extendes from base custom element
  */
-class BaseCustomElementWithHyperHTML extends BaseCustomElement {
+class WithHyperHTML<T = {}> extends BaseUICustomElement<T> {
     get domRender() {
-        return (...args: TemplateArgs) => bind(this.shadowRoot || this)(...args);
+        return (template: TemplateStringsArray, ...values: any[]) => bind(this.shadowRoot || this)(template, ...values);
     }
 
     get html() {
@@ -40,4 +38,4 @@ class BaseCustomElementWithHyperHTML extends BaseCustomElement {
     }
 }
 
-export default BaseCustomElementWithHyperHTML;
+export default WithHyperHTML;

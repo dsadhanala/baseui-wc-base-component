@@ -1,29 +1,38 @@
-import { html, render as renderFn } from 'lit-html/lib/lit-extended.js';
-import baseComponent from '../base-component';
+import { html, render, svg } from 'lit-html';
+import { TemplateArgs } from '../_global-types';
+import { default as BaseUICustomElement } from '../base-component/custom-element';
 
 /**
  * html(template)
  * *** @param {object} template literal which needs to be wired
  *
- * renderFn((template, renderRoot)
+ * render((template, renderRoot)
  * *** @param {object} template literal that needs to be rendered
  * *** @param {*} renderRoot defines where to render
+ *
+ * svg(template)
+ * *** @param {object} template literal which needs to be wired
  */
-export { html, renderFn };
+export { html, render, svg };
 
 // this extra function call is to keep API consistent with hyperHTML wire
-export const htmlWithContext = () => (...args) => html(...args);
+export const htmlWithContext = () => (...args: TemplateArgs) => html(...args);
 
 /**
  * DOM rendering with litHtml which extendes from base custom element
  */
-class BaseCustomElementWithLitHTML extends BaseCustomElement {
+class WithLitHTML<T = {}> extends BaseUICustomElement<T> {
     get domRender() {
-        return (...args) => renderFn(html(...args), this.shadowRoot || this);
+        return (template: TemplateStringsArray, ...values: any[]) =>
+            render(html(template, ...values), this.shadowRoot || this);
     }
 
     get html() {
         return html;
+    }
+
+    get svg() {
+        return svg;
     }
 
     get htmlWithContext() {
@@ -31,4 +40,4 @@ class BaseCustomElementWithLitHTML extends BaseCustomElement {
     }
 }
 
-export default BaseCustomElementWithLitHTML;
+export default WithLitHTML;

@@ -2,24 +2,31 @@
     "compilerOptions": {
         "pretty": true,
         "moduleResolution": "node",
-        "target": "esnext",
-        "module": "umd",
+        "target": "es5",
+        "module": "commonjs",
         "skipLibCheck": true,
-        "lib": ["es2015", "es2016", "es2017", "dom"],
+        "lib": ["dom", "es2015", "es2016", "es2017", "es2018"],
         "strict": true,
+        "alwaysStrict": true,
         "sourceMap": true,
         "declaration": true,
         // "allowJs": true,
         "allowSyntheticDefaultImports": true,
+        "strictPropertyInitialization": true,
+        "strictNullChecks": true,
         "esModuleInterop": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "declarationDir": "dist/types",
-        "outDir": "@types",
+        // "declarationDir": "./@types",
+        "noImplicitAny": false,
+        "outDir": "./lib/cjs",
         "rootDir": ".",
-        "typeRoots": ["./node_modules/@types", "./src/global-types"]
+        "typeRoots": ["./node_modules/@types", "./src/_global-types"],
+        "baseUrl": ".",
+        "paths": {
+            "@rootSrc/*": ["src/*"]
+        }
     },
-    "include": ["src", "demo/tests"],
-    "exclude": ["node_modules"],
-    "files": ["./src/index.ts", "./demo/tests/index.ts"]
+    "include": ["./src/**/*.ts", "./demo/tests"],
+    "exclude": ["node_modules", "./src/**/_tests/*.ts"]
 }

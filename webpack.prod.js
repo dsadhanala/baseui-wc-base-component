@@ -1,12 +1,12 @@
 const merge = require('webpack-merge');
-const common = require('./build-config/webpack');
+const common = require('./build-config/webpack')();
 
 const entry = {
-    'baseui-wc-base-component': './src/index.ts',
-    'base-component': './src/base-component/index.ts',
-    'with-hyperHTML': './src/with-hyperHTML/index.ts',
-    'with-litHTML': './src/with-litHTML/index.ts',
-    'throw-error': './src/throw-error/index.ts'
+    'baseui-wc-base-component': './src/index',
+    'base-component': './src/base-component/custom-element',
+    'with-hyperHTML': './src/with-hyperHTML',
+    'with-litHTML': './src/with-litHTML',
+    'throw-error': './src/throw-error'
 };
 
 module.exports = env => {
