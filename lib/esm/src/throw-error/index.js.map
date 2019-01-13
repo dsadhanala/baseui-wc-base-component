@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../src/throw-error/index.ts"],"names":[],"mappings":"AAIA,SAAS,UAAU,CAAC,MAAc;IAC9B,IAAM,MAAM,GAAG,IAAI,KAAK,CAAC,MAAM,CAAW,CAAC;IAE3C,OAAO,UAAC,KAAY;QAChB,MAAM,CAAC,aAAa,GAAG,KAAK,CAAC;QAC7B,MAAM,MAAM,CAAC;IACjB,CAAC,CAAC;AACN,CAAC;AAED,eAAe,UAAU,CAAC"}
