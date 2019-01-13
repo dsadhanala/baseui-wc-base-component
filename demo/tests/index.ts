@@ -87,11 +87,13 @@ interface HeaderTextState {
 class HeaderTextHyper extends WithHyperHTML<HeaderTextState> {
     static get attributesToProps() {
         return {
-            text: { type: String, observe: true },
+            'is-string': { type: String, observe: true },
             'is-boolean': { type: Boolean, observe: true },
             'is-number': { type: Number, observe: true },
-            'check-value': { type: String, observe: false },
-            'new-attr': { type: String, observe: false }
+            'is-obj': { type: Object, observe: true },
+            'is-ary': { type: Array, observe: true }
+            // 'check-value': { type: String, observe: false },
+            // 'new-attr': { type: String, observe: false }
         };
     }
 
@@ -99,28 +101,30 @@ class HeaderTextHyper extends WithHyperHTML<HeaderTextState> {
         count: 0
     };
 
-    onClick() {
+    onClick(e: Event): void {
         // this.text = 'change';
         // console.log(this.hasClass('hyper'));
-        this.text = 'new text content';
-        this.isBoolean = this.isBoolean ? false : true;
-        this.isNumber = this.isNumber + 1;
-        // console.log('check', this.checkValue);
+        // this.isString = 'new text content';
+        // this.isBoolean = this.isBoolean ? false : true;
+        // this.isNumber = this.isNumber + 1;
+        // this.checkValue = 'new val form onclick';
+        console.log('is-number', this.isNumber);
+        // console.log('is-obj', this.isObj);
+        // console.log('is-ary', this.isAry);
+        console.log('checkValue', this.checkValue);
         // console.log('some', this.someOther);
         // console.log(this.newAttr);
-
         // this.setState((prevState) => ({
         //     count: prevState.count + 1
         // }));
     }
 
-    render({ domRender, text, state }: this) {
-        // console.log('render called');
+    render({ domRender, isString, state }: this) {
         const clickCount = state.count ? ` -> click count ${state.count}` : '';
 
         return domRender`
             <h2 class="header-text__htext">
-                <span onclick="${this}">${text}</span>
+                <span onclick="${this}">${isString}</span>
                 <span>${clickCount}</span>
             </h2>
         `;

@@ -37,6 +37,9 @@ class BootstrapElement extends HTMLElement {
             // if boolean attribute check if attribute exist or not
             if (true.constructor === type && !value) return this.hasAttribute(name);
 
+            // when value is undefined/null/empty string log error
+            if (!value) return console.error(`Can't read value "${value}" from attribute "${name}"`);
+
             return serializeAttrValue(classProto, name, value, type);
         };
 
@@ -50,6 +53,9 @@ class BootstrapElement extends HTMLElement {
 
             // set boolean attribute
             if (valueAsString === 'true') return this.setAttribute(name, '');
+
+            // when value is undefined/null/empty string log error
+            if (!value) return console.error(`Invalid value "${value}" assigned to the attribute "${name}"`);
 
             const parsedVal = serializeAttrValue(classProto, name, value, type);
             this.setAttribute(name, parsedVal);

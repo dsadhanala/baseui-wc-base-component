@@ -1,5 +1,5 @@
 import { default as BootstrapElement } from '../bootstrap';
-import { toCamelCase } from '../helpers';
+import { toCamelCase, toCapitalCase } from '../helpers';
 
 /**
  * custom element base class
@@ -90,7 +90,7 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
     }
 
     handleEvent(e: Event) {
-        const eventType = e.type;
+        const eventType = toCapitalCase(e.type); // time being Capitalize event type as method name
         const hasInstanceMethod = `on${eventType}`;
 
         if (!this[hasInstanceMethod] || typeof this[hasInstanceMethod] !== 'function') return;

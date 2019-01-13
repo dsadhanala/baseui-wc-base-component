@@ -17,6 +17,17 @@ export function toHyphenCase(word: string): string {
 }
 
 /**
+ * Converts string to capitalcase
+ * @param {string} word data that passed to the function
+ * @return {string} capitalized string
+ */
+export function toCapitalCase(word: string): string {
+    if (typeof word !== 'string') return '';
+
+    return `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
+}
+
+/**
  * logError helps log composed error when property types mismatch
  */
 interface LogErrorTypes {
@@ -34,17 +45,21 @@ export function logError({ attrName, validate, expected, actual }: LogErrorTypes
     );
 }
 
+export function parsedArrayOrObjectValue(attrName: string, value: string) {
+    try {
+        return JSON.parse(value);
+    } catch (e) {
+        throw new Error(`Failed serializing attribute(${attrName}) value as JSON: ${value}`);
+    }
+}
+
 /**
  * serialize attribute value from string
  * @param {string} attrName key/name of the attribute
  * @param {string} value of the attribute that needs to be serialize
  * @return {any} based on the type of the given value, it will be parsed and returned as O
  */
-export function serializeAttrValue(proto: any, attrName: string, value: string | null, type: (val: any) => any): any {
-    if (!value) return;
-
-    // console.log(attrName, value, type);
-
+export function serializeAttrValue(proto: any, attrName: string, value: string, type: (val: any) => any): any {
     // when property is defined as string type
     if (type === String) {
         logError({
@@ -71,9 +86,31 @@ export function serializeAttrValue(proto: any, attrName: string, value: string |
         return parsedVal;
     }
 
-    try {
-        return JSON.parse(value);
-    } catch (e) {
-        throw new Error(`Warning: Failed serializing attribute(${attrName}) value as JSON: ${value}`);
+    // when property is defined as array type
+    if (type === Array) {
+        const parsedVal = parsedArrayOrObjectValue(attrName, value);
+
+        logError({
+            attrName,
+            validate: parsedVal instanceof type,
+            expected: 'array',
+            actual: typeof parsedVal
+        });
+
+        return parsedVal;
+    }
+
+    // when property is defined as object type
+    if (type === Object) {
+        const parsedVal = parsedArrayOrObjectValue(attrName, value);
+
+        logError({
+            attrName,
+            validate: parsedVal instanceof type,
+            expected: 'object',
+            actual: typeof parsedVal
+        });
+
+        return parsedVal;
     }
 }
