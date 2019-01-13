@@ -16,7 +16,7 @@ declare class BaseUICustomElement<T = {}> extends BootstrapElement {
     static readonly observedAttributes: string[];
     static withShadowDom: boolean;
     static element: string;
-    static readonly attrToProp: any;
+    static readonly attributesToProps: object;
     static define(elementName: string, options?: ElementDefinitionOptions | undefined): void;
     state: T;
     isFirstRender: boolean;
@@ -24,13 +24,13 @@ declare class BaseUICustomElement<T = {}> extends BootstrapElement {
     constructor();
     connectedCallback(): void;
     attributeChangedCallback(attrName: string, oldVal: any, newVal: any): void;
-    willConnect(): void;
-    onConnect(): void;
-    willRender(): void;
-    didRender(): void;
-    didConnect(): void;
     handleEvent(e: Event): void;
-    protected render(): void;
+    protected willConnect(): void;
+    protected onConnect(): void;
+    protected willRender(): void;
+    protected didRender(): void;
+    protected didConnect(): void;
+    protected render(properties: this): void;
     protected setState(state: Partial<T> | ((this: this, state: T) => Partial<T>), render?: boolean): void;
     private create;
     private beforeRender;

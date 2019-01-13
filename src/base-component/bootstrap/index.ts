@@ -1,6 +1,11 @@
 /* eslint-disable class-methods-use-this */
 import { serializeAttrValue, toCamelCase } from '../helpers';
 
+function getPropType<T, K extends keyof T>(obj: T, key: K) {
+    return obj[key]; // Inferred type is T[K]
+}
+type Readonly<T> = { readonly [P in keyof T]: T[P] };
+
 /**
  * This module create property instance and get/set for all attributes and observedAttributes
  */
@@ -9,25 +14,48 @@ class BootstrapElement extends HTMLElement {
      * This is re-usable static method, which sets property on the instance prototype based on the given attribute name
      * @param {string} name attribute name
      */
-    defineProp(name: string) {
+    defineProp(name: string, reflectedAttrToProps) {
         if (!name) return;
 
-        // const classInstance = this;
         const classProto = Object.getPrototypeOf(this);
         const propName = toCamelCase(name);
 
+        if (this.hasOwnProperty(propName)) {
+            const value = this[propName];
+
+            delete this[propName];
+            this[propName] = value;
+        }
+
         if (propName in classProto) return;
 
-        Object.defineProperty(classProto, propName, {
-            configurable: true,
-            get() {
-                return serializeAttrValue(name, this.getAttribute(name));
-            },
-            set(value) {
-                const checkedValue = typeof value !== 'string' ? JSON.stringify(value) : value;
-                this.setAttribute(name, checkedValue);
-            }
-        });
+        const { type, observe } = reflectedAttrToProps[name];
+
+        const get = () => {
+            const value = this.getAttribute(name);
+
+            // if boolean attribute check if attribute exist or not
+            if (true.constructor === type && !value) return this.hasAttribute(name);
+
+            return serializeAttrValue(classProto, name, value, type);
+        };
+
+        const set = (value: string | null) => {
+            if (!observe) return;
+
+            const valueAsString = String(value);
+
+            // when value is null or false remove attribute
+            if (value == null || valueAsString === 'false') return this.removeAttribute(name);
+
+            // set boolean attribute
+            if (valueAsString === 'true') return this.setAttribute(name, '');
+
+            const parsedVal = serializeAttrValue(classProto, name, value, type);
+            this.setAttribute(name, parsedVal);
+        };
+
+        Object.defineProperty(classProto, propName, { get, set, configurable: true });
     }
 
     /**
@@ -35,132 +63,127 @@ class BootstrapElement extends HTMLElement {
      * @param {object} attributes list of attributes added to the component
      * @param {array} observedAttributes list of observed attributes
      */
-    createAttributesToProperties(attributes: any = {}, observedAttributes: any[] = []) {
-        // attributes to properties
-        Object.keys(attributes).forEach((attr) => {
-            const attrName = attributes[attr].name;
-            this.defineProp(attrName);
-        });
-
-        if (observedAttributes.length === 0) return;
-
-        // observedAttributes to properties
-        observedAttributes.forEach(this.defineProp.bind(this));
+    createAttributesToProperties(reflectedAttrToProps: any = {}) {
+        Object.keys(reflectedAttrToProps).forEach((attrName) => this.defineProp(attrName, reflectedAttrToProps));
     }
 
     /**
      * has attribute
      * @param {string} attribute name
+     * @param {object} target DOM element
      */
-    hasAttr(attr: string): boolean {
-        return this.hasAttribute(attr);
+    hasAttr(attr: string, target: Element = this): boolean {
+        return target.hasAttribute(attr);
     }
 
     /**
      * set attribute value
      * @param {string} attribute name
+     * @param {object} target DOM element
      */
-    getAttr(attr: string) {
-        return this.getAttribute(attr);
+    getAttr(attr: string, target: Element = this) {
+        return target.getAttribute(attr);
     }
 
     /**
      * set attribute value
      * @param {string} attribute name
      * @param {string} new/changed value for the attribute
+     * @param {object} target DOM element
      */
-    setAttr(attr: string, val: string) {
-        return this.setAttribute(attr, val);
+    setAttr(attr: string, val: string, target: Element = this) {
+        return target.setAttribute(attr, val);
     }
 
     /**
      * remove attribute
      * @param {string} attribute name
+     * @param {object} target DOM element
      */
-    removeAttr(attr: string) {
-        return this.removeAttribute(attr);
+    removeAttr(attr: string, target: Element = this) {
+        return target.removeAttribute(attr);
     }
 
     /**
      * helper function to add class name using classList
-     * @param {object} element DOM element
      * @param {string} className string of class name
+     * @param {object} target DOM element
      * @return {object} element DOM element
      */
-    addClass(element: Element, className: string): Element {
-        element.classList.add(className);
-        return element;
+    addClass(className: string, target: Element = this): Element {
+        target.classList.add(className);
+        return target;
     }
 
     /**
      * helper function to remove class name using classList
-     * @param {object} element DOM element
      * @param {string} className string of class name
+     * @param {object} target DOM element
      * @return {object} element DOM element
      */
-    removeClass(element: Element, className: string): object {
-        element.classList.remove(className);
-        return element;
+    removeClass(className: string, target: Element = this): object {
+        target.classList.remove(className);
+        return target;
     }
 
     /**
      * helper function to check for has class name using classList
-     * @param {object} element DOM element
      * @param {string} className string of class name
+     * @param {object} target DOM element
      * @return {boolean} contains true/false
      */
-    hasClass(element: Element, className: string): boolean {
-        return element.classList.contains(className);
+    hasClass(className: string, target: Element = this): boolean {
+        return target.classList.contains(className);
     }
 
     /**
      * helper function to toggle class name using classList
-     * @param {object} element DOM element
      * @param {string} className string of class name
+     * @param {object} target DOM element
      * @param {boolean} force boolean to use force optionally
      * @return {object} element DOM element
      */
-    toggleClass(element: Element, className: string, force: boolean): boolean {
-        return element.classList.toggle(className, force);
+    toggleClass(className: string, target: Element = this, force: boolean): boolean {
+        return target.classList.toggle(className, force);
     }
 
     /**
      * helper to find child nodes rendered inside
      * @param {string} selector that is used to search the DOM node
-     * @param {object} context Element in which search should be performed
+     * @param {object} target Element in which search should be performed
      * @return {object} Element
      */
-    find(selector: string, context: any = this): object {
-        return context.querySelector(selector);
+    find(selector: string, target: NodeSelector = this): Element | null {
+        return target.querySelector(selector);
     }
 
     /**
      * helper to find all child nodes rendered inside
      * @param {string} selector that is used to search the DOM node
-     * @param {object} context Element in which search should be performed
+     * @param {object} target Element in which search should be performed
      * @return {array} Elements that are matched
      */
-    findAll(selector: string, context: any = this): any[] {
-        return context.querySelectorAll(selector);
+    findAll(selector: string, target: NodeSelector = this): NodeListOf<Element> {
+        return target.querySelectorAll(selector);
     }
 
     /**
      * simplyfied event handler function to add events
      * @param {string} eventName event type ex: click, blur, etc.
-     * @param {object} target HTML element that needs event to be added
      * @param {function | Object} callback function or Object (which has handleEvent method) that needs to be triggerd
+     * @param {object} target HTML element that needs event to be added
      */
-    on(eventName: string, target: HTMLElement, callback: EventListenerOrEventListenerObject): void {
+    on(eventName: string, callback: EventListenerOrEventListenerObject, target: HTMLElement = this): void {
         target.addEventListener(eventName, callback, false);
     }
 
     /**
      * simplyfied event handler function to remove events
      * @param {string} eventName event type ex: click, blur, etc.
-     * @param {object} target HTML element that needs event to be added
      * @param {function | Object} callback function or Object (which has handleEvent method) that needs to be triggerd
+     * @param {object} target HTML element that needs event to be added
      */
-    off(eventName: string, target: HTMLElement, callback: EventListenerOrEventListenerObject) {
+    off(eventName: string, callback: EventListenerOrEventListenerObject, target: HTMLElement = this) {
         target.removeEventListener(eventName, callback, false);
     }
 
@@ -170,7 +193,7 @@ class BootstrapElement extends HTMLElement {
      * @param {object} target element reference on which event needs to be triggerd
      * @param {object} eventData custom event data to share
      */
-    trigger(eventName: string, target: HTMLElement, eventData: {}) {
+    trigger(eventName: string, target: HTMLElement = this, eventData: {}) {
         const triggerEvent = !eventData
             ? new Event(eventName)
             : new CustomEvent(eventName, { detail: eventData || {} });

@@ -2,11 +2,7 @@ const merge = require('webpack-merge');
 const common = require('./build-config/webpack')();
 
 const entry = {
-    'baseui-wc-base-component': './src/index',
-    'base-component': './src/base-component/custom-element',
-    'with-hyperHTML': './src/with-hyperHTML',
-    'with-litHTML': './src/with-litHTML',
-    'throw-error': './src/throw-error'
+    'index': './src/index'
 };
 
 module.exports = env => {
@@ -19,9 +15,13 @@ module.exports = env => {
         },
         output: {
             filename: (isMinEnabled) ? '[name].min.js' : '[name].js',
-            library: '[name]',
+            library: 'baseuiwcelement',
             libraryTarget: 'umd',
             umdNamedDefine: true
+        },
+        externals: {
+            'lit-html': 'lit-html',
+            'hyperhtml/esm': 'hyperhtml'
         }
     });
 };

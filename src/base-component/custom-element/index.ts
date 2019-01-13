@@ -21,7 +21,7 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
 
     static get observedAttributes(): string[] {
         // console.log('observedAttributes');
-        const observeAttrs = this.attrToProp;
+        const observeAttrs = this.attributesToProps;
 
         return Object.keys(observeAttrs).filter((item) => observeAttrs[item].observe);
     }
@@ -30,7 +30,7 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
 
     static element: string;
 
-    static readonly attrToProp: any;
+    static readonly attributesToProps: object;
 
     static define(elementName: string, options?: ElementDefinitionOptions | undefined): void {
         const { customElements } = window;
@@ -48,18 +48,12 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
 
     constructor() {
         super();
+
         this.isFirstRender = true;
         this.isCreated = false;
-
         this.create = this.create.bind(this);
 
-        const CLASS = this.constructor as typeof BaseUICustomElement;
-
-        const props = CLASS.attrToProp;
-
-        // console.log('cons', props);
-
-        if (CLASS.withShadowDom) {
+        if ((this.constructor as typeof BaseUICustomElement).withShadowDom) {
             this.attachShadow({ mode: 'open' });
         }
 
@@ -69,6 +63,8 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
     connectedCallback() {
         // delay execution of connectedCallback to make sure dynamic data added to the attributes are available to consume
         window.requestAnimationFrame(this.create);
+        // this.create();
+        // return Promise.resolve().then(() => this.create());
     }
 
     attributeChangedCallback(attrName: string, oldVal: any, newVal: any) {
@@ -85,27 +81,17 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
         /**
          * check if attribute changed due to removeAttribute or change of value
          * if removed, delete property set on element instance
-         * else, update property with the new value
          */
         if (newVal === null) {
             delete this[propName];
-        } else {
-            this[propName] = newVal;
         }
 
         this.beforeRender();
     }
 
-    /* tslint:disable:no-empty */
-    willConnect(): void {}
-    onConnect(): void {}
-    willRender(): void {}
-    didRender(): void {}
-    didConnect(): void {}
-    /* tslint:enable:no-empty */
-
     handleEvent(e: Event) {
-        const hasInstanceMethod = `on${e.type}`;
+        const eventType = e.type;
+        const hasInstanceMethod = `on${eventType}`;
 
         if (!this[hasInstanceMethod] || typeof this[hasInstanceMethod] !== 'function') return;
 
@@ -113,7 +99,12 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
     }
 
     /* tslint:disable:no-empty */
-    protected render(): void {}
+    protected willConnect(): void {}
+    protected onConnect(): void {}
+    protected willRender(): void {}
+    protected didRender(): void {}
+    protected didConnect(): void {}
+    protected render(properties: this): void {}
     /* tslint:enable:no-empty */
 
     protected setState(state: Partial<T> | ((this: this, state: T) => Partial<T>), render: boolean = true): void {
@@ -125,11 +116,10 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
     }
 
     private create() {
-        const { attributes } = this;
-        const CLASS = this.constructor as typeof BaseUICustomElement;
+        const reflectedAttrToProps = (this.constructor as typeof BaseUICustomElement).attributesToProps;
 
         // poxy attributes & observed attributes as properties
-        this.createAttributesToProperties(attributes, CLASS.observedAttributes);
+        this.createAttributesToProperties(reflectedAttrToProps);
 
         this.isCreated = true;
 
@@ -142,7 +132,7 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
         this.willRender();
 
         this.setAttr('is-rendering', '');
-        this.render();
+        this.render(this);
         this.afterRender();
     }
 

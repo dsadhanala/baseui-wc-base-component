@@ -12,15 +12,25 @@
 <body>
     <h1>Demo</h1>
 
-    <header-text-base text="Rendered with base-custom-element"></header-text-base>
+    <!-- <header-text-base text="Rendered with base-custom-element"></header-text-base>
 
     <header-text-lit text="Rendered with lit-html"></header-text-lit>
     <toggle-view-lit class="toggle-view" view="list" source-url="https://reqres.in/api/users?per_page=4">
-    </toggle-view-lit>
+    </toggle-view-lit> -->
 
-    <header-text-hyper text="Rendered with hyper-html"></header-text-hyper>
-    <toggle-view-hyper class="toggle-view" view="table" source-url="https://reqres.in/api/users?per_page=4">
-    </toggle-view-hyper>
+    <header-text-hyper class="hyper" text="Rendered with hyper-html" some-other="shshhs" is-number="2" is-boolean></header-text-hyper>
+    <!-- <toggle-view-hyper class="toggle-view" view="table" source-url="https://reqres.in/api/users?per_page=4">
+    </toggle-view-hyper> -->
+
+    <script>
+        const pageLoad = () => {
+            const ele = document.querySelector('header-text-hyper');
+            ele.checkValue = 'test';
+            ele.setAttribute('new-attr', 'test attr');
+        };
+
+        document.addEventListener('DOMContentLoaded', pageLoad);
+    </script>
 </body>
 
 </html>

@@ -2,10 +2,6 @@ import { default as BaseUICustomElement } from '@rootSrc/base-component/custom-e
 import { default as WithHyperHTML } from '@rootSrc/with-hyperHTML/index.ts';
 import { default as WithLitHTML } from '@rootSrc/with-litHTML/index.ts';
 
-interface HeaderTextBaseState {
-    count: number;
-}
-
 /**
  * HeaderTextBase
  * @extends HeaderText with BaseUICustomElement
@@ -75,15 +71,27 @@ interface HeaderTextBaseState {
 
 // HeaderTextLit.define('header-text-lit');
 
-/**
- * HeaderTextHyper
- * @extends HeaderText WithHyperHTML
- */
-class HeaderTextHyper extends WithHyperHTML<HeaderTextBaseState> {
-    static get attrToProp() {
+interface HeaderTextState {
+    count: number;
+}
+
+// interface HeaderTextHyper {
+//     text: String;
+//     isBoolean: Boolean;
+//     isNumber: Number;
+//     newAttr: String;
+//     checkValue: Number;
+//     // onClick(e: Event): void;
+// }
+
+class HeaderTextHyper extends WithHyperHTML<HeaderTextState> {
+    static get attributesToProps() {
         return {
             text: { type: String, observe: true },
-            'is-defined': { type: Boolean, observe: false }
+            'is-boolean': { type: Boolean, observe: true },
+            'is-number': { type: Number, observe: true },
+            'check-value': { type: String, observe: false },
+            'new-attr': { type: String, observe: false }
         };
     }
 
@@ -91,15 +99,24 @@ class HeaderTextHyper extends WithHyperHTML<HeaderTextBaseState> {
         count: 0
     };
 
-    // onclick() {
-    //     this.setState((prevState) => ({
-    //         count: prevState.count + 1
-    //     }));
-    // }
+    onClick() {
+        // this.text = 'change';
+        // console.log(this.hasClass('hyper'));
+        this.text = 'new text content';
+        this.isBoolean = this.isBoolean ? false : true;
+        this.isNumber = this.isNumber + 1;
+        // console.log('check', this.checkValue);
+        // console.log('some', this.someOther);
+        // console.log(this.newAttr);
 
-    render() {
-        const { domRender, text } = this;
-        const clickCount = this.state.count ? ` -> click count ${this.state.count}` : '';
+        // this.setState((prevState) => ({
+        //     count: prevState.count + 1
+        // }));
+    }
+
+    render({ domRender, text, state }: this) {
+        // console.log('render called');
+        const clickCount = state.count ? ` -> click count ${state.count}` : '';
 
         return domRender`
             <h2 class="header-text__htext">

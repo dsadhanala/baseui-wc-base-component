@@ -2,8 +2,8 @@
     "name": "baseui-wc-base-component",
     "version": "0.5.0",
     "description": "re-usable base customElement to avoid repeated bootstrap code, flexible to choose own rendering or use hyperHTML/LitHTML.",
-    "main": "dist/baseui-wc-base-component.js",
-    "module": "src/index.js",
+    "main": "dist/index.js",
+    "module": "lib/esm/src/index.js",
     "scripts": {
         "prepublishOnly": "npm run release",
         "start": "npm run server",

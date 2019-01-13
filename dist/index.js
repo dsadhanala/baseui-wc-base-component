@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
+		module.exports = factory(require("lit-html"), require("hyperhtml"));
 	else if(typeof define === 'function' && define.amd)
-		define("base-component", [], factory);
+		define("baseuiwcelement", ["lit-html", "hyperhtml"], factory);
 	else if(typeof exports === 'object')
-		exports["base-component"] = factory();
+		exports["baseuiwcelement"] = factory(require("lit-html"), require("hyperhtml"));
 	else
-		root["base-component"] = factory();
-})(window, function() {
+		root["baseuiwcelement"] = factory(root["lit-html"], root["hyperhtml"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__4__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -76,16 +76,22 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 27);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(13);
-var createDesc = __webpack_require__(21);
-module.exports = __webpack_require__(5) ? function (object, key, value) {
+var dP = __webpack_require__(15);
+var createDesc = __webpack_require__(22);
+module.exports = __webpack_require__(7) ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
 } : function (object, key, value) {
   object[key] = value;
@@ -94,7 +100,7 @@ module.exports = __webpack_require__(5) ? function (object, key, value) {
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -106,12 +112,12 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var store = __webpack_require__(24)('wks');
-var uid = __webpack_require__(14);
-var Symbol = __webpack_require__(1).Symbol;
+var store = __webpack_require__(25)('wks');
+var uid = __webpack_require__(16);
+var Symbol = __webpack_require__(2).Symbol;
 var USE_SYMBOL = typeof Symbol == 'function';
 
 var $exports = module.exports = function (name) {
@@ -123,7 +129,13 @@ $exports.store = store;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__4__;
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports) {
 
 var hasOwnProperty = {}.hasOwnProperty;
@@ -133,18 +145,18 @@ module.exports = function (it, key) {
 
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(1);
-var hide = __webpack_require__(0);
-var has = __webpack_require__(3);
-var SRC = __webpack_require__(14)('src');
+var global = __webpack_require__(2);
+var hide = __webpack_require__(1);
+var has = __webpack_require__(5);
+var SRC = __webpack_require__(16)('src');
 var TO_STRING = 'toString';
 var $toString = Function[TO_STRING];
 var TPL = ('' + $toString).split(TO_STRING);
 
-__webpack_require__(15).inspectSource = function (it) {
+__webpack_require__(17).inspectSource = function (it) {
   return $toString.call(it);
 };
 
@@ -170,28 +182,28 @@ __webpack_require__(15).inspectSource = function (it) {
 
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(10)(function () {
+module.exports = !__webpack_require__(12)(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var shared = __webpack_require__(24)('keys');
-var uid = __webpack_require__(14);
+var shared = __webpack_require__(25)('keys');
+var uid = __webpack_require__(16);
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
 
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports) {
 
 // 7.2.1 RequireObjectCoercible(argument)
@@ -202,26 +214,26 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __webpack_require__(43);
-var defined = __webpack_require__(7);
+var IObject = __webpack_require__(45);
+var defined = __webpack_require__(9);
 module.exports = function (it) {
   return IObject(defined(it));
 };
 
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports) {
 
 module.exports = {};
 
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = function (exec) {
@@ -234,7 +246,7 @@ module.exports = function (exec) {
 
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = function (it) {
@@ -243,10 +255,10 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(11);
+var isObject = __webpack_require__(13);
 module.exports = function (it) {
   if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
@@ -254,15 +266,15 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject = __webpack_require__(12);
-var IE8_DOM_DEFINE = __webpack_require__(46);
-var toPrimitive = __webpack_require__(45);
+var anObject = __webpack_require__(14);
+var IE8_DOM_DEFINE = __webpack_require__(48);
+var toPrimitive = __webpack_require__(47);
 var dP = Object.defineProperty;
 
-exports.f = __webpack_require__(5) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+exports.f = __webpack_require__(7) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
@@ -276,7 +288,7 @@ exports.f = __webpack_require__(5) ? Object.defineProperty : function defineProp
 
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports) {
 
 var id = 0;
@@ -287,7 +299,7 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports) {
 
 var core = module.exports = { version: '2.5.7' };
@@ -295,447 +307,12 @@ if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
 /***/ }),
-/* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
-var web_dom_iterable = __webpack_require__(25);
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.replace.js
-var es6_regexp_replace = __webpack_require__(27);
-
-// CONCATENATED MODULE: ./src/base-component/helpers/index.ts
-
-
-/**
- * set context to allow CE polyfill work as expected
- */
-// export class HTMLCustomElement extends HTMLElement {
-//     constructor(_: any) { return (_ = super(_)).init(), _; } // eslint-disable-line
-//     init() { } // eslint-disable-line
-// }
-
-/**
- * serialize attribute value from string to number/object/boolean/null or string
- * this also checks if the given attribute is a boolean attribute(named as `has-*`) without value, then returns as boolean
- * @param {string} attrName key/name of the attribute
- * @param {string} value of the attribute that needs to be serialize
- * @return {any} based on the type of the given value, it will be parsed and returned as O
- */
-function serializeAttrValue(attrName, value) {
-  const isObjOrArray = /^[{|[]/g.test(value);
-  const hasOrIsBooleanAttr = /^has-|^is-/g.test(attrName);
-  let updatedValue; // parse attributue value
-
-  try {
-    updatedValue = JSON.parse(value);
-  } catch (e) {
-    updatedValue = value;
-
-    if (isObjOrArray) {
-      // this avoid unexpected rendering issues with invalid string passed in
-      updatedValue = null;
-      console.error(`Warning: Failed serializing attribute(${attrName}) value as JSON: ${value}`);
-    }
-  } // check for has-* or is-* attributes
-
-
-  if (hasOrIsBooleanAttr) {
-    updatedValue = hasOrIsBooleanAttr;
-  }
-
-  return updatedValue;
-}
-/**
- * Converts string hyphennated to camelcase
- * @param {string} word data that passed to the function
- * @return {string} camelcase string
- */
-
-function toCamelCase(word) {
-  return word.replace(/\b(_|-)([a-z])/g, (s, f, c) => c.toUpperCase());
-}
-/**
- * Converts string camelcase to hyphennated
- * @param {string} word data that passed to the function
- * @return {string} hyphennated string
- */
-
-function toHyphenCase(word) {
-  return word.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase();
-}
-// CONCATENATED MODULE: ./src/base-component/bootstrap/index.ts
-
-
-/* eslint-disable class-methods-use-this */
-
-/**
- * This module create property instance and get/set for all attributes and observedAttributes
- */
-
-class bootstrap_BootstrapElement extends HTMLElement {
-  /**
-   * This is re-usable static method, which sets property on the instance prototype based on the given attribute name
-   * @param {string} name attribute name
-   */
-  defineProp(name) {
-    if (!name) return; // const classInstance = this;
-
-    const classProto = Object.getPrototypeOf(this);
-    const propName = toCamelCase(name);
-    if (propName in classProto) return;
-    Object.defineProperty(classProto, propName, {
-      configurable: true,
-
-      get() {
-        return serializeAttrValue(name, this.getAttribute(name));
-      },
-
-      set(value) {
-        const checkedValue = typeof value !== 'string' ? JSON.stringify(value) : value;
-        this.setAttribute(name, checkedValue);
-      }
-
-    });
-  }
-  /**
-   * This loops through all the given attributes, observedAttributes and send it to `defineProp()`
-   * @param {object} attributes list of attributes added to the component
-   * @param {array} observedAttributes list of observed attributes
-   */
-
-
-  createAttributesToProperties(attributes = {}, observedAttributes = []) {
-    // attributes to properties
-    Object.keys(attributes).forEach(attr => {
-      const attrName = attributes[attr].name;
-      this.defineProp(attrName);
-    });
-    if (observedAttributes.length === 0) return; // observedAttributes to properties
-
-    observedAttributes.forEach(this.defineProp.bind(this));
-  }
-  /**
-   * has attribute
-   * @param {string} attribute name
-   */
-
-
-  hasAttr(attr) {
-    return this.hasAttribute(attr);
-  }
-  /**
-   * set attribute value
-   * @param {string} attribute name
-   */
-
-
-  getAttr(attr) {
-    return this.getAttribute(attr);
-  }
-  /**
-   * set attribute value
-   * @param {string} attribute name
-   * @param {string} new/changed value for the attribute
-   */
-
-
-  setAttr(attr, val) {
-    return this.setAttribute(attr, val);
-  }
-  /**
-   * remove attribute
-   * @param {string} attribute name
-   */
-
-
-  removeAttr(attr) {
-    return this.removeAttribute(attr);
-  }
-  /**
-   * helper function to add class name using classList
-   * @param {object} element DOM element
-   * @param {string} className string of class name
-   * @return {object} element DOM element
-   */
-
-
-  addClass(element, className) {
-    element.classList.add(className);
-    return element;
-  }
-  /**
-   * helper function to remove class name using classList
-   * @param {object} element DOM element
-   * @param {string} className string of class name
-   * @return {object} element DOM element
-   */
-
-
-  removeClass(element, className) {
-    element.classList.remove(className);
-    return element;
-  }
-  /**
-   * helper function to check for has class name using classList
-   * @param {object} element DOM element
-   * @param {string} className string of class name
-   * @return {boolean} contains true/false
-   */
-
-
-  hasClass(element, className) {
-    return element.classList.contains(className);
-  }
-  /**
-   * helper function to toggle class name using classList
-   * @param {object} element DOM element
-   * @param {string} className string of class name
-   * @param {boolean} force boolean to use force optionally
-   * @return {object} element DOM element
-   */
-
-
-  toggleClass(element, className, force) {
-    return element.classList.toggle(className, force);
-  }
-  /**
-   * helper to find child nodes rendered inside
-   * @param {string} selector that is used to search the DOM node
-   * @param {object} context Element in which search should be performed
-   * @return {object} Element
-   */
-
-
-  find(selector, context = this) {
-    return context.querySelector(selector);
-  }
-  /**
-   * helper to find all child nodes rendered inside
-   * @param {string} selector that is used to search the DOM node
-   * @param {object} context Element in which search should be performed
-   * @return {array} Elements that are matched
-   */
-
-
-  findAll(selector, context = this) {
-    return context.querySelectorAll(selector);
-  }
-  /**
-   * simplyfied event handler function to add events
-   * @param {string} eventName event type ex: click, blur, etc.
-   * @param {object} target HTML element that needs event to be added
-   * @param {function | Object} callback function or Object (which has handleEvent method) that needs to be triggerd
-   */
-
-
-  on(eventName, target, callback) {
-    target.addEventListener(eventName, callback, false);
-  }
-  /**
-   * simplyfied event handler function to remove events
-   * @param {string} eventName event type ex: click, blur, etc.
-   * @param {object} target HTML element that needs event to be added
-   * @param {function | Object} callback function or Object (which has handleEvent method) that needs to be triggerd
-   */
-
-
-  off(eventName, target, callback) {
-    target.removeEventListener(eventName, callback, false);
-  }
-  /**
-   * trigger native/custom event and pass data between components
-   * @param {string} eventName custom event name
-   * @param {object} target element reference on which event needs to be triggerd
-   * @param {object} eventData custom event data to share
-   */
-
-
-  trigger(eventName, target, eventData) {
-    const triggerEvent = !eventData ? new Event(eventName) : new CustomEvent(eventName, {
-      detail: eventData || {}
-    });
-    target.dispatchEvent(triggerEvent);
-  }
-
-}
-
-/* harmony default export */ var bootstrap = (bootstrap_BootstrapElement);
-// CONCATENATED MODULE: ./src/base-component/custom-element/index.ts
-
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-/**
- * custom element base class
- * below methods available to make this base element flexible
- *  - define('element-name') this will help register customElement only if it is not already deinfined
- *  - willConnect() this will be triggered before connectedCallback()
- *  - onConnect() this will be triggered on connectedCallback()
- *  - didConnect() this will be triggered only once after didRender()
- *  - willRender() will be triggered before render()
- *  - didRender() will be triggered after render()
- *  - setState() this helps shallow merge changes and allow re-render
- */
-
-class custom_element_BaseUICustomElement extends bootstrap {
-  static get is() {
-    return this.element;
-  }
-
-  static get observedAttributes() {
-    // console.log('observedAttributes');
-    const observeAttrs = this.attrToProp;
-    return Object.keys(observeAttrs).filter(item => observeAttrs[item].observe);
-  }
-
-  static define(elementName, options) {
-    const _window = window,
-          customElements = _window.customElements;
-    const isElementExist = customElements.get(elementName);
-    if (isElementExist) return;
-    this.element = elementName;
-    customElements.define(elementName, this, options);
-  }
-
-  constructor() {
-    super();
-
-    _defineProperty(this, "state", void 0);
-
-    _defineProperty(this, "isFirstRender", void 0);
-
-    _defineProperty(this, "isCreated", void 0);
-
-    this.isFirstRender = true;
-    this.isCreated = false;
-    this.create = this.create.bind(this);
-    const CLASS = this.constructor;
-    const props = CLASS.attrToProp; // console.log('cons', props);
-
-    if (CLASS.withShadowDom) {
-      this.attachShadow({
-        mode: 'open'
-      });
-    }
-
-    this.willConnect();
-  }
-
-  connectedCallback() {
-    // delay execution of connectedCallback to make sure dynamic data added to the attributes are available to consume
-    window.requestAnimationFrame(this.create);
-  }
-
-  attributeChangedCallback(attrName, oldVal, newVal) {
-    /**
-     * to optimize and avoid unnecessary re-rendering when attribte values changed
-     * this condition checks for below three things
-     * {isCreated} check if element connected, if no, avoid re-render
-     * {oldVal === newVal} check if current and new value for this attribute are same, if yes, then avoid re-render
-     */
-    if (!this.isCreated || oldVal === newVal) return;
-    const propName = toCamelCase(attrName);
-    /**
-     * check if attribute changed due to removeAttribute or change of value
-     * if removed, delete property set on element instance
-     * else, update property with the new value
-     */
-
-    if (newVal === null) {
-      delete this[propName];
-    } else {
-      this[propName] = newVal;
-    }
-
-    this.beforeRender();
-  }
-  /* tslint:disable:no-empty */
-
-
-  willConnect() {}
-
-  onConnect() {}
-
-  willRender() {}
-
-  didRender() {}
-
-  didConnect() {}
-  /* tslint:enable:no-empty */
-
-
-  handleEvent(e) {
-    const hasInstanceMethod = `on${e.type}`;
-    if (!this[hasInstanceMethod] || typeof this[hasInstanceMethod] !== 'function') return;
-    this[hasInstanceMethod](e);
-  }
-  /* tslint:disable:no-empty */
-
-
-  render() {}
-  /* tslint:enable:no-empty */
-
-
-  setState(state, render = true) {
-    const currentStateObj = this.state;
-    const nextState = typeof state === 'function' ? state.call(this, currentStateObj) : state;
-    this.state = _objectSpread({}, this.state, nextState);
-    if (render) this.beforeRender();
-  }
-
-  create() {
-    const attributes = this.attributes;
-    const CLASS = this.constructor; // poxy attributes & observed attributes as properties
-
-    this.createAttributesToProperties(attributes, CLASS.observedAttributes);
-    this.isCreated = true;
-    this.onConnect();
-    this.beforeRender();
-    this.setAttr('enhanced', '');
-  }
-
-  beforeRender() {
-    this.willRender();
-    this.setAttr('is-rendering', '');
-    this.render();
-    this.afterRender();
-  }
-
-  afterRender() {
-    if (this.isFirstRender) {
-      this.isFirstRender = false;
-      this.didConnect();
-    }
-
-    this.removeAttr('is-rendering');
-    this.didRender();
-  }
-
-}
-
-_defineProperty(custom_element_BaseUICustomElement, "withShadowDom", false);
-
-_defineProperty(custom_element_BaseUICustomElement, "element", void 0);
-
-_defineProperty(custom_element_BaseUICustomElement, "attrToProp", void 0);
-
-/* harmony default export */ var custom_element = __webpack_exports__["default"] = (custom_element_BaseUICustomElement);
-
-/***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var def = __webpack_require__(13).f;
-var has = __webpack_require__(3);
-var TAG = __webpack_require__(2)('toStringTag');
+var def = __webpack_require__(15).f;
+var has = __webpack_require__(5);
+var TAG = __webpack_require__(3)('toStringTag');
 
 module.exports = function (it, tag, stat) {
   if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
@@ -743,7 +320,7 @@ module.exports = function (it, tag, stat) {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 // IE 8- don't enum bug keys
@@ -753,7 +330,7 @@ module.exports = (
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 // 7.1.4 ToInteger
@@ -765,12 +342,12 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = __webpack_require__(34);
-var enumBugKeys = __webpack_require__(18);
+var $keys = __webpack_require__(36);
+var enumBugKeys = __webpack_require__(19);
 
 module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
@@ -778,7 +355,7 @@ module.exports = Object.keys || function keys(O) {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = function (bitmap, value) {
@@ -792,11 +369,11 @@ module.exports = function (bitmap, value) {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(11);
-var document = __webpack_require__(1).document;
+var isObject = __webpack_require__(13);
+var document = __webpack_require__(2).document;
 // typeof document.createElement is 'object' in old IE
 var is = isObject(document) && isObject(document.createElement);
 module.exports = function (it) {
@@ -805,18 +382,18 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports) {
 
 module.exports = false;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var core = __webpack_require__(15);
-var global = __webpack_require__(1);
+var core = __webpack_require__(17);
+var global = __webpack_require__(2);
 var SHARED = '__core-js_shared__';
 var store = global[SHARED] || (global[SHARED] = {});
 
@@ -824,22 +401,22 @@ var store = global[SHARED] || (global[SHARED] = {});
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
   version: core.version,
-  mode: __webpack_require__(23) ? 'pure' : 'global',
+  mode: __webpack_require__(24) ? 'pure' : 'global',
   copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
 });
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $iterators = __webpack_require__(48);
-var getKeys = __webpack_require__(20);
-var redefine = __webpack_require__(4);
-var global = __webpack_require__(1);
-var hide = __webpack_require__(0);
-var Iterators = __webpack_require__(9);
-var wks = __webpack_require__(2);
+var $iterators = __webpack_require__(50);
+var getKeys = __webpack_require__(21);
+var redefine = __webpack_require__(6);
+var global = __webpack_require__(2);
+var hide = __webpack_require__(1);
+var Iterators = __webpack_require__(11);
+var wks = __webpack_require__(3);
 var ITERATOR = wks('iterator');
 var TO_STRING_TAG = wks('toStringTag');
 var ArrayValues = Iterators.Array;
@@ -894,16 +471,592 @@ for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++
 
 
 /***/ }),
-/* 26 */
+/* 27 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
+var web_dom_iterable = __webpack_require__(26);
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.replace.js
+var es6_regexp_replace = __webpack_require__(29);
+
+// CONCATENATED MODULE: ./src/base-component/helpers/index.ts
+
+
+/**
+ * Converts string hyphennated to camelcase
+ * @param {string} word data that passed to the function
+ * @return {string} camelcase string
+ */
+function toCamelCase(word) {
+  return word.replace(/\b(_|-)([a-z])/g, (s, f, c) => c.toUpperCase());
+}
+/**
+ * Converts string camelcase to hyphennated
+ * @param {string} word data that passed to the function
+ * @return {string} hyphennated string
+ */
+
+function toHyphenCase(word) {
+  return word.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase();
+}
+/**
+ * logError helps log composed error when property types mismatch
+ */
+
+function logError({
+  attrName,
+  validate,
+  expected,
+  actual
+}) {
+  if (validate) return;
+  throw new Error(`PropType mismatch for attribute "${attrName}": Expected value type is "${expected}" but received "${actual}"`);
+}
+/**
+ * serialize attribute value from string
+ * @param {string} attrName key/name of the attribute
+ * @param {string} value of the attribute that needs to be serialize
+ * @return {any} based on the type of the given value, it will be parsed and returned as O
+ */
+
+function serializeAttrValue(proto, attrName, value, type) {
+  if (!value) return; // console.log(attrName, value, type);
+  // when property is defined as string type
+
+  if (type === String) {
+    logError({
+      attrName,
+      validate: value.constructor === type,
+      expected: 'string',
+      actual: typeof value
+    });
+    return type(value);
+  } // when property is defined as number type
+
+
+  if (type === Number) {
+    const parsedVal = type(value);
+    logError({
+      attrName,
+      validate: !isNaN(parsedVal),
+      expected: 'number',
+      actual: typeof value
+    });
+    return parsedVal;
+  }
+
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    throw new Error(`Warning: Failed serializing attribute(${attrName}) value as JSON: ${value}`);
+  }
+}
+// CONCATENATED MODULE: ./src/base-component/bootstrap/index.ts
+
+
+/* eslint-disable class-methods-use-this */
+
+
+function getPropType(obj, key) {
+  return obj[key]; // Inferred type is T[K]
+}
+
+/**
+ * This module create property instance and get/set for all attributes and observedAttributes
+ */
+class bootstrap_BootstrapElement extends HTMLElement {
+  /**
+   * This is re-usable static method, which sets property on the instance prototype based on the given attribute name
+   * @param {string} name attribute name
+   */
+  defineProp(name, reflectedAttrToProps) {
+    if (!name) return;
+    const classProto = Object.getPrototypeOf(this);
+    const propName = toCamelCase(name);
+
+    if (this.hasOwnProperty(propName)) {
+      const value = this[propName];
+      delete this[propName];
+      this[propName] = value;
+    }
+
+    if (propName in classProto) return;
+    const _reflectedAttrToProps = reflectedAttrToProps[name],
+          type = _reflectedAttrToProps.type,
+          observe = _reflectedAttrToProps.observe;
+
+    const get = () => {
+      const value = this.getAttribute(name); // if boolean attribute check if attribute exist or not
+
+      if (true.constructor === type && !value) return this.hasAttribute(name);
+      return serializeAttrValue(classProto, name, value, type);
+    };
+
+    const set = value => {
+      if (!observe) return;
+      const valueAsString = String(value); // when value is null or false remove attribute
+
+      if (value == null || valueAsString === 'false') return this.removeAttribute(name); // set boolean attribute
+
+      if (valueAsString === 'true') return this.setAttribute(name, '');
+      const parsedVal = serializeAttrValue(classProto, name, value, type);
+      this.setAttribute(name, parsedVal);
+    };
+
+    Object.defineProperty(classProto, propName, {
+      get,
+      set,
+      configurable: true
+    });
+  }
+  /**
+   * This loops through all the given attributes, observedAttributes and send it to `defineProp()`
+   * @param {object} attributes list of attributes added to the component
+   * @param {array} observedAttributes list of observed attributes
+   */
+
+
+  createAttributesToProperties(reflectedAttrToProps = {}) {
+    Object.keys(reflectedAttrToProps).forEach(attrName => this.defineProp(attrName, reflectedAttrToProps));
+  }
+  /**
+   * has attribute
+   * @param {string} attribute name
+   * @param {object} target DOM element
+   */
+
+
+  hasAttr(attr, target = this) {
+    return target.hasAttribute(attr);
+  }
+  /**
+   * set attribute value
+   * @param {string} attribute name
+   * @param {object} target DOM element
+   */
+
+
+  getAttr(attr, target = this) {
+    return target.getAttribute(attr);
+  }
+  /**
+   * set attribute value
+   * @param {string} attribute name
+   * @param {string} new/changed value for the attribute
+   * @param {object} target DOM element
+   */
+
+
+  setAttr(attr, val, target = this) {
+    return target.setAttribute(attr, val);
+  }
+  /**
+   * remove attribute
+   * @param {string} attribute name
+   * @param {object} target DOM element
+   */
+
+
+  removeAttr(attr, target = this) {
+    return target.removeAttribute(attr);
+  }
+  /**
+   * helper function to add class name using classList
+   * @param {string} className string of class name
+   * @param {object} target DOM element
+   * @return {object} element DOM element
+   */
+
+
+  addClass(className, target = this) {
+    target.classList.add(className);
+    return target;
+  }
+  /**
+   * helper function to remove class name using classList
+   * @param {string} className string of class name
+   * @param {object} target DOM element
+   * @return {object} element DOM element
+   */
+
+
+  removeClass(className, target = this) {
+    target.classList.remove(className);
+    return target;
+  }
+  /**
+   * helper function to check for has class name using classList
+   * @param {string} className string of class name
+   * @param {object} target DOM element
+   * @return {boolean} contains true/false
+   */
+
+
+  hasClass(className, target = this) {
+    return target.classList.contains(className);
+  }
+  /**
+   * helper function to toggle class name using classList
+   * @param {string} className string of class name
+   * @param {object} target DOM element
+   * @param {boolean} force boolean to use force optionally
+   * @return {object} element DOM element
+   */
+
+
+  toggleClass(className, target = this, force) {
+    return target.classList.toggle(className, force);
+  }
+  /**
+   * helper to find child nodes rendered inside
+   * @param {string} selector that is used to search the DOM node
+   * @param {object} target Element in which search should be performed
+   * @return {object} Element
+   */
+
+
+  find(selector, target = this) {
+    return target.querySelector(selector);
+  }
+  /**
+   * helper to find all child nodes rendered inside
+   * @param {string} selector that is used to search the DOM node
+   * @param {object} target Element in which search should be performed
+   * @return {array} Elements that are matched
+   */
+
+
+  findAll(selector, target = this) {
+    return target.querySelectorAll(selector);
+  }
+  /**
+   * simplyfied event handler function to add events
+   * @param {string} eventName event type ex: click, blur, etc.
+   * @param {function | Object} callback function or Object (which has handleEvent method) that needs to be triggerd
+   * @param {object} target HTML element that needs event to be added
+   */
+
+
+  on(eventName, callback, target = this) {
+    target.addEventListener(eventName, callback, false);
+  }
+  /**
+   * simplyfied event handler function to remove events
+   * @param {string} eventName event type ex: click, blur, etc.
+   * @param {function | Object} callback function or Object (which has handleEvent method) that needs to be triggerd
+   * @param {object} target HTML element that needs event to be added
+   */
+
+
+  off(eventName, callback, target = this) {
+    target.removeEventListener(eventName, callback, false);
+  }
+  /**
+   * trigger native/custom event and pass data between components
+   * @param {string} eventName custom event name
+   * @param {object} target element reference on which event needs to be triggerd
+   * @param {object} eventData custom event data to share
+   */
+
+
+  trigger(eventName, target = this, eventData) {
+    const triggerEvent = !eventData ? new Event(eventName) : new CustomEvent(eventName, {
+      detail: eventData || {}
+    });
+    target.dispatchEvent(triggerEvent);
+  }
+
+}
+
+/* harmony default export */ var bootstrap = (bootstrap_BootstrapElement);
+// CONCATENATED MODULE: ./src/base-component/custom-element/index.ts
+
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+/**
+ * custom element base class
+ * below methods available to make this base element flexible
+ *  - define('element-name') this will help register customElement only if it is not already deinfined
+ *  - willConnect() this will be triggered before connectedCallback()
+ *  - onConnect() this will be triggered on connectedCallback()
+ *  - didConnect() this will be triggered only once after didRender()
+ *  - willRender() will be triggered before render()
+ *  - didRender() will be triggered after render()
+ *  - setState() this helps shallow merge changes and allow re-render
+ */
+
+class custom_element_BaseUICustomElement extends bootstrap {
+  static get is() {
+    return this.element;
+  }
+
+  static get observedAttributes() {
+    // console.log('observedAttributes');
+    const observeAttrs = this.attributesToProps;
+    return Object.keys(observeAttrs).filter(item => observeAttrs[item].observe);
+  }
+
+  static define(elementName, options) {
+    const _window = window,
+          customElements = _window.customElements;
+    const isElementExist = customElements.get(elementName);
+    if (isElementExist) return;
+    this.element = elementName;
+    customElements.define(elementName, this, options);
+  }
+
+  constructor() {
+    super();
+
+    _defineProperty(this, "state", void 0);
+
+    _defineProperty(this, "isFirstRender", void 0);
+
+    _defineProperty(this, "isCreated", void 0);
+
+    this.isFirstRender = true;
+    this.isCreated = false;
+    this.create = this.create.bind(this);
+
+    if (this.constructor.withShadowDom) {
+      this.attachShadow({
+        mode: 'open'
+      });
+    }
+
+    this.willConnect();
+  }
+
+  connectedCallback() {
+    // delay execution of connectedCallback to make sure dynamic data added to the attributes are available to consume
+    window.requestAnimationFrame(this.create); // this.create();
+    // return Promise.resolve().then(() => this.create());
+  }
+
+  attributeChangedCallback(attrName, oldVal, newVal) {
+    /**
+     * to optimize and avoid unnecessary re-rendering when attribte values changed
+     * this condition checks for below three things
+     * {isCreated} check if element connected, if no, avoid re-render
+     * {oldVal === newVal} check if current and new value for this attribute are same, if yes, then avoid re-render
+     */
+    if (!this.isCreated || oldVal === newVal) return; // console.log(attrName, oldVal, newVal);
+
+    const propName = toCamelCase(attrName);
+    /**
+     * check if attribute changed due to removeAttribute or change of value
+     * if removed, delete property set on element instance
+     * else, update property with the new value
+     */
+
+    if (newVal === null) {
+      delete this[propName];
+    } else {// this[propName] = newVal;
+    }
+
+    this.beforeRender();
+  }
+
+  handleEvent(e) {
+    const eventType = e.type;
+    const hasInstanceMethod = `on${eventType}`;
+    if (!this[hasInstanceMethod] || typeof this[hasInstanceMethod] !== 'function') return;
+    this[hasInstanceMethod](e);
+  }
+  /* tslint:disable:no-empty */
+
+
+  willConnect() {}
+
+  onConnect() {}
+
+  willRender() {}
+
+  didRender() {}
+
+  didConnect() {}
+
+  render(properties) {}
+  /* tslint:enable:no-empty */
+
+
+  setState(state, render = true) {
+    const currentStateObj = this.state;
+    const nextState = typeof state === 'function' ? state.call(this, currentStateObj) : state;
+    this.state = _objectSpread({}, this.state, nextState);
+    if (render) this.beforeRender();
+  }
+
+  create() {
+    const reflectedAttrToProps = this.constructor.attributesToProps; // poxy attributes & observed attributes as properties
+
+    this.createAttributesToProperties(reflectedAttrToProps);
+    this.isCreated = true;
+    this.onConnect();
+    this.beforeRender();
+    this.setAttr('enhanced', '');
+  }
+
+  beforeRender() {
+    this.willRender();
+    this.setAttr('is-rendering', '');
+    this.render(this);
+    this.afterRender();
+  }
+
+  afterRender() {
+    if (this.isFirstRender) {
+      this.isFirstRender = false;
+      this.didConnect();
+    }
+
+    this.removeAttr('is-rendering');
+    this.didRender();
+  }
+
+}
+
+_defineProperty(custom_element_BaseUICustomElement, "withShadowDom", false);
+
+_defineProperty(custom_element_BaseUICustomElement, "element", void 0);
+
+_defineProperty(custom_element_BaseUICustomElement, "attributesToProps", void 0);
+
+/* harmony default export */ var custom_element = (custom_element_BaseUICustomElement);
+// EXTERNAL MODULE: external "hyperhtml"
+var external_hyperhtml_ = __webpack_require__(4);
+
+// CONCATENATED MODULE: ./src/with-hyperHTML/index.ts
+
+
+/**
+ *
+ * @param {array} template literal that needs to be wired
+ */
+
+const html = (...args) => Object(external_hyperhtml_["wire"])()(...args);
+/**
+ *
+ * To render and update nodes multiple times, bind object as context
+ * ex: `items.map(item => htmlWithContext(item)`<li>${item.val}</li>`);`
+ * here each item is bound as context to avoid rerendering same template
+ */
+
+const htmlWithContext = external_hyperhtml_["wire"];
+/**
+ *
+ * @param {object} template literal that needs to be rendered
+ * @param {HTMLElement} renderRoot defines where to render
+ */
+
+const renderFn = (template, renderRoot) => Object(external_hyperhtml_["bind"])(renderRoot)(template);
+/**
+ * DOM rendering with HyperHTML which extendes from base custom element
+ */
+
+class with_hyperHTML_WithHyperHTML extends custom_element {
+  get domRender() {
+    return (template, ...values) => Object(external_hyperhtml_["bind"])(this.shadowRoot || this)(template, ...values);
+  }
+
+  get html() {
+    return html;
+  }
+
+  get htmlWithContext() {
+    return htmlWithContext;
+  }
+
+}
+
+/* harmony default export */ var with_hyperHTML = (with_hyperHTML_WithHyperHTML);
+// EXTERNAL MODULE: external "lit-html"
+var external_lit_html_ = __webpack_require__(0);
+
+// CONCATENATED MODULE: ./src/with-litHTML/index.ts
+
+
+/**
+ * html(template)
+ * *** @param {object} template literal which needs to be wired
+ *
+ * render((template, renderRoot)
+ * *** @param {object} template literal that needs to be rendered
+ * *** @param {*} renderRoot defines where to render
+ *
+ * svg(template)
+ * *** @param {object} template literal which needs to be wired
+ */
+
+ // this extra function call is to keep API consistent with hyperHTML wire
+
+const with_litHTML_htmlWithContext = () => (...args) => Object(external_lit_html_["html"])(...args);
+/**
+ * DOM rendering with litHtml which extendes from base custom element
+ */
+
+class with_litHTML_WithLitHTML extends custom_element {
+  get domRender() {
+    return (template, ...values) => Object(external_lit_html_["render"])(Object(external_lit_html_["html"])(template, ...values), this.shadowRoot || this);
+  }
+
+  get html() {
+    return external_lit_html_["html"];
+  }
+
+  get svg() {
+    return external_lit_html_["svg"];
+  }
+
+  get htmlWithContext() {
+    return with_litHTML_htmlWithContext;
+  }
+
+}
+
+/* harmony default export */ var with_litHTML = (with_litHTML_WithLitHTML);
+// CONCATENATED MODULE: ./src/throw-error/index.ts
+function throwError(reason) {
+  const newErr = new Error(reason);
+  return error => {
+    newErr.originalError = error;
+    throw newErr;
+  };
+}
+
+/* harmony default export */ var throw_error = (throwError);
+// CONCATENATED MODULE: ./src/index.ts
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "BaseUICustomElement", function() { return custom_element; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "withHyperHTML", function() { return with_hyperHTML; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "htmlHyper", function() { return html; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "withLitHTML", function() { return with_litHTML; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "htmlLit", function() { return external_lit_html_["html"]; });
+/* concated harmony reexport */__webpack_require__.d(__webpack_exports__, "throwError", function() { return throw_error; });
+
+
+
+
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var hide = __webpack_require__(0);
-var redefine = __webpack_require__(4);
-var fails = __webpack_require__(10);
-var defined = __webpack_require__(7);
-var wks = __webpack_require__(2);
+var hide = __webpack_require__(1);
+var redefine = __webpack_require__(6);
+var fails = __webpack_require__(12);
+var defined = __webpack_require__(9);
+var wks = __webpack_require__(3);
 
 module.exports = function (KEY, length, exec) {
   var SYMBOL = wks(KEY);
@@ -929,11 +1082,11 @@ module.exports = function (KEY, length, exec) {
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // @@replace logic
-__webpack_require__(26)('replace', 2, function (defined, REPLACE, $replace) {
+__webpack_require__(28)('replace', 2, function (defined, REPLACE, $replace) {
   // 21.1.3.14 String.prototype.replace(searchValue, replaceValue)
   return [function replace(searchValue, replaceValue) {
     'use strict';
@@ -947,24 +1100,24 @@ __webpack_require__(26)('replace', 2, function (defined, REPLACE, $replace) {
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.13 ToObject(argument)
-var defined = __webpack_require__(7);
+var defined = __webpack_require__(9);
 module.exports = function (it) {
   return Object(defined(it));
 };
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = __webpack_require__(3);
-var toObject = __webpack_require__(28);
-var IE_PROTO = __webpack_require__(6)('IE_PROTO');
+var has = __webpack_require__(5);
+var toObject = __webpack_require__(30);
+var IE_PROTO = __webpack_require__(8)('IE_PROTO');
 var ObjectProto = Object.prototype;
 
 module.exports = Object.getPrototypeOf || function (O) {
@@ -977,18 +1130,18 @@ module.exports = Object.getPrototypeOf || function (O) {
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var document = __webpack_require__(1).document;
+var document = __webpack_require__(2).document;
 module.exports = document && document.documentElement;
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(19);
+var toInteger = __webpack_require__(20);
 var max = Math.max;
 var min = Math.min;
 module.exports = function (index, length) {
@@ -998,11 +1151,11 @@ module.exports = function (index, length) {
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.15 ToLength
-var toInteger = __webpack_require__(19);
+var toInteger = __webpack_require__(20);
 var min = Math.min;
 module.exports = function (it) {
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
@@ -1010,14 +1163,14 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = __webpack_require__(8);
-var toLength = __webpack_require__(32);
-var toAbsoluteIndex = __webpack_require__(31);
+var toIObject = __webpack_require__(10);
+var toLength = __webpack_require__(34);
+var toAbsoluteIndex = __webpack_require__(33);
 module.exports = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
     var O = toIObject($this);
@@ -1039,13 +1192,13 @@ module.exports = function (IS_INCLUDES) {
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var has = __webpack_require__(3);
-var toIObject = __webpack_require__(8);
-var arrayIndexOf = __webpack_require__(33)(false);
-var IE_PROTO = __webpack_require__(6)('IE_PROTO');
+var has = __webpack_require__(5);
+var toIObject = __webpack_require__(10);
+var arrayIndexOf = __webpack_require__(35)(false);
+var IE_PROTO = __webpack_require__(8)('IE_PROTO');
 
 module.exports = function (object, names) {
   var O = toIObject(object);
@@ -1062,14 +1215,14 @@ module.exports = function (object, names) {
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(13);
-var anObject = __webpack_require__(12);
-var getKeys = __webpack_require__(20);
+var dP = __webpack_require__(15);
+var anObject = __webpack_require__(14);
+var getKeys = __webpack_require__(21);
 
-module.exports = __webpack_require__(5) ? Object.defineProperties : function defineProperties(O, Properties) {
+module.exports = __webpack_require__(7) ? Object.defineProperties : function defineProperties(O, Properties) {
   anObject(O);
   var keys = getKeys(Properties);
   var length = keys.length;
@@ -1081,27 +1234,27 @@ module.exports = __webpack_require__(5) ? Object.defineProperties : function def
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject = __webpack_require__(12);
-var dPs = __webpack_require__(35);
-var enumBugKeys = __webpack_require__(18);
-var IE_PROTO = __webpack_require__(6)('IE_PROTO');
+var anObject = __webpack_require__(14);
+var dPs = __webpack_require__(37);
+var enumBugKeys = __webpack_require__(19);
+var IE_PROTO = __webpack_require__(8)('IE_PROTO');
 var Empty = function () { /* empty */ };
 var PROTOTYPE = 'prototype';
 
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
 var createDict = function () {
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = __webpack_require__(22)('iframe');
+  var iframe = __webpack_require__(23)('iframe');
   var i = enumBugKeys.length;
   var lt = '<';
   var gt = '>';
   var iframeDocument;
   iframe.style.display = 'none';
-  __webpack_require__(30).appendChild(iframe);
+  __webpack_require__(32).appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
   // createDict = iframe.contentWindow.Object;
   // html.removeChild(iframe);
@@ -1128,18 +1281,18 @@ module.exports = Object.create || function create(O, Properties) {
 
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var create = __webpack_require__(36);
-var descriptor = __webpack_require__(21);
-var setToStringTag = __webpack_require__(17);
+var create = __webpack_require__(38);
+var descriptor = __webpack_require__(22);
+var setToStringTag = __webpack_require__(18);
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-__webpack_require__(0)(IteratorPrototype, __webpack_require__(2)('iterator'), function () { return this; });
+__webpack_require__(1)(IteratorPrototype, __webpack_require__(3)('iterator'), function () { return this; });
 
 module.exports = function (Constructor, NAME, next) {
   Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
@@ -1148,7 +1301,7 @@ module.exports = function (Constructor, NAME, next) {
 
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports) {
 
 module.exports = function (it) {
@@ -1158,11 +1311,11 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // optional / simple context binding
-var aFunction = __webpack_require__(38);
+var aFunction = __webpack_require__(40);
 module.exports = function (fn, that, length) {
   aFunction(fn);
   if (that === undefined) return fn;
@@ -1184,14 +1337,14 @@ module.exports = function (fn, that, length) {
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(1);
-var core = __webpack_require__(15);
-var hide = __webpack_require__(0);
-var redefine = __webpack_require__(4);
-var ctx = __webpack_require__(39);
+var global = __webpack_require__(2);
+var core = __webpack_require__(17);
+var hide = __webpack_require__(1);
+var redefine = __webpack_require__(6);
+var ctx = __webpack_require__(41);
 var PROTOTYPE = 'prototype';
 
 var $export = function (type, name, source) {
@@ -1233,20 +1386,20 @@ module.exports = $export;
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var LIBRARY = __webpack_require__(23);
-var $export = __webpack_require__(40);
-var redefine = __webpack_require__(4);
-var hide = __webpack_require__(0);
-var Iterators = __webpack_require__(9);
-var $iterCreate = __webpack_require__(37);
-var setToStringTag = __webpack_require__(17);
-var getPrototypeOf = __webpack_require__(29);
-var ITERATOR = __webpack_require__(2)('iterator');
+var LIBRARY = __webpack_require__(24);
+var $export = __webpack_require__(42);
+var redefine = __webpack_require__(6);
+var hide = __webpack_require__(1);
+var Iterators = __webpack_require__(11);
+var $iterCreate = __webpack_require__(39);
+var setToStringTag = __webpack_require__(18);
+var getPrototypeOf = __webpack_require__(31);
+var ITERATOR = __webpack_require__(3)('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
 var FF_ITERATOR = '@@iterator';
 var KEYS = 'keys';
@@ -1309,7 +1462,7 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -1320,11 +1473,11 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
-var cof = __webpack_require__(42);
+var cof = __webpack_require__(44);
 // eslint-disable-next-line no-prototype-builtins
 module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return cof(it) == 'String' ? it.split('') : Object(it);
@@ -1332,7 +1485,7 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
 
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports) {
 
 module.exports = function (done, value) {
@@ -1341,11 +1494,11 @@ module.exports = function (done, value) {
 
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __webpack_require__(11);
+var isObject = __webpack_require__(13);
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
 module.exports = function (it, S) {
@@ -1359,43 +1512,43 @@ module.exports = function (it, S) {
 
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(5) && !__webpack_require__(10)(function () {
-  return Object.defineProperty(__webpack_require__(22)('div'), 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !__webpack_require__(7) && !__webpack_require__(12)(function () {
+  return Object.defineProperty(__webpack_require__(23)('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 22.1.3.31 Array.prototype[@@unscopables]
-var UNSCOPABLES = __webpack_require__(2)('unscopables');
+var UNSCOPABLES = __webpack_require__(3)('unscopables');
 var ArrayProto = Array.prototype;
-if (ArrayProto[UNSCOPABLES] == undefined) __webpack_require__(0)(ArrayProto, UNSCOPABLES, {});
+if (ArrayProto[UNSCOPABLES] == undefined) __webpack_require__(1)(ArrayProto, UNSCOPABLES, {});
 module.exports = function (key) {
   ArrayProto[UNSCOPABLES][key] = true;
 };
 
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var addToUnscopables = __webpack_require__(47);
-var step = __webpack_require__(44);
-var Iterators = __webpack_require__(9);
-var toIObject = __webpack_require__(8);
+var addToUnscopables = __webpack_require__(49);
+var step = __webpack_require__(46);
+var Iterators = __webpack_require__(11);
+var toIObject = __webpack_require__(10);
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
 // 22.1.3.29 Array.prototype.values()
 // 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = __webpack_require__(41)(Array, 'Array', function (iterated, kind) {
+module.exports = __webpack_require__(43)(Array, 'Array', function (iterated, kind) {
   this._t = toIObject(iterated); // target
   this._i = 0;                   // next index
   this._k = kind;                // kind
@@ -1424,4 +1577,4 @@ addToUnscopables('entries');
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=base-component.js.map
+//# sourceMappingURL=index.js.map
