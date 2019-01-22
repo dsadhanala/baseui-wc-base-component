@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Test baseUI custom element</title>
+        <link rel="stylesheet" href="./styles.css" />
+        <script src="https://unpkg.com/@webcomponents/custom-elements@1.1.0/custom-elements.min.js"></script>
+        <script src="/tests.js"></script>
+    </head>
 
-<head>
-    <meta charset="utf-8">
-    <title>Test baseUI custom element</title>
-    <link rel="stylesheet" href="./styles.css">
-    <script src="https://unpkg.com/@webcomponents/custom-elements@1.1.0/custom-elements.min.js"></script>
-    <script src="/tests.js"></script>
-</head>
+    <body>
+        <h1>Demo</h1>
 
-<body>
-    <h1>Demo</h1>
-
-    <!-- <header-text-base text="Rendered with base-custom-element"></header-text-base>
+        <!-- <header-text-base text="Rendered with base-custom-element"></header-text-base>
 
     <header-text-lit text="Rendered with lit-html"></header-text-lit>
     <toggle-view-lit class="toggle-view" view="list" source-url="https://reqres.in/api/users?per_page=4">
     </toggle-view-lit> -->
 
-    <header-text-hyper class="hyper" is-string="Rendered with hyper-html {test}" some-other="shshhs" is-boolean is-obj='{"name": "test"}'
-        is-ary='[{"name1": "test1"}, {"name2": "test2"}]'></header-text-hyper>
-    <!-- <toggle-view-hyper class="toggle-view" view="table" source-url="https://reqres.in/api/users?per_page=4">
+        <header-text-hyper
+            class="hyper"
+            text="Rendered with hyper-html"
+            some-other="shshhs"
+            is-number="2"
+            is-boolean
+        ></header-text-hyper>
+        <!-- <toggle-view-hyper class="toggle-view" view="table" source-url="https://reqres.in/api/users?per_page=4">
     </toggle-view-hyper> -->
 
-    <script>
-        const pageLoad = () => {
-            const ele = document.querySelector('header-text-hyper');
-            ele.checkValue = 'test';
-            ele.setAttribute('new-attr', 'test attr');
-        };
+        <script>
+            const pageLoad = () => {
+                const ele = document.querySelector('header-text-hyper');
+                ele.setAttribute('new-attr', 'test attr');
+                ele.checkValue = 'test';
+            };
 
-        document.addEventListener('DOMContentLoaded', pageLoad);
-    </script>
-</body>
-
+            document.addEventListener('DOMContentLoaded', pageLoad);
+        </script>
+    </body>
 </html>

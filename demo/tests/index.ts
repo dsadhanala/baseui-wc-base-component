@@ -75,25 +75,23 @@ interface HeaderTextState {
     count: number;
 }
 
-// interface HeaderTextHyper {
-//     text: String;
-//     isBoolean: Boolean;
-//     isNumber: Number;
-//     newAttr: String;
-//     checkValue: Number;
-//     // onClick(e: Event): void;
-// }
+interface HeaderTextHyper {
+    text: string;
+    isBoolean: boolean;
+    isNumber: number;
+    checkValue: string;
+    newAttr: string;
+    // onclick(e: Event): void;
+}
 
-class HeaderTextHyper extends WithHyperHTML<HeaderTextState> {
-    static get attributesToProps() {
+class HeaderTextHyper extends WithHyperHTML.Component<HeaderTextState> {
+    static get attrToProp() {
         return {
-            'is-string': { type: String, observe: true },
+            text: { type: String, observe: true, require: true },
             'is-boolean': { type: Boolean, observe: true },
             'is-number': { type: Number, observe: true },
-            'is-obj': { type: Object, observe: true },
-            'is-ary': { type: Array, observe: true }
-            // 'check-value': { type: String, observe: false },
-            // 'new-attr': { type: String, observe: false }
+            'check-value': { type: String, observe: true },
+            'new-attr': { type: String }
         };
     }
 
@@ -101,30 +99,29 @@ class HeaderTextHyper extends WithHyperHTML<HeaderTextState> {
         count: 0
     };
 
-    onClick(e: Event): void {
-        // this.text = 'change';
-        // console.log(this.hasClass('hyper'));
-        // this.isString = 'new text content';
-        // this.isBoolean = this.isBoolean ? false : true;
-        // this.isNumber = this.isNumber + 1;
-        // this.checkValue = 'new val form onclick';
-        console.log('is-number', this.isNumber);
-        // console.log('is-obj', this.isObj);
-        // console.log('is-ary', this.isAry);
-        console.log('checkValue', this.checkValue);
-        // console.log('some', this.someOther);
-        // console.log(this.newAttr);
-        // this.setState((prevState) => ({
-        //     count: prevState.count + 1
-        // }));
+    willConnect() {
+        this.checkValue = 'changed from willConnect';
     }
 
-    render({ domRender, isString, state }: this) {
+    onClick() {
+        // change all attribute values and also state to validate if it renders batched changes or multiple times
+        this.text = `new text content ${this.state.count}`;
+        this.isBoolean = !this.isBoolean;
+        this.isNumber = this.isNumber + 1;
+        this.checkValue = 'changed';
+        this.newAttr = 'new val changed';
+
+        this.setState((prevState) => ({
+            count: prevState.count + 1
+        }));
+    }
+
+    render({ domRender, text, state }: this) {
         const clickCount = state.count ? ` -> click count ${state.count}` : '';
 
         return domRender`
             <h2 class="header-text__htext">
-                <span onclick="${this}">${isString}</span>
+                <span onclick="${this.onClick}">${text}</span>
                 <span>${clickCount}</span>
             </h2>
         `;

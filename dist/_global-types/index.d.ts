@@ -1,5 +1,4 @@
-export type attrType = string | number | boolean | {} | [];
-
+export declare type attrType = string | number | boolean | {} | [];
 export interface ReflectedAttrToProps {
     [key: string]: {
         type: attrType;
@@ -7,6 +6,4 @@ export interface ReflectedAttrToProps {
         require?: boolean;
     };
 }
-
-// webpack feature flags
 export declare var DEV_FEATURE: boolean;

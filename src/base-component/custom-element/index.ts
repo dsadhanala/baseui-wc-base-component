@@ -1,5 +1,22 @@
-import { default as BootstrapElement } from '../bootstrap';
-import { toCamelCase, toCapitalCase } from '../helpers';
+import { DEV_FEATURE, ReflectedAttrToProps } from '../../_global-types';
+import { toCamelCase } from '../../helpers';
+import { BootstrapElement } from '../bootstrap-element';
+import { validateRequiredAttributes } from '../validate-required-attributes';
+
+// interface A {
+//     x: any;
+//   }
+
+// Merge interface B with the abstract class declaration below.
+// interface BootstrapElement<T = {}> extends HTMLElement {
+//     onclick(ev: MouseEvent): void;
+//     onsubmit(ev: Event): void;
+// }
+
+// Note that the 'implements A' here is optional... you can remove it if you like.
+//   export abstract class B implements A {
+//     y: any;
+//   }
 
 /**
  * custom element base class
@@ -16,21 +33,19 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
     [key: string]: any;
 
     static get is(): string {
-        return this.element;
+        return this.elementName;
     }
 
     static get observedAttributes(): string[] {
-        // console.log('observedAttributes');
-        const observeAttrs = this.attributesToProps;
+        if (!this.attrToProp) return [];
 
+        const observeAttrs = this.attrToProp;
         return Object.keys(observeAttrs).filter((item) => observeAttrs[item].observe);
     }
 
+    static readonly attrToProp: ReflectedAttrToProps;
     static withShadowDom = false;
-
-    static element: string;
-
-    static readonly attributesToProps: object;
+    static elementName: string;
 
     static define(elementName: string, options?: ElementDefinitionOptions | undefined): void {
         const { customElements } = window;
@@ -38,20 +53,25 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
 
         if (isElementExist) return;
 
-        this.element = elementName;
+        this.elementName = elementName;
         customElements.define(elementName, this, options);
     }
+
+    // static hasFullyMounted(component: HTMLElement) {
+    // const unDefinedChildren = component.querySelectorAll(':not(:defined)');
+    // return Promise.all([...unDefinedChildren].map((el) => customElements.whenDefined(el.localName)));
+    // }
 
     state!: T;
     isFirstRender: boolean;
     isCreated: boolean;
+    shouldRender: boolean = false;
 
     constructor() {
         super();
 
         this.isFirstRender = true;
         this.isCreated = false;
-        this.create = this.create.bind(this);
 
         if ((this.constructor as typeof BaseUICustomElement).withShadowDom) {
             this.attachShadow({ mode: 'open' });
@@ -61,10 +81,7 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
     }
 
     connectedCallback() {
-        // delay execution of connectedCallback to make sure dynamic data added to the attributes are available to consume
-        window.requestAnimationFrame(this.create);
-        // this.create();
-        // return Promise.resolve().then(() => this.create());
+        this.create();
     }
 
     attributeChangedCallback(attrName: string, oldVal: any, newVal: any) {
@@ -76,21 +93,11 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
          */
         if (!this.isCreated || oldVal === newVal) return;
 
-        const propName = toCamelCase(attrName);
-
-        /**
-         * check if attribute changed due to removeAttribute or change of value
-         * if removed, delete property set on element instance
-         */
-        if (newVal === null) {
-            delete this[propName];
-        }
-
         this.beforeRender();
     }
 
     handleEvent(e: Event) {
-        const eventType = toCapitalCase(e.type); // time being Capitalize event type as method name
+        const eventType = e.type;
         const hasInstanceMethod = `on${eventType}`;
 
         if (!this[hasInstanceMethod] || typeof this[hasInstanceMethod] !== 'function') return;
@@ -98,13 +105,18 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
         this[hasInstanceMethod](e);
     }
 
+    disconnectedCallback(): void {
+        this.onDisconnect();
+    }
+
     /* tslint:disable:no-empty */
     protected willConnect(): void {}
     protected onConnect(): void {}
-    protected willRender(): void {}
-    protected didRender(): void {}
+    protected onDisconnect(): void {}
     protected didConnect(): void {}
+    protected willRender(): void {}
     protected render(properties: this): void {}
+    protected didRender(): void {}
     /* tslint:enable:no-empty */
 
     protected setState(state: Partial<T> | ((this: this, state: T) => Partial<T>), render: boolean = true): void {
@@ -115,27 +127,6 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
         if (render) this.beforeRender();
     }
 
-    private create() {
-        const reflectedAttrToProps = (this.constructor as typeof BaseUICustomElement).attributesToProps;
-
-        // poxy attributes & observed attributes as properties
-        this.createAttributesToProperties(reflectedAttrToProps);
-
-        this.isCreated = true;
-
-        this.onConnect();
-        this.beforeRender();
-        this.setAttr('enhanced', '');
-    }
-
-    private beforeRender() {
-        this.willRender();
-
-        this.setAttr('is-rendering', '');
-        this.render(this);
-        this.afterRender();
-    }
-
     private afterRender() {
         if (this.isFirstRender) {
             this.isFirstRender = false;
@@ -144,6 +135,64 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
 
         this.removeAttr('is-rendering');
         this.didRender();
+
+        if (DEV_FEATURE) console.timeEnd(this.elementName);
+    }
+
+    private create() {
+        const reflectedAttrToProps = (this.constructor as typeof BaseUICustomElement).attrToProp;
+
+        // poxy attributes & observed attributes as properties
+        if (reflectedAttrToProps) this.createAttributesToProperties(reflectedAttrToProps);
+
+        this.isCreated = true;
+
+        this.onConnect();
+        this.beforeRender();
+        this.setAttr('enhanced', '');
+    }
+
+    private hasRequiredAttributes() {
+        interface RequiredAttrsType {
+            [key: string]: any;
+        }
+
+        // validate required attributes before rendering
+        const CTOR = this.constructor as typeof BaseUICustomElement;
+        const observeAttrs = CTOR.attrToProp || {};
+        const requiredAttrs: { [index: string]: string } = Object.keys(observeAttrs)
+            .filter((item) => observeAttrs[item].require)
+            .reduce((accum: RequiredAttrsType, attr) => {
+                accum[attr] = this[toCamelCase(attr)];
+                return accum;
+            }, {});
+        // console.log(requiredAttrs);
+        return validateRequiredAttributes({
+            attrs: { ...requiredAttrs },
+            ele: CTOR.elementName
+        });
+    }
+
+    private async beforeRender() {
+        this.willRender();
+
+        if (this.shouldRender) return;
+
+        this.shouldRender = true;
+
+        // batch render all changes at once to improve performance with below microtask queue
+        await Promise.resolve().then((resolve) => resolve);
+
+        this.shouldRender = false;
+
+        this.setAttr('is-rendering', '');
+
+        if (DEV_FEATURE) console.time(this.elementName);
+
+        // validate all required attributes before render
+        if (this.hasRequiredAttributes()) this.render(this);
+
+        this.afterRender();
     }
 }
 

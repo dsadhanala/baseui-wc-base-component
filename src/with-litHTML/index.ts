@@ -1,5 +1,4 @@
 import { html, render, svg } from 'lit-html';
-import { TemplateArgs } from '../_global-types';
 import { default as BaseUICustomElement } from '../base-component/custom-element';
 
 /**
@@ -16,12 +15,12 @@ import { default as BaseUICustomElement } from '../base-component/custom-element
 export { html, render, svg };
 
 // this extra function call is to keep API consistent with hyperHTML wire
-export const htmlWithContext = () => (...args: TemplateArgs) => html(...args);
+export const htmlWithContext = () => (template: TemplateStringsArray, ...values: any[]) => html(template, ...values);
 
 /**
  * DOM rendering with litHtml which extendes from base custom element
  */
-class WithLitHTML<T = {}> extends BaseUICustomElement<T> {
+export class Component<T = {}> extends BaseUICustomElement<T> {
     get domRender() {
         return (template: TemplateStringsArray, ...values: any[]) =>
             render(html(template, ...values), this.shadowRoot || this);
@@ -40,4 +39,8 @@ class WithLitHTML<T = {}> extends BaseUICustomElement<T> {
     }
 }
 
-export default WithLitHTML;
+export default {
+    Component,
+    html,
+    htmlWithContext
+};

@@ -2,11 +2,11 @@ const merge = require('webpack-merge');
 const common = require('./build-config/webpack')();
 
 const entry = {
-    'index': './src/index'
+    index: './src/index'
 };
 
-module.exports = env => {
-    const isMinEnabled = !!((env && env.min));
+module.exports = (env) => {
+    const isMinEnabled = !!(env && env.min);
 
     return merge(common, {
         entry,
@@ -14,8 +14,8 @@ module.exports = env => {
             minimize: isMinEnabled
         },
         output: {
-            filename: (isMinEnabled) ? '[name].min.js' : '[name].js',
-            library: 'baseuiwcelement',
+            filename: isMinEnabled ? '[name].min.js' : '[name].js',
+            library: 'baseuiWcBaseComponent',
             libraryTarget: 'umd',
             umdNamedDefine: true
         },
