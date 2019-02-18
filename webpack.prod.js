@@ -21,7 +21,12 @@ module.exports = (env) => {
         },
         externals: {
             'lit-html': 'lit-html',
-            'hyperhtml/esm': 'hyperhtml'
+            hyperhtml: 'hyperhtml'
+        },
+        resolve: {
+            alias: {
+                '@rootSrc': './src'
+            }
         }
     });
 };

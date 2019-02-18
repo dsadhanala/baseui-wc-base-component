@@ -1,3 +1,7 @@
 {
-    "extends": ["./build-config/tslint/default.json"]
+    "extends": ["./build-config/tslint/default.json"],
+    "rules": {
+        "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case"],
+        "function-name": false
+    }
 }

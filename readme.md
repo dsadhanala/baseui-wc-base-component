@@ -10,8 +10,9 @@ This base component allows you to create a customElement without repeated bootst
 Optionally you can use rendering library of your choice(vdom, preact, etc.) or just vanilla JS.
 You can also choose from the provided wrapped component with `lit-html` or `hyperHTML` to efficiently render/re-render templates to DOM, while keeping the component creation API same.
 
-> Note:
-If you use `customElements.define('element-name', ElementClass);` and import components more than once on the same page throws exception as it tries to register same element more than once. So use `ElementClass.define('element-name')` instead, which is a static method on the element instance helps prevent this issue.
+> Note: To keep this package lean, `hyperHTML` and `lit-html` are moved out as external deps, please make sure to include based on your choice.
+
+> V1 re-written with Typescript support and improved developer experience with type definition for attribute values, conversion of all attributes default is no-longer works, you have to define them in a `static get attrToProp` method see examples below.
 
 ## Install
 ```
@@ -23,11 +24,11 @@ Since it's an UMD bundle, this can be imported into ES6/CJS/AMD modules in node 
 **Node:**
 ```js
 // ES6
-import { BaseComponent } from 'baseui-wc-base-component';
+import { BaseUICustomElement } from 'baseui-wc-base-component';
 // CJS
-const { BaseComponent } = require('baseui-wc-base-component');
+const { BaseUICustomElement } = require('baseui-wc-base-component');
 // AMD
-define('module_name', ['baseui-wc-base-component'], function (BaseComponent){});
+define('module_name', ['baseui-wc-base-component'], function (BaseUICustomElement){});
 ```
 
 **Browser:**
@@ -56,10 +57,14 @@ To see the preview of below examples refer this [codepen](https://codepen.io/dsa
 Optionally you can use rendering library of your choice or just vanilla JS.
 
 ```js
-import BaseComponent from 'baseui-wc-base-component/dist/base-component';
+import { BaseUICustomElement } from 'baseui-wc-base-component';
 
-class HeaderTextBase extends BaseComponent {
-    static get observedAttributes() { return ['text']; }
+class HeaderTextBase extends BaseUICustomElement {
+    static get attrToProp() {
+        return {
+            text: { type: String, observe: true, require: true }
+        };
+    }
 
     willConnect() {
         this.state = { count: 0 };
@@ -70,15 +75,12 @@ class HeaderTextBase extends BaseComponent {
         this.on('click', clickHandlerEle, this);
     }
 
-    onclick() {
+    onClick() {
         this.setState((prevState) => ({ count: prevState.count + 1 }));
+        this.clickCount = this.state.count ? ` -> click count ${this.state.count}` : '';
     }
 
-    render() {
-        /* choose your own rendering library or use vanilla JS like below */
-        const { text } = this;
-        const clickCount = (this.state.count) ? ` -> click count ${this.state.count}` : '';
-
+    render({ text, clickCount = '' }: this) {
         this.innerHTML = `
             <h2 class="header-text__htext">
                 <span js-click-handler>${text}</span>
@@ -98,37 +100,44 @@ Usage in HTML:
 <header-text-base text="Rendered with base-custom-element"></header-text-base>
 ```
 
+If you want to use in a Typescript project, can be written like below examples with hyper/lit html rendering.
+
 ### with hyperHTML
 
-```js
-import BaseComponent from 'baseui-wc-base-component/dist/with-hyperHTML';
+```ts
+import { CustomElement } from 'baseui-wc-base-component/esm/decorators';
+import { Component } from 'baseui-wc-base-component/esm/with-hyperHTML';
 
-class HeaderTextHyper extends BaseComponent {
-    static get observedAttributes() { return ['text']; }
+interface HeaderTextState {
+    count: number;
+}
 
-    willConnect() {
-        this.state = { count: 0 };
-        this.onClickCallback = this.onClickCallback.bind(this);
+@CustomElement('header-text-hyper')
+export class HeaderTextHyper extends Component<HeaderTextState> {
+    readonly state = {
+        count: 0
+    };
+
+    static get attrToProp() {
+        return {
+            text: { type: String, observe: true, require: true }
+        };
     }
 
-    onClickCallback() {
+    onClick() {
         this.setState((prevState) => ({ count: prevState.count + 1 }));
+        this.clickCount = this.state.count ? ` -> click count ${this.state.count}` : '';
     }
 
-    render() {
-        const { domRender, text, onClickCallback } = this;
-        const clickCount = (this.state.count) ? ` -> click count ${this.state.count}` : '';
-
+    render({ domRender, text, clickCount }) {
         return domRender`
             <h2 class="header-text__htext">
-                <span onclick="${onClickCallback}">${text}</span>
+                <span onclick="${this}">${text}</span>
                 <span>${clickCount}</span>
             </h2>
         `;
     }
 }
-
-HeaderTextHyper.define('header-text-hyper');
 ```
 
 Usage in HTML:
@@ -140,35 +149,40 @@ Usage in HTML:
 
 ### with litHTML
 
-```js
-import BaseComponent from 'baseui-wc-base-component/dist/with-litHTML';
+```ts
+import { CustomElement } from 'baseui-wc-base-component/esm/decorators';
+import { Component } from 'baseui-wc-base-component/esm/with-litHTML';
 
-class HeaderTextLit extends BaseComponent {
-    static get observedAttributes() { return ['text']; }
+interface HeaderTextState {
+    count: number;
+}
 
-    willConnect() {
-        this.state = { count: 0 };
-        this.onClickCallback = this.onClickCallback.bind(this);
+@CustomElement('header-text-lit')
+class HeaderTextLit extends Component<HeaderTextState> {
+    readonly state = {
+        count: 0
+    };
+
+    static get attrToProp() {
+        return {
+            text: { type: String, observe: true, require: true }
+        };
     }
 
-    onClickCallback() {
+    onClick() {
         this.setState((prevState) => ({ count: prevState.count + 1 }));
+        this.clickCount = this.state.count ? ` -> click count ${this.state.count}` : '';
     }
 
-    render() {
-        const { domRender, text, onClickCallback } = this;
-        const clickCount = (this.state.count) ? ` -> click count ${this.state.count}` : '';
-
+    render({ domRender, text, clickCount }) {
         return domRender`
             <h2 class="header-text__htext">
-                <span onclick="${onClickCallback}">${text}</span>
+                <span @click="${this}">${text}</span>
                 <span>${clickCount}</span>
             </h2>
         `;
     }
 }
-
-HeaderTextLit.define('header-text-lit');
 ```
 
 Usage in HTML:

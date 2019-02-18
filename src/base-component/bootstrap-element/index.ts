@@ -1,17 +1,13 @@
-/* eslint-disable class-methods-use-this */
-import { ReflectedAttrToProps } from '../../_global-types';
+import { ReflectedAttrToProps } from '../../_global/types';
 import { toCamelCase } from '../../helpers';
 import { serializeAttrValue } from '../serialize';
-
-// export interface BootstrapElement extends HTMLElement {
-//     onclick(ev: MouseEvent): void;
-//     onsubmit(ev: Event): void;
-// }
 
 /**
  * This module create property instance and get/set for all attributes and observedAttributes
  */
-export abstract class BootstrapElement extends HTMLElement {
+export abstract class BootstrapClass extends HTMLElement {
+    [key: string]: any;
+
     /**
      * This is re-usable static method, which sets property on the instance prototype based on the given attribute name
      * @param {string} name attribute name
@@ -25,14 +21,20 @@ export abstract class BootstrapElement extends HTMLElement {
         const get = () => {
             const value = this.getAttribute(name);
 
-            // if boolean attribute check if attribute exist or not
+            // boolean attribute, then check if attribute exist or not
             if (true.constructor === type && !value) return this.hasAttribute(name);
 
-            return serializeAttrValue(name, value, type);
+            // attribute value is defined as Array or Object
+            if (type === (Array || Object) && this[`_${propName}`]) {
+                return this[`_${propName}`];
+            }
+
+            // return serialized value from the attribute
+            if (typeof value === 'string') return serializeAttrValue(name, value, type);
         };
 
-        const set = (value: string | null) => {
-            if (!observe) return;
+        const set = (value: any) => {
+            if (!observe) return false;
 
             const valueAsString = String(value);
 
@@ -42,9 +44,18 @@ export abstract class BootstrapElement extends HTMLElement {
             // set boolean attribute
             if (valueAsString === 'true') return this.setAttribute(name, '');
 
-            // when value is a empty string then simply set that as attribute value
-            const parsedVal = value === '' ? '' : serializeAttrValue(name, value, type);
-            this.setAttribute(name, parsedVal);
+            // when value is a empty string then simply set that as attribute value and skip parsing
+            if (value === '' || typeof value === 'string') {
+                const parsedVal = value === '' ? '' : serializeAttrValue(name, value, type);
+                return this.setAttribute(name, parsedVal);
+            }
+
+            // update/create attribute value as string, when it's used for rich data
+            if (type === (Array || Object)) {
+                const stringifiedValue = JSON.stringify(value);
+                this[`_${propName}`] = value;
+                this.setAttribute(name, stringifiedValue);
+            }
         };
 
         Object.defineProperty(this, propName, { get, set, configurable: true });
@@ -162,20 +173,20 @@ export abstract class BootstrapElement extends HTMLElement {
     /**
      * simplyfied event handler function to add events
      * @param {string} eventName event type ex: click, blur, etc.
-     * @param {function | Object} callback function or Object (which has handleEvent method) that needs to be triggerd
      * @param {object} target HTML element that needs event to be added
+     * @param {function | Object} callback function or Object (which has handleEvent method) that needs to be triggerd
      */
-    on(eventName: string, callback: EventListenerOrEventListenerObject, target: HTMLElement = this): void {
+    on(eventName: string, target: HTMLElement = this, callback: EventListenerOrEventListenerObject): void {
         target.addEventListener(eventName, callback, false);
     }
 
     /**
      * simplyfied event handler function to remove events
      * @param {string} eventName event type ex: click, blur, etc.
-     * @param {function | Object} callback function or Object (which has handleEvent method) that needs to be triggerd
      * @param {object} target HTML element that needs event to be added
+     * @param {function | Object} callback function or Object (which has handleEvent method) that needs to be triggerd
      */
-    off(eventName: string, callback: EventListenerOrEventListenerObject, target: HTMLElement = this): void {
+    off(eventName: string, target: HTMLElement = this, callback: EventListenerOrEventListenerObject): void {
         target.removeEventListener(eventName, callback, false);
     }
 
@@ -193,4 +204,4 @@ export abstract class BootstrapElement extends HTMLElement {
     }
 }
 
-export default BootstrapElement;
+export default BootstrapClass;

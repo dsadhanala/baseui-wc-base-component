@@ -13,6 +13,13 @@ export function toCamelCase(word: string): string {
 }
 
 /**
+ * Converts string to Capitalize
+ */
+export function toCapitalize(word: string): string {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+/**
  * Check if the given object is empty or not.
  */
 export function isEmptyObject(obj: object): boolean {
@@ -30,6 +37,9 @@ interface IError {
     originalError?: any;
 }
 
+/**
+ * Simple error wrapper, helpful and re-usable, can be called inside catch when promise failed
+ */
 export function throwError(reason: string) {
     const newErr = new Error(reason) as IError;
 

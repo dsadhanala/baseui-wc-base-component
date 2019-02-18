@@ -1,22 +1,80 @@
-import { DEV_FEATURE, ReflectedAttrToProps } from '../../_global-types';
-import { toCamelCase } from '../../helpers';
-import { BootstrapElement } from '../bootstrap-element';
+import { ReflectedAttrToProps } from '../../_global/types';
+import { toCamelCase, toCapitalize } from '../../helpers';
+import { BootstrapClass } from '../bootstrap-element';
+import { define } from '../define';
+import { serializeAttrValue } from '../serialize';
 import { validateRequiredAttributes } from '../validate-required-attributes';
+const environment = process.env.NODE_ENV;
 
-// interface A {
-//     x: any;
-//   }
-
-// Merge interface B with the abstract class declaration below.
-// interface BootstrapElement<T = {}> extends HTMLElement {
-//     onclick(ev: MouseEvent): void;
-//     onsubmit(ev: Event): void;
-// }
-
-// Note that the 'implements A' here is optional... you can remove it if you like.
-//   export abstract class B implements A {
-//     y: any;
-//   }
+export interface BaseUICustomElement<T = {}> {
+    onAbort(ev: UIEvent): void;
+    onActivate(this: HTMLElement, ev: Event): any;
+    onBeforeactivate(this: HTMLElement, ev: Event): any;
+    onBeforecopy(this: HTMLElement, ev: Event): any;
+    onBeforecut(this: HTMLElement, ev: Event): any;
+    onBeforedeactivate(this: HTMLElement, ev: Event): any;
+    onBeforepaste(this: HTMLElement, ev: Event): any;
+    onBlur(ev: FocusEvent): void;
+    onCanplay(ev: Event): void;
+    onCanplaythrough(ev: Event): void;
+    onChange(ev: Event): void;
+    onClick(ev: MouseEvent): void;
+    onContextmenu(ev: PointerEvent): void;
+    onCopy(ev: ClipboardEvent): void;
+    onCuechange(ev: Event): void;
+    onCut(ev: ClipboardEvent): void;
+    onDblclick(ev: MouseEvent): void;
+    onDeactivate(this: HTMLElement, ev: Event): any;
+    onDrag(ev: DragEvent): void;
+    onDragend(ev: DragEvent): void;
+    onDragenter(ev: DragEvent): void;
+    onDragleave(ev: DragEvent): void;
+    onDragover(ev: DragEvent): void;
+    onDragstart(ev: DragEvent): void;
+    onDrop(ev: DragEvent): void;
+    onDurationchange(ev: Event): void;
+    onEmptied(ev: Event): void;
+    onEnded(this: HTMLElement, ev: Event): any;
+    onError(ev: ErrorEvent): void;
+    onFocus(ev: FocusEvent): void;
+    onInput(ev: Event): void;
+    onInvalid(ev: Event): void;
+    onKeydown(ev: KeyboardEvent): void;
+    onKeypress(ev: KeyboardEvent): void;
+    onKeyup(ev: KeyboardEvent): void;
+    onLoad(ev: Event): void;
+    onLoadeddata(ev: Event): void;
+    onLoadedmetadata(ev: Event): void;
+    onLoadstart(ev: Event): void;
+    onMousedown(ev: MouseEvent): void;
+    onMouseenter(ev: MouseEvent): void;
+    onMouseleave(ev: MouseEvent): void;
+    onMousemove(ev: MouseEvent): void;
+    onMouseout(ev: MouseEvent): void;
+    onMouseover(ev: MouseEvent): void;
+    onMouseup(ev: MouseEvent): void;
+    onMousewheel(ev: WheelEvent): void;
+    onMscontentzoom(this: HTMLElement, ev: Event): any;
+    onMsmanipulationstatechanged(ev: Event): void;
+    onPaste(ev: ClipboardEvent): void;
+    onPause(ev: Event): void;
+    onPlay(ev: Event): void;
+    onPlaying(ev: Event): void;
+    onProgress(ev: ProgressEvent): void;
+    onRatechange(ev: Event): void;
+    onReset(ev: Event): void;
+    onScroll(ev: UIEvent): void;
+    onSeeked(ev: Event): void;
+    onSeeking(ev: Event): void;
+    onSelect(ev: UIEvent): void;
+    onSelectstart(ev: Event): void;
+    onStalled(ev: Event): void;
+    onSubmit(ev: Event): void;
+    onSuspend(ev: Event): void;
+    onTimeupdate(ev: Event): void;
+    onVolumechange(ev: Event): void;
+    onWaiting(ev: Event): void;
+}
 
 /**
  * custom element base class
@@ -29,7 +87,7 @@ import { validateRequiredAttributes } from '../validate-required-attributes';
  *  - didRender() will be triggered after render()
  *  - setState() this helps shallow merge changes and allow re-render
  */
-class BaseUICustomElement<T = {}> extends BootstrapElement {
+export class BaseUICustomElement<T = {}> extends BootstrapClass {
     [key: string]: any;
 
     static get is(): string {
@@ -48,13 +106,8 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
     static elementName: string;
 
     static define(elementName: string, options?: ElementDefinitionOptions | undefined): void {
-        const { customElements } = window;
-        const isElementExist = customElements.get(elementName);
-
-        if (isElementExist) return;
-
         this.elementName = elementName;
-        customElements.define(elementName, this, options);
+        define(elementName, this, options);
     }
 
     // static hasFullyMounted(component: HTMLElement) {
@@ -84,7 +137,7 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
         this.create();
     }
 
-    attributeChangedCallback(attrName: string, oldVal: any, newVal: any) {
+    attributeChangedCallback(attrName: string, oldVal: string, newVal: string) {
         /**
          * to optimize and avoid unnecessary re-rendering when attribte values changed
          * this condition checks for below three things
@@ -93,11 +146,26 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
          */
         if (!this.isCreated || oldVal === newVal) return;
 
+        // check for rich data type, set the value to secret getter instance if it's Object or Array
+        // this improves rendering performance
+        const CTOR = this.constructor as typeof BaseUICustomElement;
+        const observeAttrs = CTOR.attrToProp || {};
+        const propName = toCamelCase(attrName);
+
+        if (observeAttrs[attrName].type === (Array || Object)) {
+            this[`_${propName}`] = serializeAttrValue(attrName, newVal, observeAttrs[attrName].type as any);
+        }
+
+        // re-render component
         this.beforeRender();
     }
 
+    // this method helps deligate event callbacks to instance using EventListenerObject
+    // so that we can avoid adding `.bind(this)` on each callback instance
+    // you can attach instance methods like below
+    // `<button onclick=${this}` in render method and then add method `onClick(e) {}` on the class
     handleEvent(e: Event) {
-        const eventType = e.type;
+        const eventType = toCapitalize(e.type);
         const hasInstanceMethod = `on${eventType}`;
 
         if (!this[hasInstanceMethod] || typeof this[hasInstanceMethod] !== 'function') return;
@@ -135,8 +203,6 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
 
         this.removeAttr('is-rendering');
         this.didRender();
-
-        if (DEV_FEATURE) console.timeEnd(this.elementName);
     }
 
     private create() {
@@ -166,7 +232,7 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
                 accum[attr] = this[toCamelCase(attr)];
                 return accum;
             }, {});
-        // console.log(requiredAttrs);
+
         return validateRequiredAttributes({
             attrs: { ...requiredAttrs },
             ele: CTOR.elementName
@@ -187,10 +253,9 @@ class BaseUICustomElement<T = {}> extends BootstrapElement {
 
         this.setAttr('is-rendering', '');
 
-        if (DEV_FEATURE) console.time(this.elementName);
-
-        // validate all required attributes before render
-        if (this.hasRequiredAttributes()) this.render(this);
+        // validate all required attributes before render and log missing required attribute values during development
+        if (environment === 'development') this.hasRequiredAttributes();
+        this.render(this);
 
         this.afterRender();
     }
