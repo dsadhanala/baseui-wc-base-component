@@ -1,4 +1,4 @@
-const webpackConfig = require('./webpack.config');
+const webpackConfig = require('./build-config/webpack')();
 const watchMode = process.env.NODE_ENV === 'test-watch';
 
 module.exports = function(config) {
@@ -21,7 +21,7 @@ module.exports = function(config) {
                             loader: 'istanbul-instrumenter-loader',
                             options: { esModules: true }
                         },
-                        exclude: /(_tests|test-config|base-component|mount|node_modules)\//
+                        exclude: /(_tests|test-config|types|node_modules)\//
                     }
                 ]
             },
@@ -38,7 +38,7 @@ module.exports = function(config) {
             'karma-sinon'
         ],
         reporters: ['mocha', 'coverage-istanbul'],
-        port: 1919,
+        port: 2424,
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,

@@ -3,7 +3,7 @@
         "pretty": true,
         "moduleResolution": "node",
         "target": "es5",
-        "module": "commonjs",
+        "module": "es2015",
         "skipLibCheck": true,
         "lib": ["dom", "es2015", "es2016", "es2017", "es2018"],
         "strict": true,
@@ -17,10 +17,10 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "noImplicitAny": true,
-        // "declarationDir": "./lib/cjs",
-        "outDir": "./dist",
+        "declarationDir": "./lib/cjs",
+        "outDir": "./lib/cjs",
         "rootDir": "./src",
-        "typeRoots": ["./node_modules/@types", "./src/_global-types"],
+        "typeRoots": ["./node_modules/@types", "./src/_global/types"],
         "baseUrl": ".",
         "paths": {
             "@rootSrc/*": ["src/*"]

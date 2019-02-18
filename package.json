@@ -1,28 +1,11 @@
 {
     "name": "baseui-wc-base-component",
-    "version": "0.5.0",
-    "description": "re-usable base customElement to avoid repeated bootstrap code, flexible to choose own rendering or use hyperHTML/LitHTML.",
-    "main": "lib/cjs/index.js",
+    "version": "1.0.0-rc1",
+    "description": "Re-usable base customElement to avoid repeated bootstrap code, flexible to choose own rendering or use hyperHTML/LitHTML/LighterHTML",
+    "main": "dist/index.js",
     "module": "lib/esm/index.js",
-    "scripts": {
-        "prepublishOnly": "npm run release",
-        "start": "npm run server",
-        "clean": "shx rm -rf dist lib && shx echo build folders clean!",
-        "test": "NODE_ENV=test karma start karma.config.js",
-        "test:watch": "NODE_ENV=test-watch karma start karma.config.js",
-        "tc": "npx tsc --noEmit",
-        "tcw": "npm run tc -- -w",
-        "lint": "npx tslint './src/**/*.{js,jsx,ts,tsx}' --project tsconfig.json",
-        "lint:fix": "npx tslint './src/**/*.{js,jsx,ts,tsx}' --fix --project tsconfig.json",
-        "server": "npm run clean && NODE_ENV=development npx webpack-dev-server --config webpack.dev.js --hot",
-        "build": "npm run build-dev && npm run build-min",
-        "build:types": "npx tsc --emitDeclarationOnly",
-        "build-esm": "npx tsc -m es6 --outDir lib/esm --declarationDir lib/esm",
-        "build-dev": "NODE_ENV=production webpack --config webpack.prod.js",
-        "build-min": "NODE_ENV=production webpack --env.min --config webpack.prod.js",
-        "release": "npm run clean && npm run lint:fix && npm run build:types && npm run build-esm && npm run build",
-        "bundleServ": "./node_modules/.bin/live-server --port=1919 --host=0.0.0.0 --open='./demo/'"
-    },
+    "unpkg": "dist/index.js",
+    "types": "lib/cjs/index.d.ts",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/dsadhanala/baseui-wc-base-component.git"
@@ -42,10 +25,31 @@
         "url": "https://github.com/dsadhanala/wc-base-component/issues"
     },
     "homepage": "https://github.com/dsadhanala/wc-base-component#readme",
-    "dependencies": {
-        "hyperhtml": "^2.14.0",
-        "lit-html": "^0.14.0"
+    "files": [
+        "src/**/*",
+        "dist/**/*.{js,css,map}",
+        "lib/**/*"
+    ],
+    "scripts": {
+        "prepublishOnly": "npm run release",
+        "start": "npm run server",
+        "clean": "shx rm -rf dist lib && shx echo build folders clean!",
+        "test": "NODE_ENV=test karma start karma.config.js",
+        "test:watch": "NODE_ENV=test-watch karma start karma.config.js",
+        "tc": "npx tsc --noEmit",
+        "tcw": "npm run tc -- -w",
+        "lint": "npx tslint './src/**/*.{js,ts}' --project tsconfig.json",
+        "lint:fix": "npx tslint './src/**/*.{js,ts}' --fix --project tsconfig.json",
+        "server": "npm run clean && NODE_ENV=development npx webpack-dev-server --config webpack.dev.js --hot",
+        "build": "npm run build-dev && npm run build-min",
+        "build:types": "npx tsc --emitDeclarationOnly",
+        "build-esm": "npx tsc -m es6 --outDir lib/esm --declarationDir lib/esm",
+        "build-dev": "NODE_ENV=production webpack --config webpack.prod.js",
+        "build-min": "NODE_ENV=production webpack --env.min --config webpack.prod.js",
+        "release": "npm run clean && npm run lint && npm run build:types && npm run build-esm && npm test && npm run build",
+        "bundleServ": "./node_modules/.bin/live-server --port=1919 --host=0.0.0.0 --open='./demo/'"
     },
+    "dependencies": {},
     "devDependencies": {
         "@babel/cli": "^7.1.2",
         "@babel/core": "^7.1.2",
@@ -57,12 +61,14 @@
         "@babel/preset-typescript": "^7.1.0",
         "@types/chai": "^4.1.7",
         "@types/mocha": "^5.2.5",
+        "@types/node": "^10.12.22",
         "@types/sinon": "^7.0.3",
         "babel-loader": "^8.0.4",
         "chai": "^4.2.0",
         "clean-webpack-plugin": "^1.0.0",
         "fork-ts-checker-webpack-plugin": "^0.5.2",
         "husky": "^1.1.2",
+        "hyperhtml": "^2.25.4",
         "istanbul-instrumenter-loader": "^3.0.1",
         "karma": "^3.1.4",
         "karma-chai": "^0.1.0",
@@ -74,7 +80,8 @@
         "karma-sinon": "^1.0.5",
         "karma-sourcemap-loader": "^0.3.7",
         "karma-webpack": "^4.0.0-rc.5",
-        "live-server": "^1.2.0",
+        "lit-html": "^1.0.0",
+        "live-server": "^1.2.1",
         "mocha": "^5.2.0",
         "prettier": "^1.14.3",
         "puppeteer": "^1.11.0",
@@ -90,7 +97,7 @@
         "typescript": "^3.2.2",
         "webpack": "^4.8.3",
         "webpack-cli": "^3.1.2",
-        "webpack-dev-server": "^3.1.4",
+        "webpack-dev-server": "^3.1.14",
         "webpack-merge": "^4.1.2"
     }
 }
