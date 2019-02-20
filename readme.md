@@ -1,4 +1,4 @@
-# Base UI: customElement
+# BaseUICustomElement
 
 [![npm](https://img.shields.io/npm/v/baseui-wc-base-component.svg)](https://www.npmjs.com/package/baseui-wc-base-component) [![license](https://img.shields.io/npm/l/baseui-wc-base-component.svg)](https://opensource.org/licenses/MIT)
 
@@ -63,11 +63,10 @@ Name                                        | When it gets called
 `off(eventName, targetEle?, callback)`      | Removes event listener on the given target element
 `trigger(eventName, targetEle?, eventData)` | Emits an event (including custom events) on a given target element, note third param takes an object which will create customEvent with event detail object in it to pass information
 
-## Simple component example and comparison with all variations:
-
-Please refer below code examples with very basic component which updates text when clicked.
-
-To see the preview of below examples refer this [codepen](https://codepen.io/dsadhanala/pen/jxNNZG)
+## Usage
+Live preview of below examples from codesandbox
+1. [BaseUICustomElement (usage in JS)](https://codesandbox.io/s/mm26428vjy)
+1. [BaseUICustomElement (usage in TS)](https://codesandbox.io/s/94kz39mn3w)
 
 ### with BaseCustomElement
 
@@ -206,8 +205,8 @@ Usage in HTML:
 <header-text-hyper text="Title text component: hyper-html"></header-text-hyper>
 ```
 
-## Complex example
-
-Refer [this codepen](https://codepen.io/dsadhanala/pen/XZZKej) to understand how you can create customElements that are extended from this package.
+## Component with external renderers example
+Live preview from codesandbox:   
+[Toggle view example (usage in TS)](https://codesandbox.io/s/mm26428vjy)
 
 ## TODO add more docs
