@@ -1,6 +1,6 @@
 {
     "name": "baseui-wc-base-component",
-    "version": "1.0.0",
+    "version": "1.0.0-rc2",
     "description": "Re-usable base customElement to avoid repeated bootstrap code, flexible to choose own rendering or use hyperHTML/LitHTML/LighterHTML",
     "main": "dist/index.js",
     "module": "lib/esm/index.js",
