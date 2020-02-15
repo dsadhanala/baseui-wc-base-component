@@ -75,7 +75,7 @@ export abstract class BootstrapClass extends HTMLElement {
      * @param {string} attribute name
      * @param {object} target DOM element
      */
-    hasAttr(attr: string, target: Element = this): boolean {
+    hasAttr(attr: string, target: HTMLElement = this): boolean {
         return target.hasAttribute(attr);
     }
 
@@ -84,7 +84,7 @@ export abstract class BootstrapClass extends HTMLElement {
      * @param {string} attribute name
      * @param {object} target DOM element
      */
-    getAttr(attr: string, target: Element = this): string | null {
+    getAttr(attr: string, target: HTMLElement = this): string | null {
         return target.getAttribute(attr);
     }
 
@@ -94,7 +94,7 @@ export abstract class BootstrapClass extends HTMLElement {
      * @param {string} new/changed value for the attribute
      * @param {object} target DOM element
      */
-    setAttr(attr: string, val: string, target: Element = this): void {
+    setAttr(attr: string, val: string, target: HTMLElement = this): void {
         target.setAttribute(attr, val);
     }
 
@@ -103,7 +103,7 @@ export abstract class BootstrapClass extends HTMLElement {
      * @param {string} attribute name
      * @param {object} target DOM element
      */
-    removeAttr(attr: string, target: Element = this): void {
+    removeAttr(attr: string, target: HTMLElement = this): void {
         target.removeAttribute(attr);
     }
 
@@ -113,7 +113,7 @@ export abstract class BootstrapClass extends HTMLElement {
      * @param {object} target DOM element
      * @return {object} element DOM element
      */
-    addClass(className: string, target: Element = this): Element {
+    addClass(className: string, target: HTMLElement = this): HTMLElement {
         target.classList.add(className);
         return target;
     }
@@ -124,7 +124,7 @@ export abstract class BootstrapClass extends HTMLElement {
      * @param {object} target DOM element
      * @return {object} element DOM element
      */
-    removeClass(className: string, target: Element = this): Element {
+    removeClass(className: string, target: HTMLElement = this): HTMLElement {
         target.classList.remove(className);
         return target;
     }
@@ -135,7 +135,7 @@ export abstract class BootstrapClass extends HTMLElement {
      * @param {object} target DOM element
      * @return {boolean} contains true/false
      */
-    hasClass(className: string, target: Element = this): boolean {
+    hasClass(className: string, target: HTMLElement = this): boolean {
         return target.classList.contains(className);
     }
 
@@ -146,7 +146,7 @@ export abstract class BootstrapClass extends HTMLElement {
      * @param {boolean} force boolean to use force optionally
      * @return {object} element DOM element
      */
-    toggleClass(className: string, target: Element = this, force: boolean): boolean {
+    toggleClass(className: string, target: HTMLElement = this, force: boolean): boolean {
         return target.classList.toggle(className, force);
     }
 
@@ -156,7 +156,7 @@ export abstract class BootstrapClass extends HTMLElement {
      * @param {object} target Element in which search should be performed
      * @return {object} Element
      */
-    find(selector: string, target: NodeSelector = this): Element | null {
+    find(selector: string, target: HTMLElement = this): HTMLElement | null {
         return target.querySelector(selector);
     }
 
@@ -166,7 +166,7 @@ export abstract class BootstrapClass extends HTMLElement {
      * @param {object} target Element in which search should be performed
      * @return {array} Elements that are matched
      */
-    findAll(selector: string, target: NodeSelector = this): NodeListOf<Element> {
+    findAll(selector: string, target: HTMLElement = this): NodeListOf<HTMLElement> {
         return target.querySelectorAll(selector);
     }
 

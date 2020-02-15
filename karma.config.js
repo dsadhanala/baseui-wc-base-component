@@ -1,5 +1,5 @@
 const webpackConfig = require('./build-config/webpack')();
-const watchMode = process.env.NODE_ENV === 'test-watch';
+const watchMode = process.env.NODE_ENV_MODE === 'test-watch';
 
 module.exports = function(config) {
     config.set({

@@ -9,7 +9,7 @@ module.exports = function () {
 
     return {
         devtool: isProd ? 'source-map' : 'cheap-module-source-map',
-        mode: ENV,
+        mode: ENV.trim(),
         target: 'web',
         output: {
             publicPath: '/',
